@@ -28,93 +28,99 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     // Procesamos los valores que sean literales
     for (element in literals) {
-        //var ele  = {type: literals[element]["p"].value, value: literals[element]["o"].value};
+        if (literals.hasOwnProperty(element)) {
 
-        ele  = {relation: literals[element].relation, value: literals[element].value};
-        literalsValues.push(ele);
+            ele = {relation: literals[element].relation, value: literals[element].value};
+            literalsValues.push(ele);
 
-        found = false;
-        for(i = 0; i < literalsAux.length; i++) {
-            if (literalsAux[i].url == literals[element].relation.url) {
-                found = true;
-                break;
+            found = false;
+            for (i = 0; i < literalsAux.length; i++) {
+                if (literalsAux[i].url == literals[element].relation.url) {
+                    found = true;
+                    break;
+                }
             }
-        }
 
-        if (!found){
-            literalsAux.push(literals[element].relation);
+            if (!found) {
+                literalsAux.push(literals[element].relation);
+            }
         }
     }
 
     // Procesamos los valores que sean literales tipados
     for (element in typedLiterals) {
-        //var ele  = {type: typedLiterals[element]["p"].value, value: typedLiterals[element]["o"].value, dataType: typedLiterals[element]["o"].datatype};
-        replaceType(typedLiterals[element].value);
-        ele  = {relation: typedLiterals[element].relation, value: typedLiterals[element].value};
-        typedLiteralsValues.push(ele);
+        if (typedLiterals.hasOwnProperty(element)) {
 
-        found = false;
-        for(i = 0; i < typedLiteralsAux.length; i++) {
-            if (typedLiteralsAux[i].url == typedLiterals[element].relation.url) {
-                found = true;
-                break;
+            replaceType(typedLiterals[element].value);
+
+            ele = {relation: typedLiterals[element].relation, value: typedLiterals[element].value};
+            typedLiteralsValues.push(ele);
+
+            found = false;
+            for (i = 0; i < typedLiteralsAux.length; i++) {
+                if (typedLiteralsAux[i].url == typedLiterals[element].relation.url) {
+                    found = true;
+                    break;
+                }
             }
-        }
 
-        if (!found){
-            typedLiteralsAux.push(typedLiterals[element].relation);
+            if (!found) {
+                typedLiteralsAux.push(typedLiterals[element].relation);
+            }
         }
     }
 
     // Procesamos los valores que sean relaciones
     for (element in relations) {
-        //var ele  = {type: relations[element]["p"].value, value: relations[element]["o"].value};
+        if (relations.hasOwnProperty(element)) {
 
-        relations[element].value.url = relations[element].value.value;
+            relations[element].value.url = relations[element].value.value;
 
-        if (relations[element].title != ""){
-            relations[element].value.value = relations[element].title;
-        }
-
-        ele  = {relation: relations[element].relation, value: relations[element].value};
-        relationsValues.push(ele);
-
-        found = false;
-        for(i = 0; i < relationsAux.length; i++) {
-            if (relationsAux[i].url == relations[element].relation.url) {
-                found = true;
-                break;
+            if (relations[element].title != "") {
+                relations[element].value.value = relations[element].title;
             }
-        }
 
-        if (!found){
-            relationsAux.push(relations[element].relation);
+            ele = {relation: relations[element].relation, value: relations[element].value};
+            relationsValues.push(ele);
+
+            found = false;
+            for (i = 0; i < relationsAux.length; i++) {
+                if (relationsAux[i].url == relations[element].relation.url) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                relationsAux.push(relations[element].relation);
+            }
         }
     }
 
-    console.log("Relaciones: ", relationsAux);
 
     for (element in reverseRelations){
+        if (reverseRelations.hasOwnProperty(element)) {
 
-        reverseRelations[element].value.url = reverseRelations[element].value.value;
+            reverseRelations[element].value.url = reverseRelations[element].value.value;
 
-        if (reverseRelations[element].title != ""){
-            reverseRelations[element].value.value = reverseRelations[element].title;
-        }
-
-        ele  = {relation: reverseRelations[element].relation, value: reverseRelations[element].value};
-        reverseRelationsValues.push(ele);
-
-        found = false;
-        for(i = 0; i < reverseRelationsAux.length; i++) {
-            if (reverseRelationsAux[i].url == reverseRelations[element].relation.url) {
-                found = true;
-                break;
+            if (reverseRelations[element].title != "") {
+                reverseRelations[element].value.value = reverseRelations[element].title;
             }
-        }
 
-        if (!found){
-            reverseRelationsAux.push(reverseRelations[element].relation);
+            ele = {relation: reverseRelations[element].relation, value: reverseRelations[element].value};
+            reverseRelationsValues.push(ele);
+
+            found = false;
+            for (i = 0; i < reverseRelationsAux.length; i++) {
+                if (reverseRelationsAux[i].url == reverseRelations[element].relation.url) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                reverseRelationsAux.push(reverseRelations[element].relation);
+            }
         }
     }
 

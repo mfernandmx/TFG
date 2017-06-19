@@ -30,57 +30,58 @@ function processData (data, dataReverse, uri){
 
     for (element in results){
         // Relacion
-        relation = results[element][vars[0]].value;
+        if (results.hasOwnProperty(element)) {
+            relation = results[element][vars[0]].value;
 
-        relationProcessed = processPrefix(relation);
+            relationProcessed = processPrefix(relation);
 
-        //TODO: Comparar relacion con valores para decidir qué hacer
-        if (isGeometryAttribute(relation)){
+            //TODO: Comparar relacion con valores para decidir qué hacer
+            if (isGeometryAttribute(relation)) {
 
-        }
-        else if(isType(relation)){
-            types.push(processPrefix(results[element][vars[1]].value));
-        }
-        else{
+            }
+            else if (isType(relation)) {
+                types.push(processPrefix(results[element][vars[1]].value));
+            }
+            else {
 
-            // Valor
-            //console.log(results[element][vars[1]].value);
+                var type = results[element][vars[1]].type;
 
-            var type = results[element][vars[1]].type;
-
-            if (type == 'literal') {
-                //literals.push(results[element]);
-                literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-            } else if (type == 'typed-literal'){
-                typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-            } else if (type == 'bnode'){
-                //TODO:
-                //TODO: Diferenciar entre 1 o varios
-                //TODO: ¿Varios recursos anónimos anidados?
-
-            } else if (type == 'uri'){
-
-                //Diferenciamos entre relacion y propiedad
-                var jsonSize = Object.keys(results[element]).length;
-                if (jsonSize == 2){ // Literal de tipo url
-                    //literals.push(results[element]);
+                if (type == 'literal') {
                     literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-                }
-                else if (jsonSize > 3){ // Relacion
 
-                    relationTitle = "";
+                } else if (type == 'typed-literal') {
+                    typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
 
-                    for (var i = 3; i < vars.length; i++){
+                } else if (type == 'bnode') {
+                    //TODO:
+                    //TODO: Diferenciar entre 1 o varios
+                    //TODO: ¿Varios recursos anónimos anidados?
 
-                        if (results[element][vars[i]] != undefined){
-                            relationTitle = results[element][vars[i]].value;
-                            break;
-                        }
+                } else if (type == 'uri') {
+
+                    //Diferenciamos entre relacion y propiedad
+                    var jsonSize = Object.keys(results[element]).length;
+                    if (jsonSize == 2) { // Literal de tipo url
+                        literals.push({relation: relationProcessed, value: results[element][vars[1]]});
                     }
+                    else if (jsonSize > 3) { // Relacion
 
-                    relations.push({relation: relationProcessed, value: results[element][vars[1]], title: relationTitle});
+                        relationTitle = "";
+
+                        for (var i = 3; i < vars.length; i++) {
+
+                            if (results[element][vars[i]] != undefined) {
+                                relationTitle = results[element][vars[i]].value;
+                                break;
+                            }
+                        }
+
+                        relations.push({
+                            relation: relationProcessed,
+                            value: results[element][vars[1]],
+                            title: relationTitle
+                        });
+                    }
                 }
             }
         }
@@ -90,21 +91,27 @@ function processData (data, dataReverse, uri){
     results = dataReverseJSON['results']['bindings'];
 
     for (element in results){
-        // Relacion
-        relation = results[element][vars[1]].value;
-        relationProcessed = processPrefix(relation);
+        if (results.hasOwnProperty(element)) {
+            // Relacion
+            relation = results[element][vars[1]].value;
+            relationProcessed = processPrefix(relation);
 
-        relationTitle = "";
+            relationTitle = "";
 
-        for (i = 2; i < vars.length; i++){
+            for (i = 2; i < vars.length; i++) {
 
-            if (results[element][vars[i]] != undefined){
-                relationTitle = results[element][vars[i]].value;
-                break;
+                if (results[element][vars[i]] != undefined) {
+                    relationTitle = results[element][vars[i]].value;
+                    break;
+                }
             }
-        }
 
-        reverseRelations.push({relation: relationProcessed, value: results[element][vars[0]], title: relationTitle});
+            reverseRelations.push({
+                relation: relationProcessed,
+                value: results[element][vars[0]],
+                title: relationTitle
+            });
+        }
     }
 
     var title = getResourceTitle(literals);
@@ -123,7 +130,7 @@ function processData (data, dataReverse, uri){
     //TODO: Revisar paso de parámetros
     //TODO: Uri en bnodes
 
-    // Arrays ordenados para ser agrupados
+    // Arrays ordenados
     template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}));
 
 }
@@ -170,9 +177,7 @@ function processPrefix(relation) {
         prefix="?";
     }
 
-    var relationProcessed = {prefix: prefix, value: value, url: relation};
-
-    return relationProcessed;
+    return {prefix: prefix, value: value, url: relation};
 }
 
 function getResourceTitle(literals){
@@ -182,17 +187,21 @@ function getResourceTitle(literals){
     var finded = false;
     var prefix, literal;
 
-    for (prefix in prefixes){
-        for (literal in literals){
-            if (literals[literal].relation.url == prefixes[prefix]){
-                finded = true;
-                title = literals[literal].value.value;
+    for (prefix in prefixes) {
+        if (prefixes.hasOwnProperty(prefix)) {
+            for (literal in literals) {
+                if (literals.hasOwnProperty(literal)) {
+                    if (literals[literal].relation.url == prefixes[prefix]) {
+                        finded = true;
+                        title = literals[literal].value.value;
+                    }
+                    if (finded)
+                        break;
+                }
             }
             if (finded)
-                break
+                break;
         }
-        if (finded)
-            break
     }
 
     return title;
