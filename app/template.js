@@ -35,6 +35,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         //console.log(typedLiterals[element]["o"].datatype);
     }
 
+    var relationsAux = [];
+
     // Procesamos los valores que sean relaciones
     for (element in relations) {
         //var ele  = {type: relations[element]["p"].value, value: relations[element]["o"].value};
@@ -47,7 +49,21 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
         ele  = {relation: relations[element].relation, value: relations[element].value};
         relationsValues.push(ele);
+
+        var found = false;
+        for(var i = 0; i < relationsAux.length; i++) {
+            if (relationsAux[i].url == relations[element].relation.url) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found){
+            relationsAux.push(relations[element].relation);
+        }
     }
+
+    console.log("Relaciones: ", relationsAux);
 
     for (element in reverseRelations){
 
@@ -71,7 +87,9 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         literals: literalsValues,
         typedLiterals: typedLiteralsValues,
         relations: relationsValues,
-        reverseRelations: reverseRelationsValues
+        reverseRelations: reverseRelationsValues,
+
+        relationsAux: relationsAux
     });
 
     // Render a set of data

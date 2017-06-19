@@ -8,8 +8,9 @@ html
         h2 #{rUri}
 
         h2 Tipos
-        each type in rTypes
-            li
-                a(href=type.url) #{type.prefix}:#{type.value}
+        ul
+            each type in rTypes
+                li
+                    a(href=type.url) #{type.prefix}:#{type.value}
 
         block content

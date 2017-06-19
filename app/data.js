@@ -24,13 +24,15 @@ function processData (data, dataReverse, uri){
 
     var types = [];
 
+    var relationProcessed, relationTitle;
+
     console.log("-------------------------");
 
     for (element in results){
         // Relacion
         relation = results[element][vars[0]].value;
 
-        var relationProcessed = processPrefix(relation);
+        relationProcessed = processPrefix(relation);
 
         //TODO: Comparar relacion con valores para decidir qué hacer
         if (isGeometryAttribute(relation)){
@@ -68,7 +70,7 @@ function processData (data, dataReverse, uri){
                 }
                 else if (jsonSize > 3){ // Relacion
 
-                    var relationTitle = "";
+                    relationTitle = "";
 
                     for (var i = 3; i < vars.length; i++){
 
@@ -90,11 +92,11 @@ function processData (data, dataReverse, uri){
     for (element in results){
         // Relacion
         relation = results[element][vars[1]].value;
-        var relationProcessed = processPrefix(relation);
+        relationProcessed = processPrefix(relation);
 
-        var relationTitle = "";
+        relationTitle = "";
 
-        for (var i = 2; i < vars.length; i++){
+        for (i = 2; i < vars.length; i++){
 
             if (results[element][vars[i]] != undefined){
                 relationTitle = results[element][vars[i]].value;
@@ -120,7 +122,9 @@ function processData (data, dataReverse, uri){
     console.log("-------------------------");
     //TODO: Revisar paso de parámetros
     //TODO: Uri en bnodes
-    template.setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations);
+
+    // Arrays ordenados para ser agrupados
+    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}));
 
 }
 
