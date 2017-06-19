@@ -1,0 +1,30 @@
+
+@prefix conf: <http://richard.cyganiak.de/2007/pubby/config.rdf#> .
+@prefix meta: <http://example.org/metadata#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix om: <http://opendata.caceres.es/def/ontomunicipio#>.
+
+# Server configuration section
+<> a conf:Configuration;
+    conf:projectName "Open Data Cáceres";
+    conf:projectHomepage <http://opendata.caceres.es>;
+    conf:webBase <http://localhost:8080/>;
+    conf:labelProperty rdfs:label, om:nombreAsociacion;
+    conf:defaultLanguage "es";
+    conf:indexResource <http://dbpedia.org/resource/Wikipedia>;
+
+    conf:dataset [
+        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;
+        conf:sparqlDefaultGraph <http://opendata.caceres.es/>;
+        conf:datasetBase <http://opendata.caceres.es/recurso/>;
+        conf:webResourcePrefix "resource/";
+        conf:fixUnescapedCharacters "(),'!$&*+;=@";
+    ];
+    .

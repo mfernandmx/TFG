@@ -1,0 +1,34 @@
+extends main.pug
+
+block content
+    h2 Literales
+    each literal in literals
+        li
+            a(href=literal.relation.url) #{literal.relation.prefix}:#{literal.relation.value}
+            | ----->
+            if literal.value.type != 'uri'
+               | #{literal.value.value}
+            else
+                a(href=literal.value.value) #{literal.value.value}
+
+    h2 Literales Tipados
+    each typedLiteral in typedLiterals
+        li
+            a(href=typedLiteral.relation.url) #{typedLiteral.relation.prefix}:#{typedLiteral.relation.value}
+            | -----> #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+
+    h2 Relaciones
+    each relation in relations
+        li
+            a(href=relation.relation.url) #{relation.relation.prefix}:#{relation.relation.value}
+            | ----->
+            a(href=relation.value.url) #{relation.value.value}
+
+    h2 Relaciones inversas
+    each relation in reverseRelations
+        li
+            | is
+            a(href=relation.relation.url) #{relation.relation.prefix}:#{relation.relation.value}
+            | ----->
+            a(href=relation.value.url) #{relation.value.value}
+

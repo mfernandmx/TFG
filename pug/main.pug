@@ -1,0 +1,15 @@
+
+html
+    head
+        title #{rTitle}
+    body
+        h1 #{rTitle}
+
+        h2 #{rUri}
+
+        h2 Tipos
+        each type in rTypes
+            li
+                a(href=type.url) #{type.prefix}:#{type.value}
+
+        block content
