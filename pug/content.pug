@@ -3,21 +3,29 @@ extends main.pug
 block content
     h2 Literales
     ul
-        each literal in literals
+        each literalAux in literalsAux
             li
-                a(href=literal.relation.url) #{literal.relation.prefix}:#{literal.relation.value}
-                | ----->
-                if literal.value.type != 'uri'
-                   | #{literal.value.value}
-                else
-                    a(href=literal.value.value) #{literal.value.value}
+                a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
+                ul
+                    each literal in literals
+                        if literalAux.url == literal.relation.url
+                            li
+                                | ----->
+                                if literal.value.type != 'uri'
+                                   | #{literal.value.value}
+                                else
+                                    a(href=literal.value.value) #{literal.value.value}
 
     h2 Literales Tipados
     ul
-        each typedLiteral in typedLiterals
+        each typedLiteralAux in typedLiteralsAux
             li
-                a(href=typedLiteral.relation.url) #{typedLiteral.relation.prefix}:#{typedLiteral.relation.value}
-                | -----> #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
+                ul
+                    each typedLiteral in typedLiterals
+                        if typedLiteralAux.url == typedLiteral.relation.url
+                            li
+                                | -----> #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
 
     h2 Relaciones
     ul
@@ -33,10 +41,14 @@ block content
 
     h2 Relaciones inversas
     ul
-        each relation in reverseRelations
+        each reverseRelationAux in reverseRelationsAux
             li
                 | is
-                a(href=relation.relation.url) #{relation.relation.prefix}:#{relation.relation.value}
-                | ----->
-                a(href=relation.value.url) #{relation.value.value}
+                a(href=reverseRelationAux.url) #{reverseRelationAux.prefix}:#{reverseRelationAux.value}
+                ul
+                    each relation in reverseRelations
+                        if reverseRelationAux.url == relation.relation.url
+                            li
+                                | ----->
+                                a(href=relation.value.url) #{relation.value.value}
 
