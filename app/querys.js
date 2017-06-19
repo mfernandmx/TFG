@@ -1,10 +1,10 @@
 // app/query.js
 
 module.exports.checkData = checkData;
-module.exports.getRelationData = getRelationData;
 
 const data = require('./data');
 const configuration = require('./configuration');
+const template = require('./template');
 
 var queryGraph = "";
 
@@ -25,8 +25,8 @@ function checkData (uri) {
         }
 
         else{
-            //TODO: Pagina 404
             console.log("ES FALSE!");
+            template.setError404(uri);
         }
 
     });
@@ -89,22 +89,5 @@ function getData (uri) {
             console.log(body);
             data.processData(body, bodyReverse, uri);
         });
-    });
-}
-
-//TODO Borrar
-function getRelationData(uri){
-
-    var sparqlQuery = "SELECT ?p ?o WHERE{"+
-        "<"+uri+"> ?p ?o .}";
-
-    endpoint = configuration.getProperty("sparqlEndpoint");
-
-    request(endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json", function (error, response, body) {
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-
-        console.log(body);
-
-        return body;
     });
 }

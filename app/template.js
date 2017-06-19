@@ -1,5 +1,6 @@
 
 module.exports.setContentPug = setContentPug;
+module.exports.setError404 = setError404;
 
 const configuration = require('./configuration');
 const data = require('./data');
@@ -7,7 +8,6 @@ const pug = require('pug');
 
 function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations){
 
-    //TODO Atributos o relaciones multivaluadas
     //TODO Language
 
     var element;
@@ -158,4 +158,18 @@ function replaceType(literal) {
             literal.datatype = "xsd:boolean";
             break;
     }
+}
+
+function setError404(uri){
+    const compiledFunction = pug.compileFile('./pug/404.pug');
+
+    var types = [];
+
+    var html = compiledFunction({
+        rTitle: "404 Not Found",
+        rUri: uri,
+        rTypes: types
+    });
+
+    console.log(html);
 }

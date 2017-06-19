@@ -7,10 +7,11 @@ html
 
         h2 #{rUri}
 
-        h2 Tipos
-        ul
-            each type in rTypes
-                li
-                    a(href=type.url) #{type.prefix}:#{type.value}
+        if rTypes.length > 0
+            h2 Tipos
+            ul
+                each type in rTypes
+                    li
+                        a(href=type.url) #{type.prefix}:#{type.value}
 
         block content
