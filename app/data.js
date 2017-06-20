@@ -1,10 +1,10 @@
 
 module.exports.processData = processData;
 module.exports.processPrefix = processPrefix;
-module.exports.getTitleFromURI = getTitleFromURI;
 
 const configuration = require('./configuration');
 const template = require('./template');
+
 
 function processData (data, dataReverse, uri){
 
@@ -21,6 +21,7 @@ function processData (data, dataReverse, uri){
     var typedLiterals = [];
     var relations = [];
     var reverseRelations = [];
+    //TODO: Array u objeto?
     var geometries = [];
     var points = [];
 
@@ -32,22 +33,30 @@ function processData (data, dataReverse, uri){
 
     console.log("-------------------------");
 
+    // Process each element received by the query
     for (element in results){
-        // Relacion
         if (results.hasOwnProperty(element)) {
+
+            // Relation value between the element and the resource
             relation = results[element][vars[0]].value;
 
+            // Process the relation to separate its name and its prefix
             relationProcessed = processPrefix(relation);
 
-            //TODO: Comparar relacion con valores para decidir qué hacer
-            if (isSpecificAttribute(relation, "geoProperty")) { // Atributo geométrico
+            /*
+             Check if the relation matches with one of the special types contemplated
+             in the configuration. Those types relate to geometric values to be
+             displayed in a map
+            */
+            if (isSpecificAttribute(relation, "geoProperty")) { // Geometric attribute
                 geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
             }
-            else if (isSpecificAttribute(relation, "latProperty")){
+            else if (isSpecificAttribute(relation, "latProperty")){ // Latitude attribute
 
                 var elementAux, relationAux, valueAux;
                 finded = false;
 
+                // Find if there is a longitude value to display a point
                 for (elementAux in results) {
                     if (results.hasOwnProperty(elementAux)) {
                         relationAux = results[elementAux][vars[0]].value;
@@ -67,32 +76,33 @@ function processData (data, dataReverse, uri){
                     //TODO: Tratar como un atributo normal
                 }
             }
-            else if (isType(relation)) {
+            else if (isType(relation)) { // Resource's type
                 types.push(processPrefix(results[element][vars[1]].value));
             }
-            else if (!isSpecificAttribute(relation, "longProperty")){ //TODO: Ver si se puede comprobar que no exista un lat
+            else if (!isSpecificAttribute(relation, "longProperty")){ // If the relation doesn't match with any special type
+                // TODO: Ver si se puede comprobar que no exista un lat
 
                 var type = results[element][vars[1]].type;
 
-                if (type == 'literal') {
+                if (type == 'literal') { // Literal
                     literals.push({relation: relationProcessed, value: results[element][vars[1]]});
 
-                } else if (type == 'typed-literal') {
+                } else if (type == 'typed-literal') { // Typed Literal
                     typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
 
-                } else if (type == 'bnode') {
+                } else if (type == 'bnode') { // Blanck node
                     //TODO:
                     //TODO: Diferenciar entre 1 o varios
                     //TODO: ¿Varios recursos anónimos anidados?
 
-                } else if (type == 'uri') {
+                } else if (type == 'uri') { // Uri - Need to choose between relation or literal url
 
-                    //Diferenciamos entre relacion y propiedad
                     var jsonSize = Object.keys(results[element]).length;
-                    if (jsonSize == 2) { // Literal de tipo url
+
+                    if (jsonSize == 2) { // Literal url
                         literals.push({relation: relationProcessed, value: results[element][vars[1]]});
                     }
-                    else if (jsonSize > 3) { // Relacion
+                    else if (jsonSize > 3) { // Relation
 
                         relationTitle = "";
 
@@ -118,9 +128,14 @@ function processData (data, dataReverse, uri){
     vars = dataReverseJSON['head']['vars'];
     results = dataReverseJSON['results']['bindings'];
 
+    /*
+     Process each element received by the reverse query. In this case, all
+     elements will be relations between other resources and the resource we
+     are processing
+    */
     for (element in results){
         if (results.hasOwnProperty(element)) {
-            // Relacion
+
             relation = results[element][vars[1]].value;
             relationProcessed = processPrefix(relation);
 
@@ -142,8 +157,13 @@ function processData (data, dataReverse, uri){
         }
     }
 
+    // Search for resource's title
     var title = getResourceTitle(literals);
 
+    /*
+     If there is no attribute that matches with the titles properties,
+     it is generated by the uri
+      */
     if (title == ""){
         title = getTitleFromURI(uri);
     }
@@ -153,14 +173,19 @@ function processData (data, dataReverse, uri){
     console.log("Type(s):", types);
 
     console.log("-------------------------");
+
     //TODO: Revisar paso de parámetros
     //TODO: Uri en bnodes
 
-    // Arrays ordenados
+    // Send the data processed to be rendered by the template
     template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
 
 }
 
+/*
+Given a relation and a property, it checks if the relation matches with any of the
+values given in the property set in the configuration file
+ */
 function isSpecificAttribute(relation, property) {
     var isSpecific = false;
     var propertyValues = configuration.getProperty(property);
@@ -175,6 +200,9 @@ function isSpecificAttribute(relation, property) {
     return isSpecific;
 }
 
+/*
+Given a relation, it determines if is type relation or not
+ */
 function isType(relation) {
     var type = false;
 
@@ -185,6 +213,9 @@ function isType(relation) {
     return type;
 }
 
+/*
+Given a relation, it will be split in order to get the prefix and the ontology separate
+ */
 function processPrefix(relation) {
 
     var prefix, value;
@@ -212,6 +243,11 @@ function processPrefix(relation) {
     return {prefix: prefix, value: value, url: relation};
 }
 
+/*
+Given a set of literals, it searches for the label/title properties in the configuration file
+If there is any match, the title will be set for the resource
+If not, and empty string will be returned
+ */
 function getResourceTitle(literals){
 
     var title = "";
@@ -239,6 +275,10 @@ function getResourceTitle(literals){
     return title;
 }
 
+/*
+Given an uri, it splits it to get the last part of the uri
+in order to create a title for the resource
+ */
 function getTitleFromURI(uri){
 
     var split = uri.split("/");

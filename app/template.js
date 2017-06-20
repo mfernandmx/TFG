@@ -162,6 +162,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 ele = {relation: geometries[element].relation, value: geometries[element].value};
                 literalsValues.push(ele);
 
+                //TODO Probar
                 found = false;
                 for (i = 0; i < literalsAux.length; i++) {
                     if (literalsAux[i].url == geometries[element].relation.url) {
@@ -183,8 +184,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
             try {
                 geodata = geojson.processPoint(points[element].lat.value.value, points[element].long.value.value);
 
-                console.log("Punto:", JSON.stringify(geodata));
-
                 //TODO: Eliminar stringify y procesar geojson para mostrarlo
                 ele = {value: JSON.stringify(geodata)};
                 pointsValues.push(ele);
@@ -195,7 +194,34 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 //TODO: Guardar error en un log
                 console.log(err);
 
-                //TODO:
+                //TODO Probar
+                ele = {relation: points[element].lat.relation, value: points[element].lat.value};
+                literalsValues.push(ele);
+
+                ele = {relation: points[element].long.relation, value: points[element].long.value};
+                literalsValues.push(ele);
+
+                found = false;
+                for (i = 0; i < literalsAux.length; i++) {
+                    if (literalsAux[i].url == points[element].lat.relation.url) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    literalsAux.push(points[element].lat.relation);
+                }
+
+                found = false;
+                for (i = 0; i < literalsAux.length; i++) {
+                    if (literalsAux[i].url == points[element].long.relation.url) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    literalsAux.push(points[element].long.relation);
+                }
 
             }
 
@@ -226,15 +252,15 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     });
 
     // Render a set of data
-    //console.log(html);
+    console.log(html);
     createHTML(html);
 }
 
 function replaceType(literal) {
 
-    //TODO: Revisar
     switch (literal.datatype){
         case "http://www.w3.org/2001/XMLSchema#int":
+        case "http://www.w3.org/2001/XMLSchema#integer":
             literal.datatype = "xsd:integer";
             break;
         case "http://www.w3.org/2001/XMLSchema#decimal":
@@ -245,6 +271,9 @@ function replaceType(literal) {
             break;
         case "http://www.w3.org/2001/XMLSchema#boolean":
             literal.datatype = "xsd:boolean";
+            break;
+        case "http://www.w3.org/2001/XMLSchema#dateTime":
+            literal.datatype = "xsd:dateTime";
             break;
     }
 }
@@ -269,10 +298,7 @@ function createHTML(html){
     var fileName = './page/index.html';
     var stream = fs.createWriteStream(fileName);
 
-    console.log(typeof html);
-
     stream.once('open', function() {
-        console.log(typeof html);
         stream.end(html);
     });
 }
