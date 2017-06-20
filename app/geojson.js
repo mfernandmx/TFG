@@ -25,7 +25,7 @@ function processGeometry(value) {
             type = point;
         }
     } else{
-        //TODO:
+        //TODO: Excepción?
     }
 
     //TODO Puntos
@@ -52,13 +52,8 @@ function processGeometry(value) {
             break;
     }
 
-    if(GJV.valid(geojson)){
-        console.log("This is valid GeoJSON!");
-        //console.log(JSON.stringify(geojson));
-    }
-    else{
-        console.log("Invalid GeoJSON!");
-        //TODO: Excepción
+    if(!GJV.valid(geojson)){
+        throw "Invalid GeoJSON generated";
     }
 
     return geojson;

@@ -9,7 +9,6 @@ const pug = require('pug');
 
 function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations, geometries){
 
-    //TODO: Geometries
     //TODO Language
 
     var element;
@@ -131,24 +130,45 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     for (element in geometries){
         if (geometries.hasOwnProperty(element)) {
 
-            //TODO: try-catch
-            var geodata = geojson.processGeometry(geometries[element].value.value);
-            //TODO: Eliminar stringify
-            geometries[element].value.value = JSON.stringify(geodata);
+            try {
+                var geodata = geojson.processGeometry(geometries[element].value.value);
 
-            ele = {relation: geometries[element].relation, value: geometries[element].value};
-            geometriesValues.push(ele);
+                //TODO: Eliminar stringify y procesar geojson para mostrarlo
+                geometries[element].value.value = JSON.stringify(geodata);
 
-            found = false;
-            for (i = 0; i < geometriesAux.length; i++) {
-                if (geometriesAux[i].url == geometries[element].relation.url) {
-                    found = true;
-                    break;
+                ele = {relation: geometries[element].relation, value: geometries[element].value};
+                geometriesValues.push(ele);
+
+                found = false;
+                for (i = 0; i < geometriesAux.length; i++) {
+                    if (geometriesAux[i].url == geometries[element].relation.url) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    geometriesAux.push(geometries[element].relation);
                 }
             }
+            catch (err) {
+                //TODO: Guardar error en un log
+                console.log(err);
 
-            if (!found) {
-                geometriesAux.push(geometries[element].relation);
+                ele = {relation: geometries[element].relation, value: geometries[element].value};
+                literalsValues.push(ele);
+
+                found = false;
+                for (i = 0; i < literalsAux.length; i++) {
+                    if (literalsAux[i].url == geometries[element].relation.url) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    literalsAux.push(geometries[element].relation);
+                }
             }
         }
     }

@@ -145,7 +145,6 @@ function isGeometryAttribute(relation) {
             break;
         }
     }
-    //TODO: Recorrer config y comparar con propiedades geometricos
 
     return isGeometry;
 }
