@@ -133,7 +133,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
             //TODO: try-catch
             var geodata = geojson.processGeometry(geometries[element].value.value);
-            geometries[element].value.value = geodata;
+            //TODO: Eliminar stringify
+            geometries[element].value.value = JSON.stringify(geodata);
 
             ele = {relation: geometries[element].relation, value: geometries[element].value};
             geometriesValues.push(ele);

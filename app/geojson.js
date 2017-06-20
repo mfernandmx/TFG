@@ -1,12 +1,8 @@
 
 module.exports.processGeometry = processGeometry;
 
-const compile = require("string-template/compile");
-
-const geojsonStructure = "{\n"+
-                "\t \"type\": \"{0}\",\n"+
-                "\t \"coordinates\": {1}\n"+
-                "}";
+const GJV = require("geojson-validation");
+const GeoJSON = require('geojson');
 
 const point = "Point";
 const line = "LineString";
@@ -32,9 +28,38 @@ function processGeometry(value) {
         //TODO:
     }
 
-    //TODO: Validar GeoJSON - Excepción
+    //TODO Puntos
 
-    var geojsonTemplate = compile(geojsonStructure);
+    value = JSON.parse(value);
 
-    return geojsonTemplate(type, value);
+    var data = {coordinates: value};
+    var geojson;
+
+    switch (type){
+        case point:
+            geojson = GeoJSON.parse(data, {Point: ['lat', 'lng']});
+
+            break;
+
+        case line:
+            geojson = GeoJSON.parse(data, {LineString: 'coordinates'});
+
+            break;
+
+        case polygon:
+            geojson = GeoJSON.parse(data, {Polygon: "coordinates"});
+
+            break;
+    }
+
+    if(GJV.valid(geojson)){
+        console.log("This is valid GeoJSON!");
+        //console.log(JSON.stringify(geojson));
+    }
+    else{
+        console.log("Invalid GeoJSON!");
+        //TODO: Excepción
+    }
+
+    return geojson;
 }

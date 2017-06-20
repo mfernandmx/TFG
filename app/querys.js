@@ -89,7 +89,6 @@ function getData (uri) {
         request(endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json", function (error, response, bodyReverse) {
             console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
 
-            console.log(body);
             data.processData(body, bodyReverse, uri);
         });
     });
