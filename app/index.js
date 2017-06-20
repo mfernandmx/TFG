@@ -2,7 +2,7 @@
 const configuration = require('./configuration');
 //const querys = require('./querys');
 
-var url = "http://opendata.caceres.es/recurso/urbanismo-infraestructuras/vias/RecorridoVia/recorrido-calle_1040";
+var url = "http://opendata.caceres.es/recurso/salud/farmacias/Farmacia/33-maria-luisa-picado-dominguez";
 
 //configuration.loadConfiguration();
 configuration.start(url);

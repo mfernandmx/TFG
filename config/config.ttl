@@ -19,6 +19,8 @@
     conf:projectHomepage <http://opendata.caceres.es>;
     conf:webBase <http://localhost:8080/>;
     conf:labelProperty rdfs:label, om:nombreAsociacion;
+    conf:longProperty geo:long;
+    conf:latProperty geo:lat;
     conf:geoProperty schema:line, schema:polygon;
     conf:defaultLanguage "es";
     conf:indexResource <http://dbpedia.org/resource/Wikipedia>;

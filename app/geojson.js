@@ -1,5 +1,6 @@
 
 module.exports.processGeometry = processGeometry;
+module.exports.processPoint = processPoint;
 
 const GJV = require("geojson-validation");
 const GeoJSON = require('geojson');
@@ -25,10 +26,8 @@ function processGeometry(value) {
             type = point;
         }
     } else{
-        //TODO: Excepción?
+        throw "Invalid geometric configuration for generating GeoJSON";
     }
-
-    //TODO Puntos
 
     value = JSON.parse(value);
 
@@ -37,7 +36,8 @@ function processGeometry(value) {
 
     switch (type){
         case point:
-            geojson = GeoJSON.parse(data, {Point: ['lat', 'lng']});
+            //geojson = GeoJSON.parse(data, {Point: ['lat', 'lng']});
+            geojson = GeoJSON.parse(data, {Point: 'coordinates'});
 
             break;
 
@@ -57,4 +57,17 @@ function processGeometry(value) {
     }
 
     return geojson;
+}
+
+function processPoint(lat, long) {
+
+    var data = {lat: lat, long: long};
+    var geojson = GeoJSON.parse(data, {Point: ['lat', 'long']});
+
+    if(!GJV.valid(geojson)){
+        throw "Invalid GeoJSON Point generated";
+    }
+
+    return geojson;
+    
 }

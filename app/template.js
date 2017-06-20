@@ -7,7 +7,7 @@ const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations, geometries){
+function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations, geometries, points){
 
     //TODO Language
 
@@ -17,6 +17,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var relationsValues = [];
     var reverseRelationsValues = [];
     var geometriesValues = [];
+    var pointsValues = [];
 
     var ele;
 
@@ -25,8 +26,11 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var relationsAux = [];
     var reverseRelationsAux = [];
     var geometriesAux = [];
+    var pointsAux = [];
 
     var found, i;
+
+    var geodata;
 
 
     // Procesamos los valores que sean literales
@@ -131,7 +135,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         if (geometries.hasOwnProperty(element)) {
 
             try {
-                var geodata = geojson.processGeometry(geometries[element].value.value);
+                geodata = geojson.processGeometry(geometries[element].value.value);
 
                 //TODO: Eliminar stringify y procesar geojson para mostrarlo
                 geometries[element].value.value = JSON.stringify(geodata);
@@ -173,6 +177,31 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         }
     }
 
+    for (element in points){
+        if (points.hasOwnProperty(element)) {
+
+            try {
+                geodata = geojson.processPoint(points[element].lat.value.value, points[element].long.value.value);
+
+                console.log("Punto:", JSON.stringify(geodata));
+
+                //TODO: Eliminar stringify y procesar geojson para mostrarlo
+                ele = {value: JSON.stringify(geodata)};
+                pointsValues.push(ele);
+
+                pointsAux.push({lat: points[element].lat.relation, long: points[element].long.relation});
+            }
+            catch (err) {
+                //TODO: Guardar error en un log
+                console.log(err);
+
+                //TODO:
+
+            }
+
+        }
+    }
+
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     var html = compiledFunction({
@@ -184,13 +213,15 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         typedLiterals: typedLiteralsValues,
         relations: relationsValues,
         reverseRelations: reverseRelationsValues,
-        geometries: geometries,
+        geometries: geometriesValues,
+        points: pointsValues,
 
         literalsAux: literalsAux,
         typedLiteralsAux: typedLiteralsAux,
         relationsAux: relationsAux,
         reverseRelationsAux: reverseRelationsAux,
-        geometriesAux: geometriesAux
+        geometriesAux: geometriesAux,
+        pointsAux: pointsAux
 
     });
 

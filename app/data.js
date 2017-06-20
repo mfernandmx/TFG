@@ -22,10 +22,13 @@ function processData (data, dataReverse, uri){
     var relations = [];
     var reverseRelations = [];
     var geometries = [];
+    var points = [];
 
     var types = [];
 
     var relationProcessed, relationTitle;
+
+    var finded;
 
     console.log("-------------------------");
 
@@ -37,14 +40,39 @@ function processData (data, dataReverse, uri){
             relationProcessed = processPrefix(relation);
 
             //TODO: Comparar relacion con valores para decidir qué hacer
-            if (isGeometryAttribute(relation)) {
-                //TODO:
+            if (isSpecificAttribute(relation, "geoProperty")) { // Atributo geométrico
                 geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
+            }
+            else if (isSpecificAttribute(relation, "latProperty")){
+                //TODO Procesar longProperty
+
+                var elementAux, relationAux, valueAux;
+                finded = false;
+
+                for (elementAux in results) {
+                    if (results.hasOwnProperty(elementAux)) {
+                        relationAux = results[elementAux][vars[0]].value;
+
+                        if (isSpecificAttribute(relationAux, "longProperty")) {
+                            valueAux = results[elementAux][vars[1]];
+                            relationAux = processPrefix(relationAux);
+                            finded = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (finded){
+                    points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
+                } else{
+                    //TODO: Tratar como un atributo normal
+                    //TODO Probar
+                }
             }
             else if (isType(relation)) {
                 types.push(processPrefix(results[element][vars[1]].value));
             }
-            else {
+            else if (!isSpecificAttribute(relation, "longProperty")){ //TODO: Ver si se puede comprobar que no exista un lat
 
                 var type = results[element][vars[1]].type;
 
@@ -131,22 +159,22 @@ function processData (data, dataReverse, uri){
     //TODO: Uri en bnodes
 
     // Arrays ordenados
-    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries);
+    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
 
 }
 
-function isGeometryAttribute(relation) {
-    var isGeometry = false;
-    var geometryValues = configuration.getProperty("geoProperty");
+function isSpecificAttribute(relation, property) {
+    var isSpecific = false;
+    var propertyValues = configuration.getProperty(property);
 
-    for (var i = 0; i < geometryValues.length; i++){
-        if (relation == geometryValues[i]){
-            isGeometry = true;
+    for (var i = 0; i < propertyValues.length; i++){
+        if (relation == propertyValues[i]){
+            isSpecific = true;
             break;
         }
     }
 
-    return isGeometry;
+    return isSpecific;
 }
 
 function isType(relation) {

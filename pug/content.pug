@@ -58,5 +58,18 @@ block content
                     each geometry in geometries
                         if geometriyAux.url == geometry.relation.url
                             li
-                                a(href=geometry.value.url) #{geometry.value.value}
+                                | #{geometry.value.value}
+
+    h2 Puntos
+    ul
+        each pointAux in pointsAux
+            li
+                ul
+                    li
+                        a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
+                    li
+                        a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
+                    each point in points
+                        li
+                            | #{point.value}
 
