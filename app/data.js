@@ -44,7 +44,6 @@ function processData (data, dataReverse, uri){
                 geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
             }
             else if (isSpecificAttribute(relation, "latProperty")){
-                //TODO Procesar longProperty
 
                 var elementAux, relationAux, valueAux;
                 finded = false;
@@ -66,7 +65,6 @@ function processData (data, dataReverse, uri){
                     points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
                 } else{
                     //TODO: Tratar como un atributo normal
-                    //TODO Probar
                 }
             }
             else if (isType(relation)) {

@@ -226,7 +226,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     });
 
     // Render a set of data
-    console.log(html);
+    //console.log(html);
+    createHTML(html);
 }
 
 function replaceType(literal) {
@@ -260,4 +261,18 @@ function setError404(uri){
     });
 
     console.log(html);
+}
+
+function createHTML(html){
+    var fs = require('fs');
+
+    var fileName = './page/index.html';
+    var stream = fs.createWriteStream(fileName);
+
+    console.log(typeof html);
+
+    stream.once('open', function() {
+        console.log(typeof html);
+        stream.end(html);
+    });
 }
