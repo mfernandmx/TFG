@@ -45,12 +45,18 @@ function getData (uri) {
     var prefix;
     var prefixProcessed;
 
+    if (prefixes.length > 0){
+        queryEnd += " ORDER BY ";
+    }
+
     for (prefix in prefixes){
         if (prefixes.hasOwnProperty(prefix)) {
             prefixProcessed = data.processPrefix(prefixes[prefix]);
 
             querySelect += "?" + prefixProcessed.value + " ";
             queryWhere += "OPTIONAL{?o " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
+
+            queryEnd += " ?" + prefixProcessed.value;
         }
     }
 

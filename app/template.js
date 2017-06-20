@@ -3,11 +3,13 @@ module.exports.setContentPug = setContentPug;
 module.exports.setError404 = setError404;
 
 const configuration = require('./configuration');
+const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations){
+function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations, geometries){
 
+    //TODO: Geometries
     //TODO Language
 
     var element;
@@ -15,6 +17,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var typedLiteralsValues = [];
     var relationsValues = [];
     var reverseRelationsValues = [];
+    var geometriesValues = [];
 
     var ele;
 
@@ -22,6 +25,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var typedLiteralsAux = [];
     var relationsAux = [];
     var reverseRelationsAux = [];
+    var geometriesAux = [];
 
     var found, i;
 
@@ -124,6 +128,30 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         }
     }
 
+    for (element in geometries){
+        if (geometries.hasOwnProperty(element)) {
+
+            //TODO: try-catch
+            var geodata = geojson.processGeometry(geometries[element].value.value);
+            geometries[element].value.value = geodata;
+
+            ele = {relation: geometries[element].relation, value: geometries[element].value};
+            geometriesValues.push(ele);
+
+            found = false;
+            for (i = 0; i < geometriesAux.length; i++) {
+                if (geometriesAux[i].url == geometries[element].relation.url) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                geometriesAux.push(geometries[element].relation);
+            }
+        }
+    }
+
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     var html = compiledFunction({
@@ -135,11 +163,13 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         typedLiterals: typedLiteralsValues,
         relations: relationsValues,
         reverseRelations: reverseRelationsValues,
+        geometries: geometries,
 
         literalsAux: literalsAux,
         typedLiteralsAux: typedLiteralsAux,
         relationsAux: relationsAux,
-        reverseRelationsAux: reverseRelationsAux
+        reverseRelationsAux: reverseRelationsAux,
+        geometriesAux: geometriesAux
 
     });
 

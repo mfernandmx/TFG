@@ -10,6 +10,8 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix om: <http://opendata.caceres.es/def/ontomunicipio#>.
+@prefix locn: <http://www.w3.org/ns/locn#>.
+@prefix schema: <http://schema.org/>.
 
 # Server configuration section
 <> a conf:Configuration;
@@ -17,6 +19,7 @@
     conf:projectHomepage <http://opendata.caceres.es>;
     conf:webBase <http://localhost:8080/>;
     conf:labelProperty rdfs:label, om:nombreAsociacion;
+    conf:geoProperty schema:line, schema:polygon;
     conf:defaultLanguage "es";
     conf:indexResource <http://dbpedia.org/resource/Wikipedia>;
 

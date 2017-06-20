@@ -10,7 +10,6 @@ block content
                     each literal in literals
                         if literalAux.url == literal.relation.url
                             li
-                                | ----->
                                 if literal.value.type != 'uri'
                                    | #{literal.value.value}
                                 else
@@ -25,7 +24,7 @@ block content
                     each typedLiteral in typedLiterals
                         if typedLiteralAux.url == typedLiteral.relation.url
                             li
-                                | -----> #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                                #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
 
     h2 Relaciones
     ul
@@ -36,7 +35,6 @@ block content
                     each relation in relations
                         if relationAux.url == relation.relation.url
                             li
-                                | ----->
                                 a(href=relation.value.url) #{relation.value.value}
 
     h2 Relaciones inversas
@@ -49,6 +47,16 @@ block content
                     each relation in reverseRelations
                         if reverseRelationAux.url == relation.relation.url
                             li
-                                | ----->
                                 a(href=relation.value.url) #{relation.value.value}
+
+    h2 Atributos geométricos
+    ul
+        each geometriyAux in geometriesAux
+            li
+                a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
+                ul
+                    each geometry in geometries
+                        if geometriyAux.url == geometry.relation.url
+                            li
+                                a(href=geometry.value.url) #{geometry.value.value}
 

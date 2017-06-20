@@ -21,6 +21,7 @@ function processData (data, dataReverse, uri){
     var typedLiterals = [];
     var relations = [];
     var reverseRelations = [];
+    var geometries = [];
 
     var types = [];
 
@@ -37,7 +38,8 @@ function processData (data, dataReverse, uri){
 
             //TODO: Comparar relacion con valores para decidir qué hacer
             if (isGeometryAttribute(relation)) {
-
+                //TODO:
+                geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
             }
             else if (isType(relation)) {
                 types.push(processPrefix(results[element][vars[1]].value));
@@ -124,23 +126,28 @@ function processData (data, dataReverse, uri){
     console.log("URI:", uri);
     console.log("Type(s):", types);
 
-    console.log(relations);
-
     console.log("-------------------------");
     //TODO: Revisar paso de parámetros
     //TODO: Uri en bnodes
 
     // Arrays ordenados
-    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}));
+    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries);
 
 }
 
 function isGeometryAttribute(relation) {
-    var geometry = false;
+    var isGeometry = false;
+    var geometryValues = configuration.getProperty("geoProperty");
 
+    for (var i = 0; i < geometryValues.length; i++){
+        if (relation == geometryValues[i]){
+            isGeometry = true;
+            break;
+        }
+    }
     //TODO: Recorrer config y comparar con propiedades geometricos
 
-    return geometry;
+    return isGeometry;
 }
 
 function isType(relation) {
