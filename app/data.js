@@ -21,7 +21,7 @@ function processData (data, dataReverse, uri){
     var typedLiterals = [];
     var relations = [];
     var reverseRelations = [];
-    //TODO: Array u objeto?
+    //TODO: Array u objeto? (Futuros trabajos)
     var geometries = [];
     var points = [];
 
@@ -73,7 +73,9 @@ function processData (data, dataReverse, uri){
                 if (finded){
                     points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
                 } else{
-                    //TODO: Tratar como un atributo normal
+                    //TODO: Guardar fallo en log, y no mostrar (documentar)
+                    console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
+                        "no se ha encontrado ninguna propiedad que coincida con la longitud");
                 }
             }
             else if (isType(relation)) { // Resource's type
@@ -81,6 +83,7 @@ function processData (data, dataReverse, uri){
             }
             else if (!isSpecificAttribute(relation, "longProperty")){ // If the relation doesn't match with any special type
                 // TODO: Ver si se puede comprobar que no exista un lat
+                // TODO: Guardar fallo en log, y no mostrar (documentar)
 
                 var type = results[element][vars[1]].type;
 
@@ -178,7 +181,7 @@ function processData (data, dataReverse, uri){
     //TODO: Uri en bnodes
 
     // Send the data processed to be rendered by the template
-    template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
+    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
 
 }
 

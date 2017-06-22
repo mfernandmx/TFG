@@ -230,10 +230,18 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
+    var projectName = configuration.getProperty("projectName");
+
+    //TODO
+    var projectHomePage = configuration.getProperty("projectHomePage");
+
     var html = compiledFunction({
         rTitle: title,
         rUri: uri,
         rTypes: types,
+
+        projectName: projectName,
+        projectHomePage: projectHomePage,
 
         literals: literalsValues,
         typedLiterals: typedLiteralsValues,
@@ -252,8 +260,9 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     });
 
     // Render a set of data
-    console.log(html);
-    createHTML(html);
+    // console.log(html);
+    // createHTML(html);
+    return html;
 }
 
 function replaceType(literal) {
@@ -289,16 +298,18 @@ function setError404(uri){
         rTypes: types
     });
 
-    console.log(html);
+    //console.log(html);
+    return html;
 }
 
-function createHTML(html){
-    var fs = require('fs');
-
-    var fileName = './page/index.html';
-    var stream = fs.createWriteStream(fileName);
-
-    stream.once('open', function() {
-        stream.end(html);
-    });
-}
+//TODO: Borrar si no es necesario
+// function createHTML(html){
+//     var fs = require('fs');
+//
+//     var fileName = './page/index.html';
+//     var stream = fs.createWriteStream(fileName);
+//
+//     stream.once('open', function() {
+//         stream.end(html);
+//     });
+// }

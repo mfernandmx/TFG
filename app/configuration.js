@@ -9,10 +9,9 @@ const fs = require('fs');
 var prefixList;
 var properties = {};
 
-const querys = require('./querys');
 const confPrefix = "http://richard.cyganiak.de/2007/pubby/config.rdf#";
 
-function start(url){
+function start(){
 
     var parser = N3.Parser(),
         rdfStream = fs.createReadStream('./config/config.ttl');
@@ -34,7 +33,7 @@ function start(url){
         }
         else{
             prefixList = prefixes;
-            querys.checkData(url);
+            require('./server');
         }
     });
 }
