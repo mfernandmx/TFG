@@ -26,10 +26,8 @@
     conf:indexResource <http://dbpedia.org/resource/Wikipedia>;
 
     conf:dataset [
-        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;
-        conf:sparqlDefaultGraph <http://opendata.caceres.es/>;
-        conf:datasetBase <http://opendata.caceres.es/recurso/>;
-        conf:webResourcePrefix "resource/";
+        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;        conf:datasetBase <http://opendata.caceres.es/recurso/>;
+        conf:webResourcePrefix "recurso/";
         conf:fixUnescapedCharacters "(),'!$&*+;=@";
     ];
     .

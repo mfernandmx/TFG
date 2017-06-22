@@ -27,14 +27,34 @@ http.createServer(function(request, response) {
         console.error(err);
     });
 
-    if (url.startsWith("")){
+    var resource = configuration.getProperty("webResourcePrefix");
+    resource = resource[0].replace(new RegExp("\"", 'g'), "");
+    console.log(url);
+    console.log(resource);
+    resource = "/" + resource;
+    console.log(resource);
+
+    if (url.startsWith(resource)){
         //TODO: Si empieza por /recurso/, procesar petición
+
+        var datasetBase = configuration.getProperty("datasetBase");
+
+        url = url.replace(resource, datasetBase);
+        console.log(url);
+
+        // var result = querys.checkData(urlOD);
+        var result = querys.checkData(url);
+
+        //console.log("RESULT:", result);
+
+        response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
+
+        response.end(result.html);
+
     }
-
-    var result = querys.checkData(urlOD);
-    console.log("RESULT:", result);
-
-    response.writeHead(result.status, {'Content-Type': 'text/html'});
+    else{
+        //TODO:
+    }
 
     // var responseBody = {
     //     headers: headers,
@@ -46,8 +66,5 @@ http.createServer(function(request, response) {
     // response.write(JSON.stringify(responseBody));
     // response.end();
     // // Note: the 2 lines above could be replaced with this next one:
-    response.end(result.html);
-
-    // END OF NEW STUFF
 
 }).listen(8080); // Activates this server, listening on port 8080.

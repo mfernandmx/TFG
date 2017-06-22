@@ -16,7 +16,8 @@
     "pug": "latest",
     "n3": "latest",
     "geojson-validation": "latest",
-    "geojson": "latest"
+    "geojson": "latest",
+    "sync-request": "latest"
   },
   "devDependencies": {
     "mocha": "^3.4.2"

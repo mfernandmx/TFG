@@ -82,7 +82,6 @@ function processData (data, dataReverse, uri){
                 types.push(processPrefix(results[element][vars[1]].value));
             }
             else if (!isSpecificAttribute(relation, "longProperty")){ // If the relation doesn't match with any special type
-                // TODO: Ver si se puede comprobar que no exista un lat
                 // TODO: Guardar fallo en log, y no mostrar (documentar)
 
                 var type = results[element][vars[1]].type;

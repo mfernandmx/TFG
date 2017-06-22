@@ -230,10 +230,11 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
-    var projectName = configuration.getProperty("projectName");
+    var projectName = configuration.getProperty("projectName").replace(new RegExp("\"", 'g'), "");
 
     //TODO
-    var projectHomePage = configuration.getProperty("projectHomePage");
+    var projectHomePage = configuration.getProperty("projectHomepage");
+    console.log(projectHomePage);
 
     var html = compiledFunction({
         rTitle: title,

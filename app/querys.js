@@ -9,7 +9,6 @@ const template = require('./template');
 //const request = require('request');
 const request = require('sync-request');
 
-var queryGraph = ""; // TODO: Obtener query graph del archivo de config (encodeURI)
 var endpoint; //TODO: Revisar si se puede obtener una sola vez
 
 function checkData (uri) {
@@ -36,13 +35,12 @@ function checkData (uri) {
     //
     // });
 
-    var res = request('GET', endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery);
+    var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery);
     var body = res.getBody();
     var status = res.statusCode;
 
     console.log('statusCode:', res && res.statusCode); // Print the response status code if a response was received
 
-    //TODO: Revisar status en excepciones
     if (body == "true") {
         console.log("ES TRUE!", status);
         html = getData(uri);
@@ -58,7 +56,6 @@ function checkData (uri) {
 }
 
 function getData (uri) {
-    //var sparqlQuery = "CONSTRUCT {<"+uri+"> ?p ?o.} WHERE {<"+uri+"> ?p ?o .}";
 
     var html;
 
@@ -120,7 +117,7 @@ function getData (uri) {
     //     });
     // });
 
-    var res = request('GET', endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json");
+    var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
 
     console.log('statusCode:', res && res.statusCode); // Print the response status code if a response was received
 
@@ -140,14 +137,11 @@ function getData (uri) {
     sparqlQuery = querySelect + queryWhere + queryEnd;
     console.log(sparqlQuery);
 
-    //sparqlQuery = "CONSTRUCT {?p ?o <"+uri+">.} WHERE {?p ?o <"+uri+">.}";
-
-    var reverseRes = request('GET', endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json");
+    var reverseRes = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
 
     console.log('statusCode:', reverseRes && reverseRes.statusCode); // Print the response status code if a response was received
 
     html = data.processData(res.getBody(), reverseRes.getBody(), uri);
 
-    //TODO:
     return html;
 }
