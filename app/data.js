@@ -21,6 +21,7 @@ function processData (data, dataReverse, uri){
     var typedLiterals = [];
     var relations = [];
     var reverseRelations = [];
+
     //TODO: Array u objeto? (Futuros trabajos)
     var geometries = [];
     var points = [];

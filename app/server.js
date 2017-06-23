@@ -1,5 +1,7 @@
 
 const http = require('http');
+const fs = require("fs");
+
 const configuration = require('./configuration');
 
 var urlOD = "http://opendata.caceres.es/recurso/urbanismo-infraestructuras/vias/RecorridoVia/recorrido-calle_1040";
@@ -30,11 +32,19 @@ http.createServer(function(request, response) {
     var resource = configuration.getProperty("webResourcePrefix");
     resource = resource[0].replace(new RegExp("\"", 'g'), "");
     console.log(url);
-    console.log(resource);
     resource = "/" + resource;
-    console.log(resource);
 
-    if (url.startsWith(resource)){
+    var pathname = url.split("/");
+    pathname = pathname[pathname.length-1];
+    console.log("Pathname", pathname);
+
+    //TODO:
+    if (pathname == "client.js") {
+        console.log("Entro en script");
+        var script = fs.readFileSync("./client/client.js", "utf8");
+        response.write(script);
+    }
+    else if (url.startsWith(resource)){
         //TODO: Si empieza por /recurso/, procesar petición
 
         var datasetBase = configuration.getProperty("datasetBase");
@@ -43,18 +53,19 @@ http.createServer(function(request, response) {
         console.log(url);
 
         // var result = querys.checkData(urlOD);
-        var result = querys.checkData(url);
+        var result = querys.getData(url);
 
         //console.log("RESULT:", result);
 
         response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
-
-        response.end(result.html);
+        response.write(result.html);
 
     }
     else{
         //TODO:
     }
+
+    response.end();
 
     // var responseBody = {
     //     headers: headers,

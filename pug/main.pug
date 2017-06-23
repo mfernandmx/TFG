@@ -18,3 +18,15 @@ html
                         a(href=type.url) #{type.prefix}:#{type.value}
 
         block content
+
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
+        script(type="text/javascript", src="../client/client.js")
+
+        script(type="text/javascript").
+            point = "#{geoPoint}";
+            figure = "#{geoFigure}";
+            initializePoint(point);
+            initializeFigure(figure);
+
+
+        script(async defer, src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt5CcFk1btCb9QpnwAmEtPNI7k4U3loEU&callback=initMap")

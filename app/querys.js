@@ -1,6 +1,7 @@
 // app/query.js
 
-module.exports.checkData = checkData;
+module.exports.getData = getData;
+
 
 const data = require('./data');
 const configuration = require('./configuration');
@@ -8,52 +9,6 @@ const template = require('./template');
 
 //const request = require('request');
 const request = require('sync-request');
-
-var endpoint; //TODO: Revisar si se puede obtener una sola vez
-
-function checkData (uri) {
-    var sparqlQuery = "ASK {<"+uri+"> ?a ?b.}";
-
-    endpoint = configuration.getProperty("sparqlEndpoint");
-
-    var html;
-
-    // request(endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery, function (error, response, body) {
-    //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    //
-    //     if (body == "true") {
-    //         console.log("ES TRUE!");
-    //         getData(uri);
-    //     }
-    //
-    //     else{
-    //         console.log("ES FALSE!");
-    //         template.setError404(uri);
-    //     }
-    //
-    //     prueba = "ADIOS";
-    //
-    // });
-
-    var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery);
-    var body = res.getBody();
-    var status = res.statusCode;
-
-    console.log('statusCode:', res && res.statusCode); // Print the response status code if a response was received
-
-    if (body == "true") {
-        console.log("ES TRUE!", status);
-        html = getData(uri);
-    }
-
-    else{
-        console.log("ES FALSE!", status);
-        html = template.setError404(uri);
-    }
-
-    return {status: status, html: html};
-
-}
 
 function getData (uri) {
 
@@ -87,61 +42,49 @@ function getData (uri) {
     var sparqlQuery = querySelect + queryWhere + queryEnd;
     console.log(sparqlQuery);
 
-    endpoint = configuration.getProperty("sparqlEndpoint");
+    var endpoint = configuration.getProperty("sparqlEndpoint");
 
-    // request(endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json", function (error, response, body) {
-    //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    //
-    //     querySelect = "SELECT ?p ?o ";
-    //     queryWhere = "WHERE {?p ?o <"+uri+">. ";
-    //     queryEnd = "}";
-    //
-    //     for (prefix in prefixes){
-    //         if (prefixes.hasOwnProperty(prefix)) {
-    //             prefixProcessed = data.processPrefix(prefixes[prefix]);
-    //
-    //             querySelect += "?" + prefixProcessed.value + " ";
-    //             queryWhere += "OPTIONAL{?p " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
-    //         }
-    //     }
-    //
-    //     sparqlQuery = querySelect + queryWhere + queryEnd;
-    //     console.log(sparqlQuery);
-    //
-    //     //sparqlQuery = "CONSTRUCT {?p ?o <"+uri+">.} WHERE {?p ?o <"+uri+">.}";
-    //
-    //     request(endpoint+"?default-graph-uri="+queryGraph+"&query="+sparqlQuery+"&format=json", function (error, response, bodyReverse) {
-    //         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    //
-    //         html = data.processData(body, bodyReverse, uri);
-    //     });
-    // });
-
+    //TODO Intentar agrupar las dos consultas en una
     var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
 
-    console.log('statusCode:', res && res.statusCode); // Print the response status code if a response was received
+    var status = res.statusCode;
 
-    querySelect = "SELECT ?p ?o ";
-    queryWhere = "WHERE {?p ?o <"+uri+">. ";
-    queryEnd = "}";
+    console.log('statusCode:', res && status); // Print the response status code if a response was received
 
-    for (prefix in prefixes){
-        if (prefixes.hasOwnProperty(prefix)) {
-            prefixProcessed = data.processPrefix(prefixes[prefix]);
+    var dataJSON = JSON.parse(res.getBody());
+    var results = dataJSON['results']['bindings'];
+    if (results.length > 0) {
 
-            querySelect += "?" + prefixProcessed.value + " ";
-            queryWhere += "OPTIONAL{?p " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
+        console.log("ES TRUE!", status);
+
+        querySelect = "SELECT ?p ?o ";
+        queryWhere = "WHERE {?p ?o <" + uri + ">. ";
+        queryEnd = "}";
+
+        for (prefix in prefixes) {
+            if (prefixes.hasOwnProperty(prefix)) {
+                prefixProcessed = data.processPrefix(prefixes[prefix]);
+
+                querySelect += "?" + prefixProcessed.value + " ";
+                queryWhere += "OPTIONAL{?p " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
+            }
         }
+
+        sparqlQuery = querySelect + queryWhere + queryEnd;
+        console.log(sparqlQuery);
+
+        var reverseRes = request('GET', endpoint + "?default-graph-uri=&query=" + sparqlQuery + "&format=json");
+
+        console.log('statusCode:', reverseRes && reverseRes.statusCode); // Print the response status code if a response was received
+
+        html = data.processData(res.getBody(), reverseRes.getBody(), uri);
     }
 
-    sparqlQuery = querySelect + queryWhere + queryEnd;
-    console.log(sparqlQuery);
+    else{
+        //TODO: Revisar qué código pasar
+        console.log("ES FALSE!", status);
+        html = template.setError404(uri);
+    }
 
-    var reverseRes = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
-
-    console.log('statusCode:', reverseRes && reverseRes.statusCode); // Print the response status code if a response was received
-
-    html = data.processData(res.getBody(), reverseRes.getBody(), uri);
-
-    return html;
+    return {status: status, html: html};
 }

@@ -31,6 +31,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var found, i;
 
     var geodata;
+    var geoFigure = "";
+    var geoPoint = "";
 
 
     // Procesamos los valores que sean literales
@@ -143,6 +145,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 ele = {relation: geometries[element].relation, value: geometries[element].value};
                 geometriesValues.push(ele);
 
+                geoFigure = JSON.stringify(geometriesValues[0].value.value);
+
                 found = false;
                 for (i = 0; i < geometriesAux.length; i++) {
                     if (geometriesAux[i].url == geometries[element].relation.url) {
@@ -185,10 +189,13 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 geodata = geojson.processPoint(points[element].lat.value.value, points[element].long.value.value);
 
                 //TODO: Eliminar stringify y procesar geojson para mostrarlo
-                ele = {value: JSON.stringify(geodata)};
+                //ele = {value: JSON.stringify(geodata)};
+                ele = {value: geodata};
                 pointsValues.push(ele);
 
                 pointsAux.push({lat: points[element].lat.relation, long: points[element].long.relation});
+
+                geoPoint = JSON.stringify(pointsValues[0].value)
             }
             catch (err) {
                 //TODO: Guardar error en un log
@@ -230,11 +237,9 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
-    var projectName = configuration.getProperty("projectName").replace(new RegExp("\"", 'g'), "");
+    var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
 
-    //TODO
-    var projectHomePage = configuration.getProperty("projectHomepage");
-    console.log(projectHomePage);
+    var projectHomePage = configuration.getProperty("projectHomepage")[0];
 
     var html = compiledFunction({
         rTitle: title,
@@ -250,6 +255,9 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         reverseRelations: reverseRelationsValues,
         geometries: geometriesValues,
         points: pointsValues,
+
+        geoFigure: geoFigure,
+        geoPoint: geoPoint,
 
         literalsAux: literalsAux,
         typedLiteralsAux: typedLiteralsAux,

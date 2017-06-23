@@ -57,8 +57,11 @@ block content
                 ul
                     each geometry in geometries
                         if geometriyAux.url == geometry.relation.url
-                            li
+                            //-li
                                 | #{geometry.value.value}
+
+                        div(style={height: '500px'})
+                            div#map(style={height: '100%'})
 
     h2 Puntos
     ul
@@ -70,6 +73,8 @@ block content
                     li
                         a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
                     each point in points
-                        li
+                        //-li
                             | #{point.value}
 
+                        div(style={height: '500px'})
+                            div#map(style={height: '100%'})
