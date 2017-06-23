@@ -1,7 +1,6 @@
 
 var map;
 
-//var myPoint = {"type":"Feature","geometry":{"type":"Point","coordinates":[-6.381675,39.464646]},"properties":{}};
 var myPoint = "";
 var myFigure = "";
 
@@ -9,7 +8,6 @@ function initializePoint(point) {
     if (point != "") {
         myPoint = JSON.parse(point.replace(/&quot;/g, '"'));
     }
-    //console.log(JSON.parse(point.replace(/&quot;/g,'"')));
 }
 
 function initializeFigure(figure) {
@@ -28,10 +26,6 @@ function initMap() {
             center: {lat: 39.475088, lng: -6.371472}
         });
 
-        // NOTE: This uses cross-domain XHR, and may not work on older browsers.
-        //map.data.loadGeoJson('{"type": "FeatureCollection","features": [{ "type": "Feature","geometry": { "type": "Point","coordinates": [ -6.37167, 39.462323 ]},"properties": {"uri": "http://opendata.caceres.es/recurso/sociedad-bienestar/residencias/HogarMayores/0-hogar-y-residencia-de-la-3a-edad-cervantes","om_tieneEnlaceSIG": "http://sig2.caceres.es/SerWeb/fichatoponimo.asp?mslink=1759","geo_long": "-6.37167","geo_lat": "39.462323","rdfs_label": "Hogar y Residencia de la 3ª Edad Cervantes" 	}}]}');
-        //map.data.loadGeoJson('https://storage.googleapis.com/mapsdevsite/json/google.json');
-
         if (myPoint != "") {
             map.data.addGeoJson(myPoint);
         }
@@ -45,5 +39,30 @@ function initMap() {
         //
         // console.log("Point value:", myPoint);
         // console.log("Figure value:", myFigure);
+
+        zoom(map);
+        google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+            map.setZoom(Math.min(16, map.getZoom()));
+        });
+    }
+}
+
+function zoom(map) {
+    var bounds = new google.maps.LatLngBounds();
+    map.data.forEach(function(feature) {
+        processPoints(feature.getGeometry(), bounds.extend, bounds);
+    });
+    map.fitBounds(bounds);
+}
+
+function processPoints(geometry, callback, thisArg) {
+    if (geometry instanceof google.maps.LatLng) {
+        callback.call(thisArg, geometry);
+    } else if (geometry instanceof google.maps.Data.Point) {
+        callback.call(thisArg, geometry.get());
+    } else {
+        geometry.getArray().forEach(function(g) {
+            processPoints(g, callback, thisArg);
+        });
     }
 }

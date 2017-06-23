@@ -52,10 +52,7 @@ http.createServer(function(request, response) {
         url = url.replace(resource, datasetBase);
         console.log(url);
 
-        // var result = querys.checkData(urlOD);
         var result = querys.getData(url);
-
-        //console.log("RESULT:", result);
 
         response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
         response.write(result.html);

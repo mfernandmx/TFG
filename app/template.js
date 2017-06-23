@@ -188,8 +188,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
             try {
                 geodata = geojson.processPoint(points[element].lat.value.value, points[element].long.value.value);
 
-                //TODO: Eliminar stringify y procesar geojson para mostrarlo
-                //ele = {value: JSON.stringify(geodata)};
                 ele = {value: geodata};
                 pointsValues.push(ele);
 
@@ -270,7 +268,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     // Render a set of data
     // console.log(html);
-    // createHTML(html);
     return html;
 }
 
@@ -310,15 +307,3 @@ function setError404(uri){
     //console.log(html);
     return html;
 }
-
-//TODO: Borrar si no es necesario
-// function createHTML(html){
-//     var fs = require('fs');
-//
-//     var fileName = './page/index.html';
-//     var stream = fs.createWriteStream(fileName);
-//
-//     stream.once('open', function() {
-//         stream.end(html);
-//     });
-// }
