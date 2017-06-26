@@ -1,6 +1,6 @@
-// app/query.js
 
 module.exports.getData = getData;
+module.exports.getBlankNode = getBlankNode;
 
 
 const data = require('./data');
@@ -87,4 +87,16 @@ function getData (uri) {
     }
 
     return {status: status, html: html};
+}
+
+function getBlankNode(nodeID) {
+    var sparqlQuery = "SELECT ?p ?o " +
+        "WHERE {<"+nodeID+"> ?p ?o . }";
+
+    var endpoint = configuration.getProperty("sparqlEndpoint");
+
+    var res = request('GET', endpoint + "?default-graph-uri=&query=" + sparqlQuery + "&format=json");
+
+    return res.getBody();
+
 }

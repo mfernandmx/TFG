@@ -34,16 +34,18 @@ function initMap() {
             map.data.addGeoJson(myFigure);
         }
 
-        // myPoint = JSON.stringify(myPoint);
-        // myFigure = JSON.stringify(myFigure);
-        //
-        // console.log("Point value:", myPoint);
-        // console.log("Figure value:", myFigure);
-
         zoom(map);
         google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
             map.setZoom(Math.min(16, map.getZoom()));
         });
+    }
+
+    else{
+        var contentMap = document.getElementById("contentMap");
+
+        if (contentMap != null){
+            contentMap.style.display = "none";
+        }
     }
 }
 

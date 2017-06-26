@@ -1,6 +1,10 @@
 extends main.pug
 
 block content
+
+    div(style={height: '500px', width: '500px'})#contentMap
+        div#map(style={height: '100%'})
+
     h2 Literales
     ul
         each literalAux in literalsAux
@@ -54,14 +58,12 @@ block content
         each geometriyAux in geometriesAux
             li
                 a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
-                ul
+                //-ul
                     each geometry in geometries
                         if geometriyAux.url == geometry.relation.url
                             //-li
                                 | #{geometry.value.value}
 
-                        div(style={height: '500px', width: '500px'})
-                            div#map(style={height: '100%'})
 
     h2 Puntos
     ul
@@ -72,9 +74,6 @@ block content
                         a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
                     li
                         a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
-                    each point in points
+                    //-each point in points
                         //-li
                             | #{point.value}
-
-                        div(style={height: '500px', width: '500px'})
-                            div#map(style={height: '100%'})

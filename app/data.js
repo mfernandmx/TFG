@@ -98,6 +98,8 @@ function processData (data, dataReverse, uri){
                     //TODO: Diferenciar entre 1 o varios
                     //TODO: ¿Varios recursos anónimos anidados?
 
+                    // getBlankNode
+
                 } else if (type == 'uri') { // Uri - Need to choose between relation or literal url
 
                     var jsonSize = Object.keys(results[element]).length;

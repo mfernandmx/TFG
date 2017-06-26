@@ -20,6 +20,7 @@
     "sync-request": "latest"
   },
   "devDependencies": {
+    "@types/googlemaps": "^3.26.14",
     "mocha": "^3.4.2"
   }
 }

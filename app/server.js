@@ -4,8 +4,6 @@ const fs = require("fs");
 
 const configuration = require('./configuration');
 
-var urlOD = "http://opendata.caceres.es/recurso/urbanismo-infraestructuras/vias/RecorridoVia/recorrido-calle_1040";
-
 const querys = require('./querys');
 
 http.createServer(function(request, response) {
@@ -21,8 +19,6 @@ http.createServer(function(request, response) {
         body.push(chunk);
     }).on('end', function() {
         body = Buffer.concat(body).toString();
-        // At this point, we have the headers, method, url and body, and can now
-        // do whatever we need to in order to respond to this request.
     });
 
     response.on('error', function(err) {
@@ -63,16 +59,5 @@ http.createServer(function(request, response) {
     }
 
     response.end();
-
-    // var responseBody = {
-    //     headers: headers,
-    //     method: method,
-    //     url: url,
-    //     body: body
-    // };
-    //
-    // response.write(JSON.stringify(responseBody));
-    // response.end();
-    // // Note: the 2 lines above could be replaced with this next one:
 
 }).listen(8080); // Activates this server, listening on port 8080.

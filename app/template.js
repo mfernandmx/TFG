@@ -139,13 +139,15 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
             try {
                 geodata = geojson.processGeometry(geometries[element].value.value);
 
-                //TODO: Eliminar stringify y procesar geojson para mostrarlo
                 geometries[element].value.value = JSON.stringify(geodata);
 
-                ele = {relation: geometries[element].relation, value: geometries[element].value};
+                //ele = {relation: geometries[element].relation, value: geometries[element].value};
+                ele = {relation: geometries[element].relation};
+
                 geometriesValues.push(ele);
 
-                geoFigure = JSON.stringify(geometriesValues[0].value.value);
+                //geoFigure = JSON.stringify(geometriesValues[0].value.value);
+                geoFigure = JSON.stringify(geometries[0].value.value);
 
                 found = false;
                 for (i = 0; i < geometriesAux.length; i++) {
@@ -160,7 +162,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 }
             }
             catch (err) {
-                //TODO: Guardar error en un log
+                //TODO: Guardar error en un log (Documentar)
                 console.log(err);
 
                 ele = {relation: geometries[element].relation, value: geometries[element].value};
@@ -196,7 +198,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
                 geoPoint = JSON.stringify(pointsValues[0].value)
             }
             catch (err) {
-                //TODO: Guardar error en un log
+                //TODO: Guardar error en un log (Documentar)
                 console.log(err);
 
                 //TODO Probar
@@ -239,7 +241,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
     var projectHomePage = configuration.getProperty("projectHomepage")[0];
 
-    var html = compiledFunction({
+    return compiledFunction({
         rTitle: title,
         rUri: uri,
         rTypes: types,
@@ -265,10 +267,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         pointsAux: pointsAux
 
     });
-
-    // Render a set of data
-    // console.log(html);
-    return html;
 }
 
 function replaceType(literal) {
@@ -298,12 +296,9 @@ function setError404(uri){
 
     var types = [];
 
-    var html = compiledFunction({
+    return compiledFunction({
         rTitle: "404 Not Found",
         rUri: uri,
         rTypes: types
     });
-
-    //console.log(html);
-    return html;
 }
