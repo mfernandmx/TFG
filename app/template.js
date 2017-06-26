@@ -7,7 +7,7 @@ const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, types, literals, relations, typedLiterals, reverseRelations, geometries, points){
+function setContentPug(title, uri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points){
 
     //TODO Language
 
@@ -15,6 +15,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var literalsValues = [];
     var typedLiteralsValues = [];
     var relationsValues = [];
+    var blankNodesValues = [];
     var reverseRelationsValues = [];
     var geometriesValues = [];
     var pointsValues = [];
@@ -24,6 +25,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
     var literalsAux = [];
     var typedLiteralsAux = [];
     var relationsAux = [];
+    var blankNodesAux = [];
     var reverseRelationsAux = [];
     var geometriesAux = [];
     var pointsAux = [];
@@ -102,6 +104,27 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
 
             if (!found) {
                 relationsAux.push(relations[element].relation);
+            }
+        }
+    }
+
+    for (element in blankNodes){
+        if (blankNodes.hasOwnProperty(element)) {
+
+            console.log(blankNodes[element]);
+
+            ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID)};
+            blankNodesValues.push(ele);
+
+            for (i = 0; i < blankNodesAux.length; i++) {
+                if (blankNodesAux[i].url == blankNodes[element].relation.url) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                blankNodesAux.push(blankNodes[element].relation);
             }
         }
     }
@@ -252,6 +275,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         literals: literalsValues,
         typedLiterals: typedLiteralsValues,
         relations: relationsValues,
+        blankNodes: blankNodesValues,
         reverseRelations: reverseRelationsValues,
         geometries: geometriesValues,
         points: pointsValues,
@@ -262,6 +286,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, re
         literalsAux: literalsAux,
         typedLiteralsAux: typedLiteralsAux,
         relationsAux: relationsAux,
+        blankNodesAux: blankNodesAux,
         reverseRelationsAux: reverseRelationsAux,
         geometriesAux: geometriesAux,
         pointsAux: pointsAux

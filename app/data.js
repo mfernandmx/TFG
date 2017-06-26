@@ -22,6 +22,8 @@ function processData (data, dataReverse, uri){
     var relations = [];
     var reverseRelations = [];
 
+    var blankNodes = [];
+
     //TODO: Array u objeto? (Futuros trabajos)
     var geometries = [];
     var points = [];
@@ -95,10 +97,12 @@ function processData (data, dataReverse, uri){
 
                 } else if (type == 'bnode') { // Blanck node
                     //TODO:
-                    //TODO: Diferenciar entre 1 o varios
                     //TODO: ¿Varios recursos anónimos anidados?
-
+                    console.log("NODO EN BLANCO");
+                    console.log(relationProcessed);
+                    blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
                     // getBlankNode
+
 
                 } else if (type == 'uri') { // Uri - Need to choose between relation or literal url
 
@@ -183,7 +187,7 @@ function processData (data, dataReverse, uri){
     //TODO: Uri en bnodes
 
     // Send the data processed to be rendered by the template
-    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
+    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
 
 }
 

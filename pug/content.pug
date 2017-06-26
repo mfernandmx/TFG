@@ -53,6 +53,17 @@ block content
                             li
                                 a(href=relation.value.url) #{relation.value.value}
 
+    h2 Nodos en blanco
+    ul
+        each blankNodeAux in blankNodesAux
+            li
+                a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
+                ul
+                    each blankNode in blankNodes
+                        if blankNodeAux.url == blankNode.relation.url
+                            li
+                                #{blankNode.nodeID}
+
     h2 Atributos geométricos
     ul
         each geometriyAux in geometriesAux
