@@ -5,6 +5,11 @@ module.exports.processPrefix = processPrefix;
 const configuration = require('./configuration');
 const template = require('./template');
 
+const geoProperty = "geoProperty";
+const latProperty = "latProperty";
+const typeProperty = "typeProperty";
+const nonSpecial = "nonSpecial";
+
 
 function processData (data, dataReverse, uri){
 
@@ -51,85 +56,97 @@ function processData (data, dataReverse, uri){
              in the configuration. Those types relate to geometric values to be
              displayed in a map
             */
-            if (isSpecificAttribute(relation, "geoProperty")) { // Geometric attribute
-                geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
-            }
-            else if (isSpecificAttribute(relation, "latProperty")){ // Latitude attribute
+            var specialRelation = isSpecialRelation(relation);
 
-                var elementAux, relationAux, valueAux;
-                finded = false;
+            switch (specialRelation){
+                case geoProperty:
+                    geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
+                    break;
 
-                // Find if there is a longitude value to display a point
-                for (elementAux in results) {
-                    if (results.hasOwnProperty(elementAux)) {
-                        relationAux = results[elementAux][vars[0]].value;
+                case latProperty:
+                    var elementAux, relationAux, valueAux;
+                    finded = false;
 
-                        if (isSpecificAttribute(relationAux, "longProperty")) {
-                            valueAux = results[elementAux][vars[1]];
-                            relationAux = processPrefix(relationAux);
-                            finded = true;
-                            break;
-                        }
-                    }
-                }
+                    // Find if there is a longitude value to display a point
+                    for (elementAux in results) {
+                        if (results.hasOwnProperty(elementAux)) {
+                            relationAux = results[elementAux][vars[0]].value;
 
-                if (finded){
-                    points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
-                } else{
-                    //TODO: Guardar fallo en log, y no mostrar (documentar)
-                    console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
-                        "no se ha encontrado ninguna propiedad que coincida con la longitud");
-                }
-            }
-            else if (isType(relation)) { // Resource's type
-                types.push(processPrefix(results[element][vars[1]].value));
-            }
-            else if (!isSpecificAttribute(relation, "longProperty")){ // If the relation doesn't match with any special type
-                // TODO: Guardar fallo en log, y no mostrar (documentar)
-
-                var type = results[element][vars[1]].type;
-
-                if (type == 'literal') { // Literal
-                    literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-                } else if (type == 'typed-literal') { // Typed Literal
-                    typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-                } else if (type == 'bnode') { // Blanck node
-                    //TODO:
-                    //TODO: ¿Varios recursos anónimos anidados?
-                    console.log("NODO EN BLANCO");
-                    console.log(relationProcessed);
-                    blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
-                    // getBlankNode
-
-
-                } else if (type == 'uri') { // Uri - Need to choose between relation or literal url
-
-                    var jsonSize = Object.keys(results[element]).length;
-
-                    if (jsonSize == 2) { // Literal url
-                        literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-                    }
-                    else if (jsonSize > 3) { // Relation
-
-                        relationTitle = "";
-
-                        for (var i = 3; i < vars.length; i++) {
-
-                            if (results[element][vars[i]] != undefined) {
-                                relationTitle = results[element][vars[i]].value;
+                            if (isSpecificAttribute(relationAux, "longProperty")) {
+                                valueAux = results[elementAux][vars[1]];
+                                relationAux = processPrefix(relationAux);
+                                finded = true;
                                 break;
                             }
                         }
-
-                        relations.push({
-                            relation: relationProcessed,
-                            value: results[element][vars[1]],
-                            title: relationTitle
-                        });
                     }
-                }
+
+                    if (finded){
+                        points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
+                    } else{
+                        //TODO: Guardar fallo en log, y no mostrar (documentar)
+                        console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
+                            "no se ha encontrado ninguna propiedad que coincida con la longitud");
+                    }
+                    break;
+
+                case typeProperty:
+                    types.push(processPrefix(results[element][vars[1]].value));
+                    break;
+
+                case nonSpecial:
+
+                    // TODO: Guardar fallo en log, y no mostrar (documentar)
+
+                    var type = results[element][vars[1]].type;
+
+                    switch (type){
+                        case "literal": // Literal
+                            literals.push({relation: relationProcessed, value: results[element][vars[1]]});
+
+                            break;
+
+                        case "typed-literal": // Typed Literal
+                            typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
+
+                            break;
+
+                        case "bnode": // Blanck node
+                            //TODO:
+                            //TODO: ¿Varios recursos anónimos anidados?
+                            console.log("NODO EN BLANCO");
+                            console.log(relationProcessed);
+                            blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
+                            break;
+
+                        case "uri": // Uri - Need to choose between relation or literal url
+                            var jsonSize = Object.keys(results[element]).length;
+
+                            if (jsonSize == 2) { // Literal url
+                                literals.push({relation: relationProcessed, value: results[element][vars[1]]});
+                            }
+                            else if (jsonSize > 3) { // Relation
+
+                                relationTitle = "";
+
+                                for (var i = 3; i < vars.length; i++) {
+
+                                    if (results[element][vars[i]] != undefined) {
+                                        relationTitle = results[element][vars[i]].value;
+                                        break;
+                                    }
+                                }
+
+                                relations.push({
+                                    relation: relationProcessed,
+                                    value: results[element][vars[1]],
+                                    title: relationTitle
+                                });
+                            }
+                            break;
+                    }
+
+                    break;
             }
         }
     }
@@ -189,6 +206,26 @@ function processData (data, dataReverse, uri){
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
 
+}
+
+function isSpecialRelation(relation){
+
+    var specialRelation = "";
+
+    if (isSpecificAttribute(relation, "geoProperty")) { // Geometric attribute
+        specialRelation = geoProperty;
+    }
+    else if (isSpecificAttribute(relation, "latProperty")){ // Latitude attribute
+        specialRelation = latProperty;
+    }
+    else if (isType(relation)) { // Resource's type
+        specialRelation = typeProperty;
+    }
+    else if (!isSpecificAttribute(relation, "longProperty")) { // If the relation doesn't match with any special type
+        specialRelation = nonSpecial;
+    }
+
+    return specialRelation;
 }
 
 /*
