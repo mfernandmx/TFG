@@ -14,11 +14,13 @@ function getData (uri) {
 
     var html;
 
-    var querySelect = "SELECT ?p ?o min(?m) as ?m ";
-    var queryWhere = "WHERE{ " +
-                    "<"+uri+"> ?p ?o . " +
-                    "OPTIONAL{?o ?n ?m.} ";
-    var queryEnd = "}";
+    var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ";
+    var queryWhere = "WHERE{ ";
+    var queryDirect = "{<"+uri+"> ?p ?o . " +
+                        "OPTIONAL{?o ?n ?m.}";
+    var queryUnion = "} UNION ";
+    var queryReverse = "{?x ?y <"+uri+">. ";
+    var queryEnd = "}}";
 
     var prefixes = configuration.getProperty("labelProperty");
     var prefix;
@@ -33,18 +35,18 @@ function getData (uri) {
             prefixProcessed = data.processPrefix(prefixes[prefix]);
 
             querySelect += "?" + prefixProcessed.value + " ";
-            queryWhere += "OPTIONAL{?o " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
+            queryDirect += "OPTIONAL{?o " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
+            queryReverse += "OPTIONAL{?x " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
 
             queryEnd += " ?" + prefixProcessed.value;
         }
     }
 
-    var sparqlQuery = querySelect + queryWhere + queryEnd;
+    var sparqlQuery = querySelect + queryWhere + queryDirect + queryUnion + queryReverse + queryEnd;
     console.log(sparqlQuery);
 
     var endpoint = configuration.getProperty("sparqlEndpoint");
 
-    //TODO Intentar agrupar las dos consultas en una
     var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
 
     var status = res.statusCode;
@@ -56,28 +58,7 @@ function getData (uri) {
     if (results.length > 0) {
 
         console.log("ES TRUE!", status);
-
-        querySelect = "SELECT ?p ?o ";
-        queryWhere = "WHERE {?p ?o <" + uri + ">. ";
-        queryEnd = "}";
-
-        for (prefix in prefixes) {
-            if (prefixes.hasOwnProperty(prefix)) {
-                prefixProcessed = data.processPrefix(prefixes[prefix]);
-
-                querySelect += "?" + prefixProcessed.value + " ";
-                queryWhere += "OPTIONAL{?p " + prefixProcessed.prefix + ":" + prefixProcessed.value + " ?" + prefixProcessed.value + ". }. ";
-            }
-        }
-
-        sparqlQuery = querySelect + queryWhere + queryEnd;
-        console.log(sparqlQuery);
-
-        var reverseRes = request('GET', endpoint + "?default-graph-uri=&query=" + sparqlQuery + "&format=json");
-
-        console.log('statusCode:', reverseRes && reverseRes.statusCode); // Print the response status code if a response was received
-
-        html = data.processData(res.getBody(), reverseRes.getBody(), uri);
+        html = data.processData(res.getBody(), uri);
     }
 
     else{

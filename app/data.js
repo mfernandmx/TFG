@@ -11,10 +11,9 @@ const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
 
-function processData (data, dataReverse, uri){
+function processData (data, uri){
 
     var dataJSON = JSON.parse(data);
-    var dataReverseJSON = JSON.parse(dataReverse);
 
     var vars = dataJSON['head']['vars'];
 
@@ -44,142 +43,140 @@ function processData (data, dataReverse, uri){
     // Process each element received by the query
     for (element in results){
         if (results.hasOwnProperty(element)) {
+            if (results[element].hasOwnProperty(vars[0])) {
 
-            // Relation value between the element and the resource
-            relation = results[element][vars[0]].value;
+                // Relation value between the element and the resource
+                relation = results[element][vars[0]].value;
 
-            // Process the relation to separate its name and its prefix
-            relationProcessed = processPrefix(relation);
+                // Process the relation to separate its name and its prefix
+                relationProcessed = processPrefix(relation);
 
-            /*
-             Check if the relation matches with one of the special types contemplated
-             in the configuration. Those types relate to geometric values to be
-             displayed in a map
-            */
-            var specialRelation = isSpecialRelation(relation);
+                /*
+                 Check if the relation matches with one of the special types contemplated
+                 in the configuration. Those types relate to geometric values to be
+                 displayed in a map
+                 */
+                var specialRelation = isSpecialRelation(relation);
 
-            switch (specialRelation){
-                case geoProperty:
-                    geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
-                    break;
+                switch (specialRelation) {
+                    case geoProperty:
+                        geometries.push({relation: relationProcessed, value: results[element][vars[1]]});
+                        break;
 
-                case latProperty:
-                    var elementAux, relationAux, valueAux;
-                    finded = false;
+                    case latProperty:
+                        var elementAux, relationAux, valueAux;
+                        finded = false;
 
-                    // Find if there is a longitude value to display a point
-                    for (elementAux in results) {
-                        if (results.hasOwnProperty(elementAux)) {
-                            relationAux = results[elementAux][vars[0]].value;
+                        // Find if there is a longitude value to display a point
+                        for (elementAux in results) {
+                            if (results.hasOwnProperty(elementAux)) {
+                                relationAux = results[elementAux][vars[0]].value;
 
-                            if (isSpecificAttribute(relationAux, "longProperty")) {
-                                valueAux = results[elementAux][vars[1]];
-                                relationAux = processPrefix(relationAux);
-                                finded = true;
-                                break;
+                                if (isSpecificAttribute(relationAux, "longProperty")) {
+                                    valueAux = results[elementAux][vars[1]];
+                                    relationAux = processPrefix(relationAux);
+                                    finded = true;
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    if (finded){
-                        points.push({lat: {relation: relationProcessed, value: results[element][vars[1]]},long: {relation: relationAux, value: valueAux}});
-                    } else{
-                        //TODO: Guardar fallo en log, y no mostrar (documentar)
-                        console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
-                            "no se ha encontrado ninguna propiedad que coincida con la longitud");
-                    }
-                    break;
+                        if (finded) {
+                            points.push({
+                                lat: {relation: relationProcessed, value: results[element][vars[1]]},
+                                long: {relation: relationAux, value: valueAux}
+                            });
+                        } else {
+                            //TODO: Guardar fallo en log, y no mostrar (documentar)
+                            console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
+                                "no se ha encontrado ninguna propiedad que coincida con la longitud");
+                        }
+                        break;
 
-                case typeProperty:
-                    types.push(processPrefix(results[element][vars[1]].value));
-                    break;
+                    case typeProperty:
+                        types.push(processPrefix(results[element][vars[1]].value));
+                        break;
 
-                case nonSpecial:
+                    case nonSpecial:
 
-                    // TODO: Guardar fallo en log, y no mostrar (documentar)
+                        // TODO: Guardar fallo en log, y no mostrar (documentar)
 
-                    var type = results[element][vars[1]].type;
+                        var type = results[element][vars[1]].type;
 
-                    switch (type){
-                        case "literal": // Literal
-                            literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-                            break;
-
-                        case "typed-literal": // Typed Literal
-                            typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
-
-                            break;
-
-                        case "bnode": // Blanck node
-                            //TODO:
-                            //TODO: ¿Varios recursos anónimos anidados?
-                            console.log("NODO EN BLANCO");
-                            console.log(relationProcessed);
-                            blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
-                            break;
-
-                        case "uri": // Uri - Need to choose between relation or literal url
-                            var jsonSize = Object.keys(results[element]).length;
-
-                            if (jsonSize == 2) { // Literal url
+                        switch (type) {
+                            case "literal": // Literal
                                 literals.push({relation: relationProcessed, value: results[element][vars[1]]});
-                            }
-                            else if (jsonSize > 3) { // Relation
 
-                                relationTitle = "";
+                                break;
 
-                                for (var i = 3; i < vars.length; i++) {
+                            case "typed-literal": // Typed Literal
+                                typedLiterals.push({relation: relationProcessed, value: results[element][vars[1]]});
 
-                                    if (results[element][vars[i]] != undefined) {
-                                        relationTitle = results[element][vars[i]].value;
-                                        break;
-                                    }
+                                break;
+
+                            case "bnode": // Blanck node
+                                //TODO:
+                                //TODO: ¿Varios recursos anónimos anidados?
+                                blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
+                                break;
+
+                            case "uri": // Uri - Need to choose between relation or literal url
+                                var jsonSize = Object.keys(results[element]).length;
+                                
+                                if (jsonSize == 2) { // Literal url
+                                    literals.push({relation: relationProcessed, value: results[element][vars[1]]});
                                 }
+                                else if (jsonSize > 3) { // Relation
 
-                                relations.push({
-                                    relation: relationProcessed,
-                                    value: results[element][vars[1]],
-                                    title: relationTitle
-                                });
-                            }
-                            break;
-                    }
+                                    relationTitle = "";
 
-                    break;
-            }
-        }
-    }
+                                    for (var i = 3; i < vars.length; i++) {
 
-    vars = dataReverseJSON['head']['vars'];
-    results = dataReverseJSON['results']['bindings'];
+                                        if (results[element][vars[i]] != undefined) {
+                                            relationTitle = results[element][vars[i]].value;
+                                            break;
+                                        }
+                                    }
 
-    /*
-     Process each element received by the reverse query. In this case, all
-     elements will be relations between other resources and the resource we
-     are processing
-    */
-    for (element in results){
-        if (results.hasOwnProperty(element)) {
+                                    relations.push({
+                                        relation: relationProcessed,
+                                        value: results[element][vars[1]],
+                                        title: relationTitle
+                                    });
+                                }
+                                break;
+                        }
 
-            relation = results[element][vars[1]].value;
-            relationProcessed = processPrefix(relation);
-
-            relationTitle = "";
-
-            for (i = 2; i < vars.length; i++) {
-
-                if (results[element][vars[i]] != undefined) {
-                    relationTitle = results[element][vars[i]].value;
-                    break;
+                        break;
                 }
             }
 
-            reverseRelations.push({
-                relation: relationProcessed,
-                value: results[element][vars[0]],
-                title: relationTitle
-            });
+            /*
+             Process each element which is a reverse relation. In this case, all
+             elements will be relations between other resources and the resource we
+             are processing
+             */
+            else if (results[element].hasOwnProperty(vars[3])){
+
+                relation = results[element][vars[4]].value;
+                relationProcessed = processPrefix(relation);
+
+                relationTitle = "";
+
+                for (i = 5; i < vars.length; i++) {
+
+                    if (results[element][vars[i]] != undefined) {
+                        relationTitle = results[element][vars[i]].value;
+                        break;
+                    }
+                }
+
+                reverseRelations.push({
+                    relation: relationProcessed,
+                    value: results[element][vars[3]],
+                    title: relationTitle
+                });
+            }
         }
     }
 

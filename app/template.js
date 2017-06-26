@@ -111,7 +111,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     for (element in blankNodes){
         if (blankNodes.hasOwnProperty(element)) {
 
-            console.log(blankNodes[element]);
+            //console.log(blankNodes[element]);
 
             ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID)};
             blankNodesValues.push(ele);
