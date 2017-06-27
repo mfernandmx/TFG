@@ -11,7 +11,7 @@ const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
 
-function processData (data, uri){
+function processData (data, uri, blankNode){
 
     var dataJSON = JSON.parse(data);
 
@@ -115,14 +115,13 @@ function processData (data, uri){
                                 break;
 
                             case "bnode": // Blanck node
-                                //TODO:
                                 //TODO: ¿Varios recursos anónimos anidados?
                                 blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
                                 break;
 
                             case "uri": // Uri - Need to choose between relation or literal url
                                 var jsonSize = Object.keys(results[element]).length;
-                                
+
                                 if (jsonSize == 2) { // Literal url
                                     literals.push({relation: relationProcessed, value: results[element][vars[1]]});
                                 }
@@ -189,6 +188,10 @@ function processData (data, uri){
       */
     if (title == ""){
         title = getTitleFromURI(uri);
+
+        if (blankNode){
+            title = "Recurso anónimo (" + title + ")";
+        }
     }
 
     console.log("Title:", title);

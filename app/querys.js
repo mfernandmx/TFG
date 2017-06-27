@@ -1,7 +1,5 @@
 
 module.exports.getData = getData;
-module.exports.getBlankNode = getBlankNode;
-
 
 const data = require('./data');
 const configuration = require('./configuration');
@@ -10,9 +8,18 @@ const template = require('./template');
 //const request = require('request');
 const request = require('sync-request');
 
+// blankNode - true or false
 function getData (uri) {
 
     var html;
+
+    var object = {uri: uri};
+
+    var blankNode = isBlankNode(object);
+
+    if (blankNode){
+        uri = object.uri;
+    }
 
     var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ";
     var queryWhere = "WHERE{ ";
@@ -58,7 +65,7 @@ function getData (uri) {
     if (results.length > 0) {
 
         console.log("ES TRUE!", status);
-        html = data.processData(res.getBody(), uri);
+        html = data.processData(res.getBody(), uri, blankNode);
     }
 
     else{
@@ -70,37 +77,23 @@ function getData (uri) {
     return {status: status, html: html};
 }
 
-function getBlankNode(nodeID) {
+function isBlankNode(object) {
 
-    //TODO Ver cómo añadir m
-    var sparqlQuery = "SELECT ?p ?o ?uri WHERE { " +
-                        "?uri ?a <"+nodeID+"> . " +
-                        "<"+nodeID+"> ?p ?o .}";
+    var blankNode = false;
 
-    var endpoint = configuration.getProperty("sparqlEndpoint");
-    var res = request('GET', endpoint + "?default-graph-uri=&query=" + sparqlQuery + "&format=json");
+    var datasetBase = configuration.getProperty("datasetBase");
+    console.log(datasetBase);
+    console.log("length:", datasetBase.length);
 
-    var html;
-    var status = res.statusCode;
+    var uriAux = object.uri.substr(datasetBase[0].length);
 
-    console.log('statusCode:', res && status); // Print the response status code if a response was received
+    console.log(uriAux);
 
-    var dataJSON = JSON.parse(res.getBody());
-    var results = dataJSON['results']['bindings'];
-    if (results.length > 0) {
-
-        var reverseRes = {};
-
-        //TODO: Relaciones inversas sobre nodos en blanco?
-        //TODO: Procesar nodeID
-        html = data.processData(res.getBody(), reverseRes, nodeID);
-    }
-    else{
-        //TODO: Revisar qué código pasar
-        console.log("ES FALSE!", status);
-        //TODO: nodeID
-        html = template.setError404(nodeID);
+    if (uriAux.startsWith("nodeID")){
+        object.uri = uriAux;
+        blankNode = true;
+        console.log("Es un nodo en blanco");
     }
 
-    return {status: status, html: html};
+    return blankNode;
 }

@@ -62,7 +62,8 @@ block content
                     each blankNode in blankNodes
                         if blankNodeAux.url == blankNode.relation.url
                             li
-                                a(href="") #{blankNode.nodeID}
+                                //-a(href="") #{blankNode.nodeID}
+                                a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
 
     h2 Atributos geométricos
     ul

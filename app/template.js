@@ -113,7 +113,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
 
             //console.log(blankNodes[element]);
 
-            ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID)};
+            ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID).replace(new RegExp("\"", 'g'), "")};
             blankNodesValues.push(ele);
 
             for (i = 0; i < blankNodesAux.length; i++) {
@@ -261,8 +261,10 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
-
     var projectHomePage = configuration.getProperty("projectHomepage")[0];
+
+    //var datasetBase = configuration.getProperty("datasetBase")[0];
+    var datasetBase = configuration.getProperty("webBase") + configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "");
 
     return compiledFunction({
         rTitle: title,
@@ -271,6 +273,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
 
         projectName: projectName,
         projectHomePage: projectHomePage,
+        datasetBase: datasetBase,
 
         literals: literalsValues,
         typedLiterals: typedLiteralsValues,
