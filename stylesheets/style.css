@@ -2,3 +2,12 @@ body{
     margin: 3%;
     font-family: Roboto, "serif";
 }
+
+#contentMap{
+    height: 500px;
+    width: 500px;
+}
+
+#map{
+    height: 100%;
+}

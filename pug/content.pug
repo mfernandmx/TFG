@@ -2,8 +2,8 @@ extends main.pug
 
 block content
 
-    div(style={height: '500px', width: '500px'})#contentMap
-        div#map(style={height: '100%'})
+    div#contentMap
+        div#map
 
     h2 Literales
     ul
@@ -62,7 +62,6 @@ block content
                     each blankNode in blankNodes
                         if blankNodeAux.url == blankNode.relation.url
                             li
-                                //-a(href="") #{blankNode.nodeID}
                                 a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
 
     h2 Atributos geométricos

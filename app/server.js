@@ -34,11 +34,17 @@ http.createServer(function(request, response) {
     pathname = pathname[pathname.length-1];
     console.log("Pathname", pathname);
 
-    //TODO:
     if (pathname == "client.js") {
         console.log("Entro en script");
+        response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
         var script = fs.readFileSync("./client/client.js", "utf8");
         response.write(script);
+    }
+    else if (pathname == "style.css"){
+        console.log("Entro en css");
+        response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
+        var css = fs.readFileSync("./stylesheets/style.css", "utf8");
+        response.write(css);
     }
     else if (url.startsWith(resource)){
         //TODO: Si empieza por /recurso/, procesar petición

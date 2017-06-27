@@ -64,6 +64,16 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
 
             replaceType(typedLiterals[element].value);
 
+            if (typedLiterals[element].value.datatype == "xsd:boolean"){
+                //TODO: Revisar las comillas
+                if (typedLiterals[element].value.value){
+                    typedLiterals[element].value.value = "\"True\"";
+                }
+                else{
+                    typedLiterals[element].value.value = "\"False\"";
+                }
+            }
+
             ele = {relation: typedLiterals[element].relation, value: typedLiterals[element].value};
             typedLiteralsValues.push(ele);
 
