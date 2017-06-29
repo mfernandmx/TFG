@@ -1,6 +1,7 @@
 body{
     margin: 3%;
     font-family: Roboto, "serif";
+    background-color: #e2e2e2;
 }
 
 #contentMap{
@@ -10,4 +11,9 @@ body{
 
 #map{
     height: 100%;
+}
+
+#img{
+    max-width: 250px;
+    max-height: 250px;
 }

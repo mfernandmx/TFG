@@ -33,11 +33,13 @@ function initMap() {
         if (myFigure != ""){
             map.data.addGeoJson(myFigure);
         }
+        changeStyle(map);
 
         zoom(map);
         google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
             map.setZoom(Math.min(16, map.getZoom()));
         });
+
     }
 
     else{
@@ -47,6 +49,19 @@ function initMap() {
             contentMap.style.display = "none";
         }
     }
+}
+
+function changeStyle(map) {
+    map.data.setStyle({
+        clickable: false,
+
+        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+
+        strokeColor: 'MidnightBlue',
+        fillColor: 'DodgerBlue',
+        strokeOpacity: '1.0',
+        strokeWeight: 3
+    });
 }
 
 function zoom(map) {

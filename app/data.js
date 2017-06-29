@@ -7,6 +7,7 @@ const template = require('./template');
 
 const geoProperty = "geoProperty";
 const latProperty = "latProperty";
+const imageProperty = "imageProperty";
 const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
@@ -31,6 +32,8 @@ function processData (data, uri, blankNode){
     //TODO: Array u objeto? (Futuros trabajos)
     var geometries = [];
     var points = [];
+
+    var images = [];
 
     var types = [];
 
@@ -91,6 +94,10 @@ function processData (data, uri, blankNode){
                             console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
                                 "no se ha encontrado ninguna propiedad que coincida con la longitud");
                         }
+                        break;
+
+                    case imageProperty:
+                        images.push({relation: relationProcessed, value: results[element][vars[1]]});
                         break;
 
                     case typeProperty:
@@ -204,7 +211,7 @@ function processData (data, uri, blankNode){
     //TODO: Uri en bnodes
 
     // Send the data processed to be rendered by the template
-    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points);
+    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points, images);
 
 }
 
@@ -217,6 +224,9 @@ function isSpecialRelation(relation){
     }
     else if (isSpecificAttribute(relation, "latProperty")){ // Latitude attribute
         specialRelation = latProperty;
+    }
+    else if (isSpecificAttribute(relation, "imageProperty")){ // Image attribute
+        specialRelation = imageProperty;
     }
     else if (isType(relation)) { // Resource's type
         specialRelation = typeProperty;

@@ -7,7 +7,7 @@ const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points){
+function setContentPug(title, uri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points, images){
 
     //TODO Language
 
@@ -19,6 +19,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     var reverseRelationsValues = [];
     var geometriesValues = [];
     var pointsValues = [];
+    var imagesValues = [];
 
     var ele;
 
@@ -29,6 +30,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     var reverseRelationsAux = [];
     var geometriesAux = [];
     var pointsAux = [];
+    var imagesAux = [];
 
     var found, i;
 
@@ -268,6 +270,30 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         }
     }
 
+    console.log(images);
+
+    //TODO:
+    // Procesamos los valores que sean imagenes
+    for (element in images) {
+        if (images.hasOwnProperty(element)) {
+
+            ele = {relation: images[element].relation, value: images[element].value};
+            imagesValues.push(ele);
+
+            found = false;
+            for (i = 0; i < imagesAux.length; i++) {
+                if (imagesAux[i].url == images[element].relation.url) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                imagesAux.push(images[element].relation);
+            }
+        }
+    }
+
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
@@ -292,6 +318,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         reverseRelations: reverseRelationsValues,
         geometries: geometriesValues,
         points: pointsValues,
+        images: imagesValues,
 
         geoFigure: geoFigure,
         geoPoint: geoPoint,
@@ -302,7 +329,8 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         blankNodesAux: blankNodesAux,
         reverseRelationsAux: reverseRelationsAux,
         geometriesAux: geometriesAux,
-        pointsAux: pointsAux
+        pointsAux: pointsAux,
+        imagesAux: imagesAux
 
     });
 }
