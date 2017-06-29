@@ -47,22 +47,28 @@ http.createServer(function(request, response) {
         var css = fs.readFileSync("./stylesheets/style.css", "utf8");
         response.write(css);
     }
-    else if (url.startsWith(resource)){
-        //TODO: Si empieza por /recurso/, procesar petición}
+    else if (url.startsWith(resource)){ // Empieza por ../recurso/
 
         var datasetBase = configuration.getProperty("datasetBase");
+        var result;
 
         if (url.startsWith(resource + "page/")) {
             url = url.replace(resource + "page/", datasetBase);
             console.log("URL de consulta:",url);
 
-            var result = querys.getData(url);
+            result = querys.getData(url, "page");
 
             response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
             response.write(result.html);
         }
         else if (url.startsWith(resource + "data/")){
-            //TODO:
+            url = url.replace(resource + "data/", datasetBase);
+            console.log("URL de consulta:",url);
+
+            result = querys.getData(url, "data");
+
+            response.writeHead(result.status, {'Content-Type': 'text/plain; charset=utf-8'});
+            response.write(result.data);
         }
         else{
             //TODO: Cambiar

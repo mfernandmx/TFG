@@ -270,7 +270,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         }
     }
 
-    //TODO:
     // Procesamos los valores que sean imagenes
     for (element in images) {
         if (images.hasOwnProperty(element)) {

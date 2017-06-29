@@ -17,7 +17,8 @@
     "n3": "latest",
     "geojson-validation": "latest",
     "geojson": "latest",
-    "sync-request": "latest"
+    "sync-request": "latest",
+    "node-ttl": "latest"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.26.14",

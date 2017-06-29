@@ -1,6 +1,7 @@
 
 module.exports.start = start;
 module.exports.getProperty = getProperty;
+module.exports.getPrefixList = getPrefixList;
 module.exports.getPrefixFromConf = getPrefixFromConf;
 
 const N3 = require('n3');
@@ -46,6 +47,10 @@ function getProperty(propertyName){
     }
 
     return value;
+}
+
+function getPrefixList() {
+    return prefixList;
 }
 
 function getPrefixFromConf(prefix) {

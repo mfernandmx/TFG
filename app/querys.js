@@ -9,9 +9,7 @@ const template = require('./template');
 const request = require('sync-request');
 
 // blankNode - true or false
-function getData (uri) {
-
-    var html;
+function getData (uri,type) {
 
     var object = {uri: uri};
 
@@ -60,20 +58,28 @@ function getData (uri) {
 
     console.log('statusCode:', res && status); // Print the response status code if a response was received
 
+    var response = {status: status};
+
     var dataJSON = JSON.parse(res.getBody());
     var results = dataJSON['results']['bindings'];
     if (results.length > 0) {
         console.log("ES TRUE!", status);
-        html = data.processData(res.getBody(), uri, blankNode);
+
+        if (type == "page") {
+            response.html = data.processDataForPage(res.getBody(), uri, blankNode);
+        }
+        else if (type == "data"){
+            response.data = data.processData(res.getBody(), uri, blankNode);
+        }
     }
 
     else{
         //TODO: Revisar qué código pasar
         console.log("ES FALSE!", status);
-        html = template.setError404(uri);
+        response.html = template.setError404(uri);
     }
 
-    return {status: status, html: html};
+    return response;
 }
 
 function isBlankNode(object) {

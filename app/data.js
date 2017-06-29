@@ -1,9 +1,12 @@
 
+module.exports.processDataForPage = processDataForPage;
 module.exports.processData = processData;
 module.exports.processPrefix = processPrefix;
 
 const configuration = require('./configuration');
 const template = require('./template');
+const N3 = require('n3');
+const N3Util = N3.Util;
 
 const geoProperty = "geoProperty";
 const latProperty = "latProperty";
@@ -12,7 +15,7 @@ const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
 
-function processData (data, uri, blankNode){
+function processDataForPage (data, uri, blankNode){
 
     var dataJSON = JSON.parse(data);
 
@@ -212,6 +215,72 @@ function processData (data, uri, blankNode){
 
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points, images);
+
+}
+
+function processData(data, uri, blankNode) {
+
+    //TODO: blankNode
+
+    var dataJSON = JSON.parse(data);
+    var vars = dataJSON['head']['vars'];
+    var results = dataJSON['results']['bindings'];
+
+    var prefixList = configuration.getPrefixList();
+
+    //TODO: Ver formatos
+    var writer = N3.Writer({ prefixes: prefixList });
+
+    var element;
+
+    for (element in results) {
+        if (results.hasOwnProperty(element)) {
+            if (results[element].hasOwnProperty(vars[0])) {
+
+                var object = "";
+
+                var type = results[element][vars[1]].type;
+
+                switch (type) {
+                    case "literal": // Literal
+                        object = N3Util.createLiteral(results[element][vars[1]].value);
+                        break;
+
+                    case "typed-literal": // Typed Literal
+                        object = N3Util.createLiteral(results[element][vars[1]].value, results[element][vars[1]].datatype);
+                        break;
+
+                    case "bnode": // Blanck node
+                        //TODO: Nodos en blanco
+                        console.log(results[element][vars[1]].value);
+                        break;
+
+                    case "uri": // Uri
+                        object = results[element][vars[1]].value;
+                        break;
+                }
+
+                writer.addTriple({
+                    subject:   uri,
+                    predicate: results[element][vars[0]].value,
+                    object:    object
+                });
+            }
+            else if (results[element].hasOwnProperty(vars[3])){
+                writer.addTriple({
+                    subject:   results[element][vars[3]].value,
+                    predicate: results[element][vars[4]].value,
+                    object:    uri
+                });
+            }
+        }
+    }
+
+    var triples;
+    //TODO: Excepción en el error
+    writer.end(function (error, result) { console.log(result); triples = result});
+
+    return triples;
 
 }
 
