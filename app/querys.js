@@ -50,7 +50,7 @@ function getData (uri) {
     }
 
     var sparqlQuery = querySelect + queryWhere + queryDirect + queryUnion + queryReverse + queryEnd;
-    console.log(sparqlQuery);
+    console.log("Query:", sparqlQuery);
 
     var endpoint = configuration.getProperty("sparqlEndpoint");
 
@@ -63,7 +63,6 @@ function getData (uri) {
     var dataJSON = JSON.parse(res.getBody());
     var results = dataJSON['results']['bindings'];
     if (results.length > 0) {
-
         console.log("ES TRUE!", status);
         html = data.processData(res.getBody(), uri, blankNode);
     }
@@ -82,12 +81,8 @@ function isBlankNode(object) {
     var blankNode = false;
 
     var datasetBase = configuration.getProperty("datasetBase");
-    console.log(datasetBase);
-    console.log("length:", datasetBase.length);
 
     var uriAux = object.uri.substr(datasetBase[0].length);
-
-    console.log(uriAux);
 
     if (uriAux.startsWith("nodeID")){
         object.uri = uriAux;

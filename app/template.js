@@ -270,8 +270,6 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         }
     }
 
-    console.log(images);
-
     //TODO:
     // Procesamos los valores que sean imagenes
     for (element in images) {

@@ -25,14 +25,15 @@ http.createServer(function(request, response) {
         console.error(err);
     });
 
+    console.log("URL recibida:", url);
+
     var resource = configuration.getProperty("webResourcePrefix");
     resource = resource[0].replace(new RegExp("\"", 'g'), "");
-    console.log(url);
     resource = "/" + resource;
 
     var pathname = url.split("/");
     pathname = pathname[pathname.length-1];
-    console.log("Pathname", pathname);
+    console.log("Pathname:", pathname);
 
     if (pathname == "client.js") {
         console.log("Entro en script");
@@ -47,17 +48,31 @@ http.createServer(function(request, response) {
         response.write(css);
     }
     else if (url.startsWith(resource)){
-        //TODO: Si empieza por /recurso/, procesar petición
+        //TODO: Si empieza por /recurso/, procesar petición}
 
         var datasetBase = configuration.getProperty("datasetBase");
 
-        url = url.replace(resource, datasetBase);
-        console.log(url);
+        if (url.startsWith(resource + "page/")) {
+            url = url.replace(resource + "page/", datasetBase);
+            console.log("URL de consulta:",url);
 
-        var result = querys.getData(url);
+            var result = querys.getData(url);
 
-        response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
-        response.write(result.html);
+            response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
+            response.write(result.html);
+        }
+        else if (url.startsWith(resource + "data/")){
+            //TODO:
+        }
+        else{
+            //TODO: Cambiar
+            url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
+            //url = url.replace(resource, datasetBase + "page/");
+
+            response.writeHead(301,
+                {Location: url}
+            );
+        }
 
     }
     else{
