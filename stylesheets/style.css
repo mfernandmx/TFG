@@ -64,6 +64,10 @@ Collapsible lists
     display: list-item;
 }
 
+.collapseButton{
+
+}
+
 /*
 Map
  */
@@ -71,6 +75,7 @@ Map
 #contentMap{
     height: 400px;
     width: 400px;
+
 }
 
 #map{

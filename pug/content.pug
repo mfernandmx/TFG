@@ -11,13 +11,26 @@ block content
                     li
                         a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
                         ul
+                            - var i = 0;
                             each literal in literals
                                 if literalAux.url == literal.relation.url
-                                    li
-                                        if literal.value.type != 'uri'
-                                           | #{literal.value.value}
-                                        else
-                                            a(href=literal.value.value) #{literal.value.value}
+                                    if i < 10
+                                        li
+                                            if literal.value.type != 'uri'
+                                               | #{literal.value.value}
+                                            else
+                                                a(href=literal.value.value) #{literal.value.value}
+                                    else
+                                        li.hidden
+                                            if literal.value.type != 'uri'
+                                                | #{literal.value.value}
+                                            else
+                                                a(href=literal.value.value) #{literal.value.value}
+                            - i++;
+
+                            if literals.length > 10
+                                button(class = "collapseButton" id = literalAux.value + "Button" onClick="showItems(\"" + literalAux.value + "\");") Show all
+
 
         if typedLiteralsAux.length > 0
             h2 Literales Tipados
@@ -26,10 +39,19 @@ block content
                     li
                         a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
                         ul
+                            - var i = 0;
                             each typedLiteral in typedLiterals
                                 if typedLiteralAux.url == typedLiteral.relation.url
-                                    li
+                                    if i < 10
+                                        li
+                                            #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                                else
+                                    li.hidden
                                         #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                            - i++;
+
+                            if typedLiterals.length > 10
+                                button(class = "collapseButton" id = typedLiteralAux.value + "Button" onClick="showItems(\"" + typedLiteralAux.value + "\");") Show all
 
         if relationsAux.length > 0
             h2 Relaciones
@@ -51,7 +73,7 @@ block content
                                     - i++;
 
                                 if relations.length > 10
-                                    button(id = relationAux.value +"Button" onClick="showItems(\""+relationAux.value+"\");") Show all
+                                    button(class = "collapseButton" id = relationAux.value +"Button" onClick="showItems(\""+relationAux.value+"\");") Show all
 
 
         if reverseRelationsAux.length > 0
@@ -62,10 +84,20 @@ block content
                         | is
                         a(href=reverseRelationAux.url) #{reverseRelationAux.prefix}:#{reverseRelationAux.value}
                         ul
+                            - var i = 0;
                             each relation in reverseRelations
                                 if reverseRelationAux.url == relation.relation.url
-                                    li
-                                        a(href=relation.value.url) #{relation.value.value}
+                                    if i < 10
+                                        li
+                                            a(href=relation.value.url) #{relation.value.value}
+                                    else
+                                        li.hidden
+                                            a(href=relation.value.url) #{relation.value.value}
+
+                                - i++;
+
+                            if reverseRelations.length > 10
+                                button(class = "collapseButton" id = reverseRelationAux.value + "Button" onClick="showItems(\"" + reverseRelationAux.value + "\");") Show all
 
         if blankNodesAux.length > 0
             h2 Nodos en blanco
@@ -74,10 +106,19 @@ block content
                     li
                         a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
                         ul
+                            - var i = 0;
                             each blankNode in blankNodes
                                 if blankNodeAux.url == blankNode.relation.url
-                                    li
-                                        a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+                                    if i < 10
+                                        li
+                                            a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+                                    else
+                                        li.hidden
+                                            a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+                            - i++;
+
+                            if blankNodes.length > 10
+                                button(class = "collapseButton" id = blankNodeAux.value + "Button" onClick="showItems(\"" + blankNodeAux.value + "\");") Show all
 
         if geometriesAux.length > 0
             h2 Atributos geométricos

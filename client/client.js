@@ -5,11 +5,7 @@ var myPoint = "";
 var myFigure = "";
 
 function showItems(divId) {
-
-    console.log(divId);
-
     var button = document.getElementById(divId + "Button");
-    console.log(button);
 
     if (button.innerHTML == "Show all"){
         button.innerHTML = "Show less";
@@ -22,11 +18,8 @@ function showItems(divId) {
     var ul = div.childNodes[0];
     var list = ul.childNodes;
 
-    console.log(list);
-
     for (var li in list){
         if (list.hasOwnProperty(li)) {
-            console.log(list[li]);
             if (list[li].className == "hidden") {
                 list[li].className = "displayed";
             }
