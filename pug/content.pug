@@ -6,7 +6,7 @@ block content
 
         if literalsAux.length > 0
             h2 Literales
-            ul
+            ul.properties
                 each literalAux in literalsAux
                     li
                         a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
@@ -29,12 +29,13 @@ block content
                             - i++;
 
                             if literals.length > 10
-                                button(class = "collapseButton" id = literalAux.value + "Button" onClick="showItems(\"" + literalAux.value + "\");") Show all
+                                button(class = "collapseButton" id = literalAux.value + "Button" onClick="showItems(\"" + literalAux.value + "\");")
+                                    span Show all
 
 
         if typedLiteralsAux.length > 0
             h2 Literales Tipados
-            ul
+            ul.properties
                 each typedLiteralAux in typedLiteralsAux
                     li
                         a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
@@ -55,7 +56,7 @@ block content
 
         if relationsAux.length > 0
             h2 Relaciones
-            ul
+            ul.properties
                 each relationAux in relationsAux
                     li
                         a(href=relationAux.url) #{relationAux.prefix}:#{relationAux.value}
@@ -78,7 +79,7 @@ block content
 
         if reverseRelationsAux.length > 0
             h2 Relaciones inversas
-            ul
+            ul.properties
                 each reverseRelationAux in reverseRelationsAux
                     li
                         | is
@@ -101,7 +102,7 @@ block content
 
         if blankNodesAux.length > 0
             h2 Nodos en blanco
-            ul
+            ul.properties
                 each blankNodeAux in blankNodesAux
                     li
                         a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
@@ -122,14 +123,14 @@ block content
 
         if geometriesAux.length > 0
             h2 Atributos geométricos
-            ul
+            ul.properties
                 each geometriyAux in geometriesAux
                     li
                         a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
 
         if pointsAux.length > 0
             h2 Atributos de coordenadas
-            ul
+            ul.properties
                 each pointAux in pointsAux
                     li
                         a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
@@ -138,7 +139,7 @@ block content
 
         if imagesAux.length > 0
             h2 Imágenes
-            ul
+            ul.properties
                 each imageAux in imagesAux
                     li
                         a(href=imageAux.url) #{imageAux.prefix}:#{imageAux.value}
