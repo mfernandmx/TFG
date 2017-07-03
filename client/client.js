@@ -60,7 +60,7 @@ function changeStyle(map) {
         strokeColor: 'MidnightBlue',
         fillColor: 'DodgerBlue',
         strokeOpacity: '1.0',
-        strokeWeight: 3
+        strokeWeight: 2
     });
 }
 

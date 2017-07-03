@@ -12,12 +12,13 @@ html
 
         if rTypes.length > 0
             h2 Tipos
-            ul
+            ul#types
                 each type in rTypes
                     li
                         a(href=type.url) #{type.prefix}:#{type.value}
 
-        block content
+        div#content
+            block content
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
         script(type="text/javascript", src="client.js")

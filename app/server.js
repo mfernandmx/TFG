@@ -3,7 +3,6 @@ const http = require('http');
 const fs = require("fs");
 
 const configuration = require('./configuration');
-
 const querys = require('./querys');
 
 http.createServer(function(request, response) {
@@ -13,6 +12,7 @@ http.createServer(function(request, response) {
     var url = request.url;
     var body = [];
 
+    //TODO: Control de errores
     request.on('error', function(err) {
         console.error(err);
     }).on('data', function(chunk) {
@@ -28,6 +28,8 @@ http.createServer(function(request, response) {
     console.log("URL recibida:", url);
 
     var resource = configuration.getProperty("webResourcePrefix");
+
+    // Replace each " for empty char
     resource = resource[0].replace(new RegExp("\"", 'g'), "");
     resource = "/" + resource;
 
@@ -36,18 +38,16 @@ http.createServer(function(request, response) {
     console.log("Pathname:", pathname);
 
     if (pathname == "client.js") {
-        console.log("Entro en script");
         response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
         var script = fs.readFileSync("./client/client.js", "utf8");
         response.write(script);
     }
     else if (pathname == "style.css"){
-        console.log("Entro en css");
         response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
         var css = fs.readFileSync("./stylesheets/style.css", "utf8");
         response.write(css);
     }
-    else if (url.startsWith(resource)){ // Empieza por ../recurso/
+    else if (url.startsWith(resource)){ // Starts with ../recurso/
 
         var datasetBase = configuration.getProperty("datasetBase");
         var result;

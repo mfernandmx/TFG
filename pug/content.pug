@@ -2,100 +2,101 @@ extends main.pug
 
 block content
 
-    div#contentMap
-        div#map
+    div.left
 
-    h2 Literales
-    ul
-        each literalAux in literalsAux
-            li
-                a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
-                ul
-                    each literal in literals
-                        if literalAux.url == literal.relation.url
-                            li
-                                if literal.value.type != 'uri'
-                                   | #{literal.value.value}
-                                else
-                                    a(href=literal.value.value) #{literal.value.value}
+        if literalsAux.length > 0
+            h2 Literales
+            ul
+                each literalAux in literalsAux
+                    li
+                        a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
+                        ul
+                            each literal in literals
+                                if literalAux.url == literal.relation.url
+                                    li
+                                        if literal.value.type != 'uri'
+                                           | #{literal.value.value}
+                                        else
+                                            a(href=literal.value.value) #{literal.value.value}
 
-    h2 Literales Tipados
-    ul
-        each typedLiteralAux in typedLiteralsAux
-            li
-                a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
-                ul
-                    each typedLiteral in typedLiterals
-                        if typedLiteralAux.url == typedLiteral.relation.url
-                            li
-                                #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+        if typedLiteralsAux.length > 0
+            h2 Literales Tipados
+            ul
+                each typedLiteralAux in typedLiteralsAux
+                    li
+                        a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
+                        ul
+                            each typedLiteral in typedLiterals
+                                if typedLiteralAux.url == typedLiteral.relation.url
+                                    li
+                                        #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
 
-    h2 Relaciones
-    ul
-        each relationAux in relationsAux
-            li
-                a(href=relationAux.url) #{relationAux.prefix}:#{relationAux.value}
-                ul
-                    each relation in relations
-                        if relationAux.url == relation.relation.url
-                            li
-                                a(href=relation.value.url) #{relation.value.value}
+        if relationsAux.length > 0
+            h2 Relaciones
+            ul
+                each relationAux in relationsAux
+                    li
+                        a(href=relationAux.url) #{relationAux.prefix}:#{relationAux.value}
+                        ul
+                            each relation in relations
+                                if relationAux.url == relation.relation.url
+                                    li
+                                        a(href=relation.value.url) #{relation.value.value}
 
-    h2 Relaciones inversas
-    ul
-        each reverseRelationAux in reverseRelationsAux
-            li
-                | is
-                a(href=reverseRelationAux.url) #{reverseRelationAux.prefix}:#{reverseRelationAux.value}
-                ul
-                    each relation in reverseRelations
-                        if reverseRelationAux.url == relation.relation.url
-                            li
-                                a(href=relation.value.url) #{relation.value.value}
+        if reverseRelationsAux.length > 0
+            h2 Relaciones inversas
+            ul
+                each reverseRelationAux in reverseRelationsAux
+                    li
+                        | is
+                        a(href=reverseRelationAux.url) #{reverseRelationAux.prefix}:#{reverseRelationAux.value}
+                        ul
+                            each relation in reverseRelations
+                                if reverseRelationAux.url == relation.relation.url
+                                    li
+                                        a(href=relation.value.url) #{relation.value.value}
 
-    h2 Nodos en blanco
-    ul
-        each blankNodeAux in blankNodesAux
-            li
-                a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
-                ul
-                    each blankNode in blankNodes
-                        if blankNodeAux.url == blankNode.relation.url
-                            li
-                                a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+        if blankNodesAux.length > 0
+            h2 Nodos en blanco
+            ul
+                each blankNodeAux in blankNodesAux
+                    li
+                        a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
+                        ul
+                            each blankNode in blankNodes
+                                if blankNodeAux.url == blankNode.relation.url
+                                    li
+                                        a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
 
-    h2 Atributos geométricos
-    ul
-        each geometriyAux in geometriesAux
-            li
-                a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
-                //-ul
-                    each geometry in geometries
-                        if geometriyAux.url == geometry.relation.url
-                            //-li
-                                | #{geometry.value.value}
+        if geometriesAux.length > 0
+            h2 Atributos geométricos
+            ul
+                each geometriyAux in geometriesAux
+                    li
+                        a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
 
-
-    h2 Puntos
-    ul
-        each pointAux in pointsAux
-            li
-                ul
+        if pointsAux.length > 0
+            h2 Atributos de coordenadas
+            ul
+                each pointAux in pointsAux
                     li
                         a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
                     li
                         a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
-                    //-each point in points
-                        //-li
-                            | #{point.value}
 
-    h2 Imágenes
-    ul
-        each imageAux in imagesAux
-            li
-                a(href=imageAux.url) #{imageAux.prefix}:#{imageAux.value}
-                ul
-                    each image in images
-                        if imageAux.url == image.relation.url
-                            li
-                                img(src=image.value.value)#img
+        if imagesAux.length > 0
+            h2 Imágenes
+            ul
+                each imageAux in imagesAux
+                    li
+                        a(href=imageAux.url) #{imageAux.prefix}:#{imageAux.value}
+                        ul
+                            each image in images
+                                if imageAux.url == image.relation.url
+                                    li
+                                        img(src=image.value.value)#resourceImg
+
+    div.right
+
+        div#contentMap
+            div#map
