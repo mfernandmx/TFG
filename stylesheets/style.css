@@ -53,6 +53,18 @@ Content
 }
 
 /*
+Collapsible lists
+ */
+
+.hidden{
+    display: none;
+}
+
+.displayed{
+    display: list-item;
+}
+
+/*
 Map
  */
 

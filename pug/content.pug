@@ -37,11 +37,22 @@ block content
                 each relationAux in relationsAux
                     li
                         a(href=relationAux.url) #{relationAux.prefix}:#{relationAux.value}
-                        ul
-                            each relation in relations
-                                if relationAux.url == relation.relation.url
-                                    li
-                                        a(href=relation.value.url) #{relation.value.value}
+                        div(id = relationAux.value)
+                            ul
+                                - var i = 0;
+                                each relation in relations
+                                    if relationAux.url == relation.relation.url
+                                        if i < 10
+                                            li
+                                                a(href=relation.value.url) #{relation.value.value}
+                                        else
+                                            li.hidden
+                                                a(href=relation.value.url) #{relation.value.value}
+                                    - i++;
+
+                                if relations.length > 10
+                                    button(id = relationAux.value +"Button" onClick="showItems(\""+relationAux.value+"\");") Show all
+
 
         if reverseRelationsAux.length > 0
             h2 Relaciones inversas
