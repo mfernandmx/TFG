@@ -9,6 +9,10 @@ html
         div#homeLink
             a(href = projectHomePage) (#{projectName})
 
+        div#backUri
+            if rBackUri != ""
+                a(href = rBackUri) Volver al recurso anterior
+
         h2 #{rUri}
 
         if rTypes.length > 0

@@ -15,7 +15,7 @@ const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
 
-function processDataForPage (data, uri, blankNode){
+function processDataForPage (data, uri, backUri, blankNode){
 
     var dataJSON = JSON.parse(data);
 
@@ -32,7 +32,7 @@ function processDataForPage (data, uri, blankNode){
 
     var blankNodes = [];
 
-    //TODO: Array u objeto? (Futuros trabajos)
+    //TODO: Cambiar por objetos
     var geometries = [];
     var points = [];
 
@@ -206,6 +206,7 @@ function processDataForPage (data, uri, blankNode){
 
     console.log("Title:", title);
     console.log("URI:", uri);
+    console.log("BackURI:", backUri);
     console.log("Type(s):", types);
 
     console.log("-------------------------");
@@ -214,7 +215,13 @@ function processDataForPage (data, uri, blankNode){
     //TODO: Uri en bnodes
 
     // Send the data processed to be rendered by the template
-    return template.setContentPug(title, uri, types, literals.sort(function (a, b) {return a.relation.value > b.relation.value;}), relations.sort(function (a, b) {return a.relation.value > b.relation.value;}), typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}), blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}), reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}), geometries, points, images);
+    return template.setContentPug(title, uri, backUri, types,
+        literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        relations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        blankNodes.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        geometries, points, images);
 
 }
 

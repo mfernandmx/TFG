@@ -7,7 +7,7 @@ const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points, images){
+function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points, images){
 
     //TODO Language
 
@@ -97,13 +97,16 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
-            relations[element].value.url = relations[element].value.value;
+            //TODO: Cambiar
+            //relations[element].value.url = relations[element].value.value;
+            relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (relations[element].title != "") {
                 relations[element].value.value = relations[element].title;
             }
 
             ele = {relation: relations[element].relation, value: relations[element].value};
+
             relationsValues.push(ele);
 
             found = false;
@@ -145,13 +148,16 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {
 
-            reverseRelations[element].value.url = reverseRelations[element].value.value;
+            // TODO: Cambiar
+            //reverseRelations[element].value.url = reverseRelations[element].value.value;
+            reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (reverseRelations[element].title != "") {
                 reverseRelations[element].value.value = reverseRelations[element].title;
             }
 
             ele = {relation: reverseRelations[element].relation, value: reverseRelations[element].value};
+
             reverseRelationsValues.push(ele);
 
             found = false;
@@ -291,6 +297,9 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
         }
     }
 
+    //TODO: Cambiar
+    backUri = backUri.replace("opendata.caceres.es","localhost:8080");
+
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
@@ -302,6 +311,7 @@ function setContentPug(title, uri, types, literals, relations, typedLiterals, bl
     return compiledFunction({
         rTitle: title,
         rUri: uri,
+        rBackUri: backUri,
         rTypes: types,
 
         projectName: projectName,
@@ -359,9 +369,13 @@ function setError404(uri){
 
     var types = [];
 
+    var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
+
     return compiledFunction({
         rTitle: "404 Not Found",
         rUri: uri,
-        rTypes: types
+        rTypes: types,
+
+        projectName: projectName
     });
 }

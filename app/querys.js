@@ -9,7 +9,7 @@ const template = require('./template');
 const request = require('sync-request');
 
 // blankNode - true or false
-function getData (uri,type) {
+function getData (uri,backUri,type) {
 
     var object = {uri: uri};
 
@@ -66,7 +66,8 @@ function getData (uri,type) {
         console.log("ES TRUE!", status);
 
         if (type == "page") {
-            response.html = data.processDataForPage(res.getBody(), uri, blankNode);
+            console.log("BackURI:", backUri);
+            response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
         }
         else if (type == "data"){
             response.data = data.processData(res.getBody(), uri, blankNode);

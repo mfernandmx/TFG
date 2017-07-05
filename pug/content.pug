@@ -67,10 +67,10 @@ block content
                                     if relationAux.url == relation.relation.url
                                         if i < 10
                                             li
-                                                a(href=relation.value.url) #{relation.value.value}
+                                                a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                         else
                                             li.hidden
-                                                a(href=relation.value.url) #{relation.value.value}
+                                                a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                     - i++;
 
                                 if relations.length > 10
@@ -90,10 +90,10 @@ block content
                                 if reverseRelationAux.url == relation.relation.url
                                     if i < 10
                                         li
-                                            a(href=relation.value.url) #{relation.value.value}
+                                            a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                     else
                                         li.hidden
-                                            a(href=relation.value.url) #{relation.value.value}
+                                            a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
 
                                 - i++;
 
@@ -112,10 +112,10 @@ block content
                                 if blankNodeAux.url == blankNode.relation.url
                                     if i < 10
                                         li
-                                            a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+                                            a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
                                     else
                                         li.hidden
-                                            a(href=datasetBase + blankNode.nodeID) Recurso anónimo (#{blankNode.nodeID})
+                                            a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
                             - i++;
 
                             if blankNodes.length > 10
