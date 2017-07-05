@@ -7,11 +7,10 @@ var myFigure = "";
 function showItems(divId) {
     var button = document.getElementById(divId + "Button");
 
-    if (button.innerHTML == "Show all"){
+    if (button.innerHTML == "Show more"){
         button.innerHTML = "Show less";
-    }
-    else{
-        button.innerHTML = "Show all";
+    } else{
+        button.innerHTML = "Show more";
     }
 
     var div = document.getElementById(divId);

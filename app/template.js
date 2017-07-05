@@ -180,13 +180,14 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             try {
                 geodata = geojson.processGeometry(geometries[element].value.value);
 
-                geometries[element].value.value = JSON.stringify(geodata);
+                geometries[element].value.value = geodata;
 
-                //ele = {relation: geometries[element].relation, value: geometries[element].value};
-                ele = {relation: geometries[element].relation};
+                ele = {relation: geometries[element].relation, value: JSON.stringify(geodata.geometry.coordinates)};
+                //ele = {relation: geometries[element].relation};
 
                 geometriesValues.push(ele);
 
+                geometries[element].value.value = JSON.stringify(geometries[element].value.value);
                 //geoFigure = JSON.stringify(geometriesValues[0].value.value);
                 geoFigure = JSON.stringify(geometries[0].value.value);
 
