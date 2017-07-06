@@ -125,7 +125,6 @@ function processDataForPage (data, uri, backUri, blankNode){
                                 break;
 
                             case "bnode": // Blanck node
-                                //TODO: ¿Varios recursos anónimos anidados?
                                 blankNodes.push({relation: relationProcessed, nodeID: results[element][vars[1]].value});
                                 break;
 
@@ -210,9 +209,6 @@ function processDataForPage (data, uri, backUri, blankNode){
     console.log("Type(s):", types);
 
     console.log("-------------------------");
-
-    //TODO: Revisar paso de parámetros
-    //TODO: Uri en bnodes
 
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,

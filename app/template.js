@@ -17,6 +17,8 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var relationsValues = [];
     var blankNodesValues = [];
     var reverseRelationsValues = [];
+
+    //TODO: Revisar los tres siguientes
     var geometriesValues = [];
     var pointsValues = [];
     var imagesValues = [];
@@ -232,12 +234,11 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             try {
                 geodata = geojson.processPoint(points[element].lat.value.value, points[element].long.value.value);
 
-                ele = {value: geodata};
-                pointsValues.push(ele);
+                pointsValues.push({lat: points[element].lat.value.value, long: points[element].long.value.value});
 
                 pointsAux.push({lat: points[element].lat.relation, long: points[element].long.relation});
 
-                geoPoint = JSON.stringify(pointsValues[0].value)
+                geoPoint = JSON.stringify(geodata)
             }
             catch (err) {
                 //TODO: Guardar error en un log (Documentar)

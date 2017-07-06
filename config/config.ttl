@@ -17,6 +17,7 @@
 <> a conf:Configuration;
     conf:projectName "Open Data Cáceres";
     conf:projectHomepage <http://opendata.caceres.es>;
+    conf:projectLogo <https://pbs.twimg.com/profile_images/657508266793111553/xF2Vjccz_400x400.jpg>;
     conf:webBase <http://localhost:8080/>;
     conf:labelProperty rdfs:label, om:nombreAsociacion;
     conf:longProperty geo:long;

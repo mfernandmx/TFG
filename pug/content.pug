@@ -5,7 +5,7 @@ block content
     div.left
 
         if literalsAux.length > 0
-            h2 Literales
+            h2 Literals
             ul.properties
                 each literalAux in literalsAux
                     li
@@ -34,7 +34,7 @@ block content
 
 
         if typedLiteralsAux.length > 0
-            h2 Literales Tipados
+            h2 Typed Literals
             ul.properties
                 each typedLiteralAux in typedLiteralsAux
                     li
@@ -56,7 +56,7 @@ block content
                                     button(class = "collapseButton" id = typedLiteralAux.value + "Button" onClick="showItems(\"" + typedLiteralAux.value + "\");") Show more
 
         if relationsAux.length > 0
-            h2 Relaciones
+            h2 Relations
             ul.properties
                 each relationAux in relationsAux
                     li
@@ -79,7 +79,7 @@ block content
 
 
         if reverseRelationsAux.length > 0
-            h2 Relaciones inversas
+            h2 Inverse relations
             ul.properties
                 each reverseRelationAux in reverseRelationsAux
                     li
@@ -103,7 +103,7 @@ block content
                                     button(class = "collapseButton" id = reverseRelationAux.value + "Button" onClick="showItems(\"" + reverseRelationAux.value + "\");") Show more
 
         if blankNodesAux.length > 0
-            h2 Nodos en blanco
+            h2 Blank Nodes
             ul.properties
                 each blankNodeAux in blankNodesAux
                     li
@@ -125,7 +125,7 @@ block content
                                     button(class = "collapseButton" id = blankNodeAux.value + "Button" onClick="showItems(\"" + blankNodeAux.value + "\");") Show more
 
         if geometriesAux.length > 0
-            h2 Atributos geométricos
+            h2 Geometric Attributes
             ul.properties
                 each geometriyAux in geometriesAux
                     li
@@ -138,16 +138,22 @@ block content
                                         button(class = "collapseButton" id = geometriyAux.value + "Button" onClick="showItems(\"" + geometriyAux.value + "\");") Show more
 
         if pointsAux.length > 0
-            h2 Atributos de coordenadas
+            h2 Coordinates Attributes
             ul.properties
                 each pointAux in pointsAux
                     li
                         a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
+                        ul
+                            each point in points
+                                li #{point.lat}
                     li
                         a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
+                        ul
+                            each point in points
+                                li #{point.long}
 
         if imagesAux.length > 0
-            h2 Imágenes
+            h2 Images
             ul.properties
                 each imageAux in imagesAux
                     li
