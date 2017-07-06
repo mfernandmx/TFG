@@ -10,17 +10,22 @@ block content
                 each literalAux in literalsAux
                     li
                         a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
+                        if literalAux.value == "sameAs"
+                            p For more information, check next link(s)
                         div(id = literalAux.value)
                             ul
                                 - var i = 0;
                                 each literal in literals
                                     if literalAux.url == literal.relation.url
-                                        if i < 10
+                                        if i < 5
                                             li
                                                 if literal.value.type != 'uri'
                                                    | #{literal.value.value}
                                                 else
-                                                    a(href=literal.value.value) #{literal.value.value}
+                                                    if literal.value.image == false
+                                                        a(href=literal.value.value) #{literal.value.value}
+                                                    else
+                                                        img(src=literal.value.value)#resourceImg
                                         else
                                             li.hidden
                                                 if literal.value.type != 'uri'
@@ -29,7 +34,7 @@ block content
                                                     a(href=literal.value.value) #{literal.value.value}
                                 - i++;
 
-                                if literals.length > 10
+                                if literals.length > 5
                                     button(class = "collapseButton" id = literalAux.value + "Button" onClick="showItems(\"" + literalAux.value + "\");") Show more
 
 
@@ -44,7 +49,7 @@ block content
                                 - var i = 0;
                                 each typedLiteral in typedLiterals
                                     if typedLiteralAux.url == typedLiteral.relation.url
-                                        if i < 10
+                                        if i < 5
                                             li
                                                 #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
                                     else
@@ -52,7 +57,7 @@ block content
                                             #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
                                 - i++;
 
-                                if typedLiterals.length > 10
+                                if typedLiterals.length > 5
                                     button(class = "collapseButton" id = typedLiteralAux.value + "Button" onClick="showItems(\"" + typedLiteralAux.value + "\");") Show more
 
         if relationsAux.length > 0
@@ -66,7 +71,7 @@ block content
                                 - var i = 0;
                                 each relation in relations
                                     if relationAux.url == relation.relation.url
-                                        if i < 10
+                                        if i < 5
                                             li
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                         else
@@ -74,7 +79,7 @@ block content
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                     - i++;
 
-                                if relations.length > 10
+                                if relations.length > 5
                                     button(class = "collapseButton" id = relationAux.value +"Button" onClick="showItems(\""+relationAux.value+"\");") Show more
 
 
@@ -90,7 +95,7 @@ block content
                                 - var i = 0;
                                 each relation in reverseRelations
                                     if reverseRelationAux.url == relation.relation.url
-                                        if i < 10
+                                        if i < 5
                                             li
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                         else
@@ -99,7 +104,7 @@ block content
 
                                     - i++;
 
-                                if reverseRelations.length > 10
+                                if reverseRelations.length > 5
                                     button(class = "collapseButton" id = reverseRelationAux.value + "Button" onClick="showItems(\"" + reverseRelationAux.value + "\");") Show more
 
         if blankNodesAux.length > 0
@@ -113,7 +118,7 @@ block content
                                 - var i = 0;
                                 each blankNode in blankNodes
                                     if blankNodeAux.url == blankNode.relation.url
-                                        if i < 10
+                                        if i < 5
                                             li
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
                                         else
@@ -121,7 +126,7 @@ block content
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
                                 - i++;
 
-                                if blankNodes.length > 10
+                                if blankNodes.length > 5
                                     button(class = "collapseButton" id = blankNodeAux.value + "Button" onClick="showItems(\"" + blankNodeAux.value + "\");") Show more
 
         if geometriesAux.length > 0
@@ -151,18 +156,6 @@ block content
                         ul
                             each point in points
                                 li #{point.long}
-
-        if imagesAux.length > 0
-            h2 Images
-            ul.properties
-                each imageAux in imagesAux
-                    li
-                        a(href=imageAux.url) #{imageAux.prefix}:#{imageAux.value}
-                        ul
-                            each image in images
-                                if imageAux.url == image.relation.url
-                                    li
-                                        img(src=image.value.value)#resourceImg
 
     div.right
 

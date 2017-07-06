@@ -7,7 +7,7 @@ const geojson = require('./geojson');
 const data = require('./data');
 const pug = require('pug');
 
-function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points, images){
+function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, blankNodes, reverseRelations, geometries, points){
 
     //TODO Language
 
@@ -21,7 +21,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     //TODO: Revisar los tres siguientes
     var geometriesValues = [];
     var pointsValues = [];
-    var imagesValues = [];
 
     var ele;
 
@@ -32,7 +31,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var reverseRelationsAux = [];
     var geometriesAux = [];
     var pointsAux = [];
-    var imagesAux = [];
 
     var found, i;
 
@@ -45,7 +43,10 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in literals) {
         if (literals.hasOwnProperty(element)) {
 
-            ele = {relation: literals[element].relation, value: literals[element].value};
+            var image = isImage(literals[element].value);
+
+            ele = {relation: literals[element].relation, value: literals[element].value, image: image};
+
             literalsValues.push(ele);
 
             found = false;
@@ -278,27 +279,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         }
     }
 
-    // Procesamos los valores que sean imagenes
-    for (element in images) {
-        if (images.hasOwnProperty(element)) {
-
-            ele = {relation: images[element].relation, value: images[element].value};
-            imagesValues.push(ele);
-
-            found = false;
-            for (i = 0; i < imagesAux.length; i++) {
-                if (imagesAux[i].url == images[element].relation.url) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                imagesAux.push(images[element].relation);
-            }
-        }
-    }
-
     //TODO: Cambiar
     backUri = backUri.replace("opendata.caceres.es","localhost:8080");
 
@@ -307,8 +287,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
     var projectHomePage = configuration.getProperty("projectHomepage")[0];
     var projectLogo = configuration.getProperty("projectLogo")[0];
-
-    console.log(projectLogo);
 
     //var datasetBase = configuration.getProperty("datasetBase")[0];
     var datasetBase = configuration.getProperty("webBase") + configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "");
@@ -331,7 +309,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         reverseRelations: reverseRelationsValues,
         geometries: geometriesValues,
         points: pointsValues,
-        images: imagesValues,
 
         geoFigure: geoFigure,
         geoPoint: geoPoint,
@@ -342,10 +319,27 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         blankNodesAux: blankNodesAux,
         reverseRelationsAux: reverseRelationsAux,
         geometriesAux: geometriesAux,
-        pointsAux: pointsAux,
-        imagesAux: imagesAux
-
+        pointsAux: pointsAux
     });
+}
+
+//TODO Revisar formatos. ¿Archivo configuración?
+function isImage(attribute) {
+    var image = false;
+
+    if (attribute.type == "uri"){
+        if (attribute.value.endsWith(".jpg") ||
+            attribute.value.endsWith(".JPG") ||
+            attribute.value.endsWith(".jpeg") ||
+            attribute.value.endsWith(".JPEG") ||
+            attribute.value.endsWith(".png") ||
+            attribute.value.endsWith(".PNG")){
+
+            image = true;
+        }
+    }
+
+    return image;
 }
 
 function replaceType(literal) {
