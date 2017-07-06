@@ -18,7 +18,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var blankNodesValues = [];
     var reverseRelationsValues = [];
 
-    //TODO: Revisar los tres siguientes
+    //TODO: Revisar siguientes
     var geometriesValues = [];
     var pointsValues = [];
 
@@ -128,8 +128,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
     for (element in blankNodes){
         if (blankNodes.hasOwnProperty(element)) {
-
-            //console.log(blankNodes[element]);
 
             ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID).replace(new RegExp("\"", 'g'), "")};
             blankNodesValues.push(ele);
@@ -370,12 +368,17 @@ function setError404(uri){
     var types = [];
 
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
+    var projectHomePage = configuration.getProperty("projectHomepage")[0];
+    var projectLogo = configuration.getProperty("projectLogo")[0];
 
     return compiledFunction({
         rTitle: "404 Not Found",
         rUri: uri,
+        rBackUri: "",
         rTypes: types,
 
-        projectName: projectName
+        projectName: projectName,
+        projectHomePage: projectHomePage,
+        projectLogo: projectLogo
     });
 }

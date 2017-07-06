@@ -8,7 +8,6 @@ const template = require('./template');
 //const request = require('request');
 const request = require('sync-request');
 
-// blankNode - true or false
 function getData (uri,backUri,type) {
 
     var object = {uri: uri};
@@ -66,7 +65,6 @@ function getData (uri,backUri,type) {
         console.log("ES TRUE!", status);
 
         if (type == "page") {
-            console.log("BackURI:", backUri);
             response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
         }
         else if (type == "data"){
@@ -75,8 +73,8 @@ function getData (uri,backUri,type) {
     }
 
     else{
-        //TODO: Revisar qué código pasar
         console.log("ES FALSE!", status);
+        response.status = 404;
         response.html = template.setError404(uri);
     }
 

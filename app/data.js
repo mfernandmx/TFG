@@ -17,9 +17,7 @@ const nonSpecial = "nonSpecial";
 function processDataForPage (data, uri, backUri, blankNode){
 
     var dataJSON = JSON.parse(data);
-
     var vars = dataJSON['head']['vars'];
-
     var results = dataJSON['results']['bindings'];
 
     var element, relation;
@@ -91,8 +89,9 @@ function processDataForPage (data, uri, backUri, blankNode){
                             });
                         } else {
                             //TODO: Guardar fallo en log, y no mostrar (documentar)
-                            console.log("Error: Se ha encontrado una propiedad que corresponde a la latitud de un punto pero " +
-                                "no se ha encontrado ninguna propiedad que coincida con la longitud");
+                            console.log("Error: Se ha encontrado una propiedad que corresponde" +
+                                "a la latitud de un punto pero no se ha encontrado ninguna propiedad " +
+                                "que coincida con la longitud");
                         }
                         break;
 
@@ -101,8 +100,7 @@ function processDataForPage (data, uri, backUri, blankNode){
                         break;
 
                     case nonSpecial:
-
-                        // TODO: Guardar fallo en log, y no mostrar (documentar)
+                        // TODO: Guardar fallo en log, y no mostrar (documentar) - long property sin lat
 
                         var type = results[element][vars[1]].type;
 
@@ -181,6 +179,7 @@ function processDataForPage (data, uri, backUri, blankNode){
         }
     }
 
+    // TODO: Pasar generación del titulo a template para ahorrar un parámetro
     // Search for resource's title
     var title = getResourceTitle(literals);
 
@@ -203,6 +202,8 @@ function processDataForPage (data, uri, backUri, blankNode){
 
     console.log("-------------------------");
 
+    //TODO: Agrupar arrays y añadir parámetro tipo
+    //TODO: Comprobar por qué no se ordenan bien las relaciones
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,
         literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
@@ -224,7 +225,6 @@ function processData(data, uri, blankNode) {
 
     var prefixList = configuration.getPrefixList();
 
-    //TODO: Ver formatos
     var writer = N3.Writer({ prefixes: prefixList });
 
     var element;
@@ -262,6 +262,8 @@ function processData(data, uri, blankNode) {
                     object:    object
                 });
             }
+
+            // TODO: Comprobar si es aconsejable
             else if (results[element].hasOwnProperty(vars[3])){
                 writer.addTriple({
                     subject:   results[element][vars[3]].value,
@@ -273,8 +275,11 @@ function processData(data, uri, blankNode) {
     }
 
     var triples;
+
     //TODO: Excepción en el error
-    writer.end(function (error, result) { console.log(result); triples = result});
+    writer.end(function (error, result) {
+        triples = result;
+    });
 
     return triples;
 

@@ -31,7 +31,10 @@ block content
                                                 if literal.value.type != 'uri'
                                                     | #{literal.value.value}
                                                 else
-                                                    a(href=literal.value.value) #{literal.value.value}
+                                                    if literal.value.image == false
+                                                        a(href=literal.value.value) #{literal.value.value}
+                                                    else
+                                                        img(src=literal.value.value)#resourceImg
                                 - i++;
 
                                 if literals.length > 5

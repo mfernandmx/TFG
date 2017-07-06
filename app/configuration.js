@@ -16,9 +16,10 @@ function start(){
 
     var parser = N3.Parser(),
         rdfStream = fs.createReadStream('./config/config.ttl');
+
+    // TODO: Excepción en el error
     parser.parse(rdfStream, function (error, triple, prefixes) {
         if (triple) {
-            //console.log(triple.subject, triple.predicate, triple.object, '.');
 
             var key = "";
 

@@ -23,12 +23,12 @@
     conf:longProperty geo:long;
     conf:latProperty geo:lat;
     conf:geoProperty schema:line, schema:polygon;
-    conf:imageProperty schema:image;
     conf:defaultLanguage "es";
     conf:indexResource <http://dbpedia.org/resource/Wikipedia>;
 
     conf:dataset [
-        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;        conf:datasetBase <http://opendata.caceres.es/recurso/>;
+        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;
+        conf:datasetBase <http://opendata.caceres.es/recurso/>;
         conf:webResourcePrefix "recurso/";
         conf:fixUnescapedCharacters "(),'!$&*+;=@";
     ];

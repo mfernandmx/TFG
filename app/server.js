@@ -56,7 +56,6 @@ http.createServer(function(request, response) {
 
         var backUri = "";
 
-        //TODO: Url aux?
         if (url.includes("?")){
             var split = url.split("?");
             url = split[0];
@@ -68,20 +67,16 @@ http.createServer(function(request, response) {
 
                     if (parameters[parameter].startsWith("backUri=")) {
                         backUri = parameters[parameter].replace("backUri=", "");
-                        console.log("BackURI - Creacion:", backUri);
+                        console.log("BackURI:", backUri);
                     }
                 }
             }
         }
 
-        console.log("BackURI:", backUri);
-
         if (url.startsWith(resource + "page/")) {
             url = url.replace(resource + "page/", datasetBase);
             console.log("URL de consulta:",url);
 
-            console.log("BackURI:", backUri);
-            console.log("BackURI:", backUri);
             result = querys.getData(url, backUri, "page");
 
             response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
