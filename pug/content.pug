@@ -4,25 +4,27 @@ block content
 
     div.left
 
-        if literalsAux.length > 0
+        if literalsPredicates.length > 0
             h2 Literals
             ul.properties
-                each literalAux in literalsAux
+                each literalPredicate in literalsPredicates
                     li
-                        a(href=literalAux.url) #{literalAux.prefix}:#{literalAux.value}
-                        if literalAux.value == "sameAs"
+                        a(href=literalPredicate.url)
+                            span #{literalPredicate.prefix}:
+                            | #{literalPredicate.value}
+                        if literalPredicate.value == "sameAs"
                             p For more information, check next link(s)
-                        div(id = literalAux.value)
+                        div(id = literalPredicate.value)
                             ul
                                 - var i = 0;
                                 each literal in literals
-                                    if literalAux.url == literal.relation.url
+                                    if literalPredicate.url == literal.relation.url
                                         if i < 5
                                             li
                                                 if literal.value.type != 'uri'
                                                    | #{literal.value.value}
                                                 else
-                                                    if literal.value.image == false
+                                                    if literal.image == false
                                                         a(href=literal.value.value) #{literal.value.value}
                                                     else
                                                         img(src=literal.value.value)#resourceImg
@@ -31,73 +33,78 @@ block content
                                                 if literal.value.type != 'uri'
                                                     | #{literal.value.value}
                                                 else
-                                                    if literal.value.image == false
+                                                    if literal.image == false
                                                         a(href=literal.value.value) #{literal.value.value}
                                                     else
                                                         img(src=literal.value.value)#resourceImg
-                                - i++;
+                                        - i++;
 
-                                if literals.length > 5
-                                    button(class = "collapseButton" id = literalAux.value + "Button" onClick="showItems(\"" + literalAux.value + "\");") Show more
+                                if i > 5
+                                    button(class = "collapseButton" id = literalPredicate.value + "Button" onClick="showItems(\"" + literalPredicate.value + "\");") Show more
 
 
-        if typedLiteralsAux.length > 0
+        if typedLiteralsPredicates.length > 0
             h2 Typed Literals
             ul.properties
-                each typedLiteralAux in typedLiteralsAux
+                each typedLiteralPredicate in typedLiteralsPredicates
                     li
-                        a(href=typedLiteralAux.url) #{typedLiteralAux.prefix}:#{typedLiteralAux.value}
-                        div(id = typedLiteralAux.value)
+                        a(href=typedLiteralPredicate.url)
+                            span #{typedLiteralPredicate.prefix}:
+                            | #{typedLiteralPredicate.value}
+                        div(id = typedLiteralPredicate.value)
                             ul
                                 - var i = 0;
                                 each typedLiteral in typedLiterals
-                                    if typedLiteralAux.url == typedLiteral.relation.url
+                                    if typedLiteralPredicate.url == typedLiteral.relation.url
                                         if i < 5
                                             li
                                                 #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
-                                    else
-                                        li.hidden
-                                            #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
-                                - i++;
+                                        else
+                                            li.hidden
+                                                #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                                        - i++;
 
-                                if typedLiterals.length > 5
-                                    button(class = "collapseButton" id = typedLiteralAux.value + "Button" onClick="showItems(\"" + typedLiteralAux.value + "\");") Show more
+                                if i > 5
+                                    button(class = "collapseButton" id = typedLiteralPredicate.value + "Button" onClick="showItems(\"" + typedLiteralPredicate.value + "\");") Show more
 
-        if relationsAux.length > 0
+        if relationsPredicates.length > 0
             h2 Relations
             ul.properties
-                each relationAux in relationsAux
+                each relationPredicate in relationsPredicates
                     li
-                        a(href=relationAux.url) #{relationAux.prefix}:#{relationAux.value}
-                        div(id = relationAux.value)
+                        a(href=relationPredicate.url)
+                            span #{relationPredicate.prefix}:
+                            | #{relationPredicate.value}
+                        div(id = relationPredicate.value)
                             ul
                                 - var i = 0;
                                 each relation in relations
-                                    if relationAux.url == relation.relation.url
+                                    if relationPredicate.url == relation.relation.url
                                         if i < 5
                                             li
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
                                         else
                                             li.hidden
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
-                                    - i++;
+                                        - i++;
 
-                                if relations.length > 5
-                                    button(class = "collapseButton" id = relationAux.value +"Button" onClick="showItems(\""+relationAux.value+"\");") Show more
+                                if i > 5
+                                    button(class = "collapseButton" id = relationPredicate.value +"Button" onClick="showItems(\""+relationPredicate.value+"\");") Show more
 
 
-        if reverseRelationsAux.length > 0
+        if reverseRelationsPredicates.length > 0
             h2 Inverse relations
             ul.properties
-                each reverseRelationAux in reverseRelationsAux
+                each reverseRelationPredicate in reverseRelationsPredicates
                     li
-                        | is
-                        a(href=reverseRelationAux.url) #{reverseRelationAux.prefix}:#{reverseRelationAux.value}
-                        div(id = reverseRelationAux.value)
+                        a(href=reverseRelationPredicate.url)
+                            span #{reverseRelationPredicate.prefix}:
+                            | #{reverseRelationPredicate.value}
+                        div(id = reverseRelationPredicate.value)
                             ul
                                 - var i = 0;
                                 each relation in reverseRelations
-                                    if reverseRelationAux.url == relation.relation.url
+                                    if reverseRelationPredicate.url == relation.relation.url
                                         if i < 5
                                             li
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
@@ -105,57 +112,65 @@ block content
                                             li.hidden
                                                 a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
 
-                                    - i++;
+                                        - i++;
 
-                                if reverseRelations.length > 5
-                                    button(class = "collapseButton" id = reverseRelationAux.value + "Button" onClick="showItems(\"" + reverseRelationAux.value + "\");") Show more
+                                if i > 5
+                                    button(class = "collapseButton" id = reverseRelationPredicate.value + "Button" onClick="showItems(\"" + reverseRelationPredicate.value + "\");") Show more
 
-        if blankNodesAux.length > 0
+        if blankNodesPredicates.length > 0
             h2 Blank Nodes
             ul.properties
-                each blankNodeAux in blankNodesAux
+                each blankNodePredicate in blankNodesPredicates
                     li
-                        a(href=blankNodeAux.url) #{blankNodeAux.prefix}:#{blankNodeAux.value}
-                        div(id = blankNodeAux.value)
+                        a(href=blankNodePredicate.url)
+                            span #{blankNodePredicate.prefix}:
+                            | #{blankNodePredicate.value}
+                        div(id = blankNodePredicate.value)
                             ul
                                 - var i = 0;
                                 each blankNode in blankNodes
-                                    if blankNodeAux.url == blankNode.relation.url
+                                    if blankNodePredicate.url == blankNode.relation.url
                                         if i < 5
                                             li
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
                                         else
                                             li.hidden
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
-                                - i++;
+                                        - i++;
 
-                                if blankNodes.length > 5
-                                    button(class = "collapseButton" id = blankNodeAux.value + "Button" onClick="showItems(\"" + blankNodeAux.value + "\");") Show more
+                                if i > 5
+                                    button(class = "collapseButton" id = blankNodePredicate.value + "Button" onClick="showItems(\"" + blankNodePredicate.value + "\");") Show more
 
-        if geometriesAux.length > 0
-            h2 Geometric Attributes
-            ul.properties
-                each geometriyAux in geometriesAux
-                    li
-                        a(href=geometriyAux.url) #{geometriyAux.prefix}:#{geometriyAux.value}
-                        div(id = geometriyAux.value)
-                            ul
-                                each geometry in geometries
-                                    if geometriyAux.url == geometry.relation.url
-                                        li.hidden #{geometry.value}
-                                        button(class = "collapseButton" id = geometriyAux.value + "Button" onClick="showItems(\"" + geometriyAux.value + "\");") Show more
+        div#geometricAttributes
 
-        if pointsAux.length > 0
+            if geometriesPredicates.length > 0
+                h2 Geometric Attributes
+                ul.properties
+                    each geometriyPredicate in geometriesPredicates
+                        li
+                            a(href=geometriyPredicate.url) #{geometriyPredicate.prefix}:#{geometriyPredicate.value}
+                            div(id = geometriyPredicate.value)
+                                ul
+                                    each geometry in geometries
+                                        if geometriyPredicate.url == geometry.relation.url
+                                            li.hidden #{geometry.value}
+                                            button(class = "geometryButton collapseButton" id = geometriyPredicate.value + "Button" onClick="showItems(\"" + geometriyPredicate.value + "\");") Show more
+
+        if pointsPredicates.length > 0
             h2 Coordinates Attributes
             ul.properties
-                each pointAux in pointsAux
+                each pointPredicate in pointsPredicates
                     li
-                        a(href=pointAux.lat.url) #{pointAux.lat.prefix}:#{pointAux.lat.value}
+                        a(href=pointPredicate.lat.url)
+                            span #{pointPredicate.lat.prefix}:
+                            | #{pointPredicate.lat.value}
                         ul
                             each point in points
                                 li #{point.lat}
                     li
-                        a(href=pointAux.long.url) #{pointAux.long.prefix}:#{pointAux.long.value}
+                        a(href=pointPredicate.long.url)
+                            span #{pointPredicate.long.prefix}:
+                            | #{pointPredicate.long.value}
                         ul
                             each point in points
                                 li #{point.long}

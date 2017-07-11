@@ -6,37 +6,49 @@ html
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
         script(type="text/javascript", src="client.js")
-    body
-        h1 #{rTitle}
+        script(type="text/javascript", src="changeView.js")
 
-        div#homeLink
-            a(href = projectHomePage) (#{projectName})
+    body
 
         if projectLogo != ""
             div#projectLogo
                 img(src=projectLogo)
 
+        h1 #{rTitle}
+
+        div#homeLink
+            a(href = projectHomePage) (#{projectName})
+
         if rBackUri != ""
             div#backUri
                 a(href = rBackUri) Volver al recurso anterior
 
-        h2 #{rUri}
+        div#resourceUri
+            h2 #{rUri}
 
         if rTypes.length > 0
-            h2 Tipos
+            h2 Types
             ul#types
                 each type in rTypes
                     li
-                        a(href=type.url) #{type.prefix}:#{type.value}
+                        a(href=type.url)
+                            span #{type.prefix}:
+                            | #{type.value}
 
         div#content
             block content
+
+        button(id="changeViewButton" onClick="changeView();") Change to developer view
 
         script(type="text/javascript").
             point = "#{geoPoint}";
             figure = "#{geoFigure}";
             initializePoint(point);
             initializeFigure(figure);
+
+            $(document).ready(function () {
+                changeView();
+            });
 
 
         script(async defer, src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt5CcFk1btCb9QpnwAmEtPNI7k4U3loEU&callback=initMap")

@@ -39,14 +39,21 @@ http.createServer(function(request, response) {
     pathname = pathname[pathname.length-1];
     console.log("Pathname:", pathname);
 
+    var script, css;
+
     if (pathname == "client.js") {
         response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
-        var script = fs.readFileSync("./client/client.js", "utf8");
+        script = fs.readFileSync("./client/client.js", "utf8");
+        response.write(script);
+    }
+    else if (pathname == "changeView.js") {
+        response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
+        script = fs.readFileSync("./client/changeView.js", "utf8");
         response.write(script);
     }
     else if (pathname == "style.css"){
         response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
-        var css = fs.readFileSync("./stylesheets/style.css", "utf8");
+        css = fs.readFileSync("./stylesheets/style.css", "utf8");
         response.write(css);
     }
     else if (url.startsWith(resource)){ // Starts with ../recurso/

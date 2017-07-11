@@ -24,13 +24,13 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
     var ele;
 
-    var literalsAux = [];
-    var typedLiteralsAux = [];
-    var relationsAux = [];
-    var blankNodesAux = [];
-    var reverseRelationsAux = [];
-    var geometriesAux = [];
-    var pointsAux = [];
+    var literalsPredicates = [];
+    var typedLiteralsPredicates = [];
+    var relationsPredicates = [];
+    var blankNodesPredicates = [];
+    var reverseRelationsPredicates = [];
+    var geometriesPredicates = [];
+    var pointsPredicates = [];
 
     var found, i;
 
@@ -50,15 +50,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             literalsValues.push(ele);
 
             found = false;
-            for (i = 0; i < literalsAux.length; i++) {
-                if (literalsAux[i].url == literals[element].relation.url) {
+            for (i = 0; i < literalsPredicates.length; i++) {
+                if (literalsPredicates[i].url == literals[element].relation.url) {
                     found = true;
                     break;
                 }
             }
 
             if (!found) {
-                literalsAux.push(literals[element].relation);
+                literalsPredicates.push(literals[element].relation);
             }
         }
     }
@@ -83,15 +83,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             typedLiteralsValues.push(ele);
 
             found = false;
-            for (i = 0; i < typedLiteralsAux.length; i++) {
-                if (typedLiteralsAux[i].url == typedLiterals[element].relation.url) {
+            for (i = 0; i < typedLiteralsPredicates.length; i++) {
+                if (typedLiteralsPredicates[i].url == typedLiterals[element].relation.url) {
                     found = true;
                     break;
                 }
             }
 
             if (!found) {
-                typedLiteralsAux.push(typedLiterals[element].relation);
+                typedLiteralsPredicates.push(typedLiterals[element].relation);
             }
         }
     }
@@ -113,15 +113,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             relationsValues.push(ele);
 
             found = false;
-            for (i = 0; i < relationsAux.length; i++) {
-                if (relationsAux[i].url == relations[element].relation.url) {
+            for (i = 0; i < relationsPredicates.length; i++) {
+                if (relationsPredicates[i].url == relations[element].relation.url) {
                     found = true;
                     break;
                 }
             }
 
             if (!found) {
-                relationsAux.push(relations[element].relation);
+                relationsPredicates.push(relations[element].relation);
             }
         }
     }
@@ -132,15 +132,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             ele = {relation: blankNodes[element].relation, nodeID: JSON.stringify(blankNodes[element].nodeID).replace(new RegExp("\"", 'g'), "")};
             blankNodesValues.push(ele);
 
-            for (i = 0; i < blankNodesAux.length; i++) {
-                if (blankNodesAux[i].url == blankNodes[element].relation.url) {
+            for (i = 0; i < blankNodesPredicates.length; i++) {
+                if (blankNodesPredicates[i].url == blankNodes[element].relation.url) {
                     found = true;
                     break;
                 }
             }
 
             if (!found) {
-                blankNodesAux.push(blankNodes[element].relation);
+                blankNodesPredicates.push(blankNodes[element].relation);
             }
         }
     }
@@ -162,15 +162,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             reverseRelationsValues.push(ele);
 
             found = false;
-            for (i = 0; i < reverseRelationsAux.length; i++) {
-                if (reverseRelationsAux[i].url == reverseRelations[element].relation.url) {
+            for (i = 0; i < reverseRelationsPredicates.length; i++) {
+                if (reverseRelationsPredicates[i].url == reverseRelations[element].relation.url) {
                     found = true;
                     break;
                 }
             }
 
             if (!found) {
-                reverseRelationsAux.push(reverseRelations[element].relation);
+                reverseRelationsPredicates.push(reverseRelations[element].relation);
             }
         }
     }
@@ -193,15 +193,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 geoFigure = JSON.stringify(geometries[0].value.value);
 
                 found = false;
-                for (i = 0; i < geometriesAux.length; i++) {
-                    if (geometriesAux[i].url == geometries[element].relation.url) {
+                for (i = 0; i < geometriesPredicates.length; i++) {
+                    if (geometriesPredicates[i].url == geometries[element].relation.url) {
                         found = true;
                         break;
                     }
                 }
 
                 if (!found) {
-                    geometriesAux.push(geometries[element].relation);
+                    geometriesPredicates.push(geometries[element].relation);
                 }
             }
             catch (err) {
@@ -213,15 +213,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 //TODO Probar
                 found = false;
-                for (i = 0; i < literalsAux.length; i++) {
-                    if (literalsAux[i].url == geometries[element].relation.url) {
+                for (i = 0; i < literalsPredicates.length; i++) {
+                    if (literalsPredicates[i].url == geometries[element].relation.url) {
                         found = true;
                         break;
                     }
                 }
 
                 if (!found) {
-                    literalsAux.push(geometries[element].relation);
+                    literalsPredicates.push(geometries[element].relation);
                 }
             }
         }
@@ -235,7 +235,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 pointsValues.push({lat: points[element].lat.value.value, long: points[element].long.value.value});
 
-                pointsAux.push({lat: points[element].lat.relation, long: points[element].long.relation});
+                pointsPredicates.push({lat: points[element].lat.relation, long: points[element].long.relation});
 
                 geoPoint = JSON.stringify(geodata)
             }
@@ -251,25 +251,25 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 literalsValues.push(ele);
 
                 found = false;
-                for (i = 0; i < literalsAux.length; i++) {
-                    if (literalsAux[i].url == points[element].lat.relation.url) {
+                for (i = 0; i < literalsPredicates.length; i++) {
+                    if (literalsPredicates[i].url == points[element].lat.relation.url) {
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    literalsAux.push(points[element].lat.relation);
+                    literalsPredicates.push(points[element].lat.relation);
                 }
 
                 found = false;
-                for (i = 0; i < literalsAux.length; i++) {
-                    if (literalsAux[i].url == points[element].long.relation.url) {
+                for (i = 0; i < literalsPredicates.length; i++) {
+                    if (literalsPredicates[i].url == points[element].long.relation.url) {
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    literalsAux.push(points[element].long.relation);
+                    literalsPredicates.push(points[element].long.relation);
                 }
 
             }
@@ -311,13 +311,13 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         geoFigure: geoFigure,
         geoPoint: geoPoint,
 
-        literalsAux: literalsAux,
-        typedLiteralsAux: typedLiteralsAux,
-        relationsAux: relationsAux,
-        blankNodesAux: blankNodesAux,
-        reverseRelationsAux: reverseRelationsAux,
-        geometriesAux: geometriesAux,
-        pointsAux: pointsAux
+        literalsPredicates: literalsPredicates,
+        typedLiteralsPredicates: typedLiteralsPredicates,
+        relationsPredicates: relationsPredicates,
+        blankNodesPredicates: blankNodesPredicates,
+        reverseRelationsPredicates: reverseRelationsPredicates,
+        geometriesPredicates: geometriesPredicates,
+        pointsPredicates: pointsPredicates
     });
 }
 
