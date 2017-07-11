@@ -13,6 +13,16 @@ h1{
     margin-right: 10px;
 }
 
+#header{
+    border-bottom: 5px solid #dd855c;
+    padding-bottom: 15px;
+}
+
+#header h2{
+    margin-top: 0.83em;
+    margin-bottom: 0;
+}
+
 #projectLogo{
     display: inline-block;
     margin: 0 20px;
@@ -153,4 +163,27 @@ Resource Image
 #resourceImg{
     max-width: 250px;
     max-height: 250px;
+}
+
+/*
+Change View Button
+ */
+
+#changeView{
+    width: 200px;
+    margin: auto;
+}
+
+#changeViewButton {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #F44336;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    width: 100%;
+    transition: all 0.5s;
+    cursor: pointer;
 }

@@ -10,21 +10,22 @@ html
 
     body
 
-        if projectLogo != ""
-            div#projectLogo
-                img(src=projectLogo)
+        div#header
+            if projectLogo != ""
+                div#projectLogo
+                    img(src=projectLogo)
 
-        h1 #{rTitle}
+            h1 #{rTitle}
 
-        div#homeLink
-            a(href = projectHomePage) (#{projectName})
+            div#homeLink
+                a(href = projectHomePage) (#{projectName})
+
+            div#resourceUri
+                h2 #{rUri}
 
         if rBackUri != ""
             div#backUri
                 a(href = rBackUri) Volver al recurso anterior
-
-        div#resourceUri
-            h2 #{rUri}
 
         if rTypes.length > 0
             h2 Types
@@ -38,7 +39,8 @@ html
         div#content
             block content
 
-        button(id="changeViewButton" onClick="changeView();") Change to developer view
+        div#changeView
+            button(id="changeViewButton" onClick="changeView();") Change to developer view
 
         script(type="text/javascript").
             point = "#{geoPoint}";

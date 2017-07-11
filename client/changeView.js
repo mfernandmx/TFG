@@ -3,20 +3,24 @@ var view = "developer";
 
 function changeView() {
 
-    var button = document.getElementById("changeViewButton").firstChild;
+    var button = document.getElementById("changeViewButton");
     var display = "";
 
     if (view == "user"){
         view = "developer";
-        button.data = "Change to user view";
+        button.firstChild.data = "Change to user view";
+        button.style.backgroundColor = "#4CAF50";
         display = "";
     }
 
     else if (view == "developer"){
         view = "user";
-        button.data = "Change to developer view";
+        button.firstChild.data = "Change to developer view";
+        button.style.backgroundColor = "#F44336";
         display = "none";
     }
+
+    console.log(button);
 
     console.log("View:", view);
 
