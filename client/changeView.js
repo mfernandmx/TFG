@@ -1,26 +1,35 @@
 
-var view = "developer";
+function initView() {
 
-function changeView() {
+    var form = document.getElementById('changeViewType');
+    var views = form.selector;
+    var prev = null;
+    for(var i = 0; i < views.length; i++) {
+        console.log(views[i]);
 
-    var button = document.getElementById("changeViewButton");
+        if (views[i].checked){
+            changeView(views[i].value);
+        }
+
+        views[i].onclick = function() {
+            if(this !== prev) {
+                prev = this;
+            }
+
+            changeView(this.value);
+        };
+    }
+}
+
+function changeView(view) {
+
     var display = "";
 
     if (view == "user"){
-        view = "developer";
-        button.firstChild.data = "Change to user view";
-        button.style.backgroundColor = "#4CAF50";
+        display = "none";
+    } else if (view == "developer"){
         display = "";
     }
-
-    else if (view == "developer"){
-        view = "user";
-        button.firstChild.data = "Change to developer view";
-        button.style.backgroundColor = "#F44336";
-        display = "none";
-    }
-
-    console.log(button);
 
     console.log("View:", view);
 
