@@ -46,11 +46,6 @@ http.createServer(function(request, response) {
         script = fs.readFileSync("./client/client.js", "utf8");
         response.write(script);
     }
-    else if (pathname == "changeView.js") {
-        response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
-        script = fs.readFileSync("./client/changeView.js", "utf8");
-        response.write(script);
-    }
     else if (pathname == "style.css"){
         response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
         css = fs.readFileSync("./stylesheets/style.css", "utf8");

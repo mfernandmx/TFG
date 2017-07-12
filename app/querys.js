@@ -19,9 +19,22 @@ function getData (uri,backUri,type) {
     }
 
     var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ";
+    //var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ?b ";
+
     var queryWhere = "WHERE{ ";
     var queryDirect = "{<"+uri+"> ?p ?o . " +
                         "OPTIONAL{?o ?n ?m.}";
+
+    // var queryDirect = "{<"+uri+"> ?p ?o . " +
+    //                     "OPTIONAL{?o ?n ?m." +
+    //                         "OPTIONAL{SELECT ?b ?m WHERE{" +
+    //                             "<"+uri+"> ?p ?o. " +
+    //                             "?o ?b ?m. " +
+    //                             "FILTER isBlank(?o). " +
+    //                             "} " +
+    //                         "} " +
+    //                     "}";
+
     var queryUnion = "} UNION ";
     var queryReverse = "{?x ?y <"+uri+">. ";
     var queryEnd = "}}";
