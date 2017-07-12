@@ -285,11 +285,15 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
     var projectHomePage = configuration.getProperty("projectHomepage")[0];
     var projectLogo = configuration.getProperty("projectLogo")[0];
+    var defaultView = configuration.getProperty("defaultView")[0].replace(new RegExp("\"", 'g'), "");
 
     //var datasetBase = configuration.getProperty("datasetBase")[0];
     var datasetBase = configuration.getProperty("webBase") + configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "");
 
     return compiledFunction({
+
+        defaultView: defaultView,
+
         rTitle: title,
         rUri: uri,
         rBackUri: backUri,

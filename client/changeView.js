@@ -1,13 +1,13 @@
 
-function initView() {
+function initView(view) {
 
     var form = document.getElementById('changeViewType');
     var views = form.selector;
     var prev = null;
     for(var i = 0; i < views.length; i++) {
-        console.log(views[i]);
 
-        if (views[i].checked){
+        if (views[i].value == view){
+            views[i].checked = true;
             changeView(views[i].value);
         }
 

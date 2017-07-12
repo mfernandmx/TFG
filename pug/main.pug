@@ -41,9 +41,19 @@ html
 
         div.radio-group
             form(id="changeViewType")
-                input(type="radio" id="user" name="selector" value="user" checked)
+                input(
+                    type="radio"
+                    id="user"
+                    name="selector"
+                    value="user"
+                )
                 label(for="user") User view
-                input(type="radio" id="developer" name="selector" value="developer")
+                input(
+                    type="radio"
+                    id="developer"
+                    name="selector"
+                    value="developer"
+                )
                 label(for="developer") Developer view
 
         script(type="text/javascript").
@@ -52,8 +62,10 @@ html
             initializePoint(point);
             initializeFigure(figure);
 
+            view = "#{defaultView}";
+
             $(document).ready(function () {
-                initView();
+                initView(view);
             });
 
 
