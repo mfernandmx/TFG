@@ -44,14 +44,27 @@ function changeView(view) {
 
     var span;
 
-    $("a").each(function(){
-
+    $("li").each(function(){
         span = $(this).children("span");
         if (span.length > 0){
             span[0].style.display = display;
         }
-
     });
+
+    $("a").each(function(){
+        span = $(this).children("span");
+        if (span.length > 0){
+            span[0].style.display = display;
+        }
+    });
+
+    var typeTitles = document.getElementsByClassName("attributeTypeTitle");
+
+    for (var type in typeTitles){
+        if (typeTitles.hasOwnProperty(type)) {
+            typeTitles[type].style.display = display;
+        }
+    }
 }
 
 function showItems(divId) {

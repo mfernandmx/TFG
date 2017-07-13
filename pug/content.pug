@@ -5,7 +5,7 @@ block content
     div.left
 
         if literalsPredicates.length > 0
-            h2 Literals
+            h2.attributeTypeTitle Literals
             ul.properties
                 each literalPredicate in literalsPredicates
                     li
@@ -44,7 +44,7 @@ block content
 
 
         if typedLiteralsPredicates.length > 0
-            h2 Typed Literals
+            h2.attributeTypeTitle Typed Literals
             ul.properties
                 each typedLiteralPredicate in typedLiteralsPredicates
                     li
@@ -58,17 +58,19 @@ block content
                                     if typedLiteralPredicate.url == typedLiteral.relation.url
                                         if i < 5
                                             li
-                                                #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                                                #{typedLiteral.value.value}
+                                                span (#{typedLiteral.value.datatype})
                                         else
                                             li.hidden
-                                                #{typedLiteral.value.value} (#{typedLiteral.value.datatype})
+                                                #{typedLiteral.value.value}
+                                                span (#{typedLiteral.value.datatype})
                                         - i++;
 
                                 if i > 5
                                     button(class = "collapseButton" id = typedLiteralPredicate.value + "Button" onClick="showItems(\"" + typedLiteralPredicate.value + "\");") Show more
 
         if relationsPredicates.length > 0
-            h2 Relations
+            h2.attributeTypeTitle Relations
             ul.properties
                 each relationPredicate in relationsPredicates
                     li
@@ -93,7 +95,7 @@ block content
 
 
         if reverseRelationsPredicates.length > 0
-            h2 Inverse relations
+            h2.attributeTypeTitle Inverse relations
             ul.properties
                 each reverseRelationPredicate in reverseRelationsPredicates
                     li
@@ -118,7 +120,7 @@ block content
                                     button(class = "collapseButton" id = reverseRelationPredicate.value + "Button" onClick="showItems(\"" + reverseRelationPredicate.value + "\");") Show more
 
         if blankNodesPredicates.length > 0
-            h2 Blank Nodes
+            h2.attributeTypeTitle Blank Nodes
             ul.properties
                 each blankNodePredicate in blankNodesPredicates
                     li
@@ -144,7 +146,7 @@ block content
         div#geometricAttributes
 
             if geometriesPredicates.length > 0
-                h2 Geometric Attributes
+                h2.attributeTypeTitle Geometric Attributes
                 ul.properties
                     each geometriyPredicate in geometriesPredicates
                         li
@@ -157,7 +159,7 @@ block content
                                             button(class = "geometryButton collapseButton" id = geometriyPredicate.value + "Button" onClick="showItems(\"" + geometriyPredicate.value + "\");") Show more
 
         if pointsPredicates.length > 0
-            h2 Coordinates Attributes
+            h2.attributeTypeTitle Coordinates Attributes
             ul.properties
                 each pointPredicate in pointsPredicates
                     li
