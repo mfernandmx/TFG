@@ -9,12 +9,12 @@ block content
             ul.properties
                 each literalPredicate in literalsPredicates
                     li
-                        a(href=literalPredicate.url)
-                            span #{literalPredicate.prefix}:
+                        a(href=literalPredicate.url).alignedTop
+                            span.alignedTop #{literalPredicate.prefix}:
                             | #{literalPredicate.value}
                         if literalPredicate.value == "sameAs"
                             p For more information, check next link(s)
-                        div(id = literalPredicate.value)
+                        div(id = literalPredicate.value).values
                             ul
                                 - var i = 0;
                                 each literal in literals
@@ -48,21 +48,23 @@ block content
             ul.properties
                 each typedLiteralPredicate in typedLiteralsPredicates
                     li
-                        a(href=typedLiteralPredicate.url)
-                            span #{typedLiteralPredicate.prefix}:
+                        a(href=typedLiteralPredicate.url).alignedTop
+                            span.alignedTop #{typedLiteralPredicate.prefix}:
                             | #{typedLiteralPredicate.value}
-                        div(id = typedLiteralPredicate.value)
+                        div(id = typedLiteralPredicate.value).values
                             ul
                                 - var i = 0;
                                 each typedLiteral in typedLiterals
                                     if typedLiteralPredicate.url == typedLiteral.relation.url
                                         if i < 5
                                             li
-                                                #{typedLiteral.value.value}
+                                                | #{typedLiteral.value.value}
+                                                |
                                                 span (#{typedLiteral.value.datatype})
                                         else
                                             li.hidden
-                                                #{typedLiteral.value.value}
+                                                | #{typedLiteral.value.value}
+                                                |
                                                 span (#{typedLiteral.value.datatype})
                                         - i++;
 
@@ -74,10 +76,10 @@ block content
             ul.properties
                 each relationPredicate in relationsPredicates
                     li
-                        a(href=relationPredicate.url)
-                            span #{relationPredicate.prefix}:
+                        a(href=relationPredicate.url).alignedTop
+                            span.alignedTop #{relationPredicate.prefix}:
                             | #{relationPredicate.value}
-                        div(id = relationPredicate.value)
+                        div(id = relationPredicate.value).values
                             ul
                                 - var i = 0;
                                 each relation in relations
@@ -99,10 +101,12 @@ block content
             ul.properties
                 each reverseRelationPredicate in reverseRelationsPredicates
                     li
-                        a(href=reverseRelationPredicate.url)
-                            span #{reverseRelationPredicate.prefix}:
+                        | Has related:
+                        |
+                        a(href=reverseRelationPredicate.url).alignedTop
+                            span.alignedTop #{reverseRelationPredicate.prefix}:
                             | #{reverseRelationPredicate.value}
-                        div(id = reverseRelationPredicate.value)
+                        div(id = reverseRelationPredicate.value).values
                             ul
                                 - var i = 0;
                                 each relation in reverseRelations
@@ -124,10 +128,10 @@ block content
             ul.properties
                 each blankNodePredicate in blankNodesPredicates
                     li
-                        a(href=blankNodePredicate.url)
-                            span #{blankNodePredicate.prefix}:
+                        a(href=blankNodePredicate.url).alignedTop
+                            span.alignedTop #{blankNodePredicate.prefix}:
                             | #{blankNodePredicate.value}
-                        div(id = blankNodePredicate.value)
+                        div(id = blankNodePredicate.value).values
                             ul
                                 - var i = 0;
                                 each blankNode in blankNodes
@@ -150,8 +154,8 @@ block content
                 ul.properties
                     each geometriyPredicate in geometriesPredicates
                         li
-                            a(href=geometriyPredicate.url) #{geometriyPredicate.prefix}:#{geometriyPredicate.value}
-                            div(id = geometriyPredicate.value)
+                            a(href=geometriyPredicate.url).alignedTop #{geometriyPredicate.prefix}:#{geometriyPredicate.value}
+                            div(id = geometriyPredicate.value).values
                                 ul
                                     each geometry in geometries
                                         if geometriyPredicate.url == geometry.relation.url
@@ -163,19 +167,21 @@ block content
             ul.properties
                 each pointPredicate in pointsPredicates
                     li
-                        a(href=pointPredicate.lat.url)
-                            span #{pointPredicate.lat.prefix}:
+                        a(href=pointPredicate.lat.url).alignedTop
+                            span.alignedTop #{pointPredicate.lat.prefix}:
                             | #{pointPredicate.lat.value}
-                        ul
-                            each point in points
-                                li #{point.lat}
+                        div.values
+                            ul
+                                each point in points
+                                    li #{point.lat}
                     li
-                        a(href=pointPredicate.long.url)
-                            span #{pointPredicate.long.prefix}:
+                        a(href=pointPredicate.long.url).alignedTop
+                            span.alignedTop #{pointPredicate.long.prefix}:
                             | #{pointPredicate.long.value}
-                        ul
-                            each point in points
-                                li #{point.long}
+                        div.values
+                            ul
+                                each point in points
+                                    li #{point.long}
 
     div.right
 

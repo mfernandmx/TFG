@@ -39,10 +39,11 @@ h1{
 
 #homeLink{
     display: inline-block;
+    margin-left: 20px;
 }
 
 #backUri{
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 ul{
@@ -51,6 +52,7 @@ ul{
 
 #types{
     display: inline-block;
+    margin-left: 20px;
 }
 
 #types ul{
@@ -78,7 +80,7 @@ Content
 #content{
     width: 100%;
     overflow: auto;
-    margin-top: 40px;
+    margin-top: 25px;
 }
 
 .left {
@@ -100,6 +102,14 @@ Content
     .right {
         width: 100%;
     }
+}
+
+.alignedTop{
+    vertical-align: top;
+}
+
+.values{
+    display: inline-block;
 }
 
 /*
@@ -156,7 +166,7 @@ Map
 #contentMap{
     height: 400px;
     width: 400px;
-
+    margin: auto;
     border: 10px solid #dd855c;
     border-radius: 10px;
 }
@@ -186,7 +196,7 @@ Change View Selector
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin: 30px 0;
+    margin: 50px 0 30px 0;
 }
 
 input[type=radio] {
