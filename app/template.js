@@ -130,22 +130,23 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
     for (var key in keys){
 
-        console.log("Nodo en blanco:", blankNodes[keys[key]]);
-
         var blankTypes = [];
-        var attributes = blankNodes[keys[key]].attributes;
 
-        //TODO: Imágenes en nodos en blanco
-        //TODO: Eliminar tipo de atributos
-        for (element in attributes){
-            if (attributes.hasOwnProperty(element)) {
-                if (attributes[element].type == "type") {
-                    blankTypes.push(attributes[element].value);
+        for (element in blankNodes[keys[key]].attributes){
+            if (blankNodes[keys[key]].attributes.hasOwnProperty(element)) {
+                if (blankNodes[keys[key]].attributes[element].type == "type") {
+                    blankTypes.push(blankNodes[keys[key]].attributes[element].value);
+                }
+                else{
+
+                    if (isImage(blankNodes[keys[key]].attributes[element])){
+                        blankNodes[keys[key]].attributes[element].type = "image";
+                    }
                 }
             }
         }
 
-        ele = {relation: blankNodes[keys[key]].relation, nodeID: keys[key], types: blankTypes, attributes: attributes};
+        ele = {relation: blankNodes[keys[key]].relation, nodeID: keys[key], types: blankTypes, attributes: blankNodes[keys[key]].attributes};
         blankNodesValues.push(ele);
 
         for (i = 0; i < blankNodesPredicates.length; i++) {

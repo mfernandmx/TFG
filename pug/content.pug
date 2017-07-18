@@ -139,8 +139,9 @@ block content
                                         if i < 5
                                             li
                                                 | {
-                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo
+                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource
                                                     span (#{blankNode.nodeID})
+                                                |
                                                 |
                                                 div.bnodeTypes
                                                     |(
@@ -157,20 +158,24 @@ block content
                                                                     span.alignedTop #{attribute.relation.prefix}:
                                                                     | #{attribute.relation.value}
                                                                 |
+                                                                |
                                                                 case attribute.type
                                                                     when "literal"
                                                                     when "typed-literal"
                                                                         | #{attribute.value}
                                                                     when "bnode"
-                                                                        a(href=datasetBase + attribute.value + "?backUri=" + rUri) Recurso anónimo
+                                                                        a(href=datasetBase + attribute.value + "?backUri=" + rUri) Anonymous resource
                                                                             span (#{attribute.value})
                                                                         |
                                                                     when "uri"
                                                                         a #{attribute.value}
+                                                                    when "image"
+                                                                        img(src=attribute.value)
+
                                                 | }
                                         else
                                             li.hidden
-                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
+                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource (#{blankNode.nodeID})
                                         - i++;
 
                                 if i > 5
