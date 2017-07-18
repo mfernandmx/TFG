@@ -125,7 +125,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         }
     }
 
-    console.log(blankNodes);
     var keys = Object.keys(blankNodes);
 
     for (var key in keys){
@@ -149,6 +148,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         ele = {relation: blankNodes[keys[key]].relation, nodeID: keys[key], types: blankTypes, attributes: blankNodes[keys[key]].attributes};
         blankNodesValues.push(ele);
 
+        found = false;
         for (i = 0; i < blankNodesPredicates.length; i++) {
             if (blankNodesPredicates[i].url == blankNodes[keys[key]].relation.url) {
                 found = true;
@@ -160,7 +160,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
             blankNodesPredicates.push(blankNodes[keys[key]].relation);
         }
     }
-
 
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {

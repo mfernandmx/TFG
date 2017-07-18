@@ -247,7 +247,8 @@ function processData(data, uri, blankNode) {
 
     var writer = N3.Writer({ prefixes: prefixList });
 
-    var element;
+    var element, nodeID, value, relation;
+    var blankNodes = {};
 
     for (element in results) {
         if (results.hasOwnProperty(element)) {
@@ -267,8 +268,24 @@ function processData(data, uri, blankNode) {
                         break;
 
                     case "bnode": // Blanck node
-                        //TODO: Nodos en blanco
                         console.log(results[element][vars[1]].value);
+
+                        nodeID = results[element][vars[1]].value;
+                        type = results[element][vars[2]].type;
+                        value = results[element][vars[2]].value;
+                        relation = results[element][vars[5]].value;
+
+                        if (blankNodes.hasOwnProperty(nodeID)){
+                            blankNodes[nodeID].attributes.push(
+                                {relation: relation,
+                                    value: value,
+                                    type: type});
+                        } else{
+                            blankNodes[nodeID] = {relation: results[element][vars[0]].value,
+                                attributes: [{relation: relation,
+                                    value: value,
+                                    type: type}]};
+                        }
                         break;
 
                     case "uri": // Uri
@@ -276,11 +293,13 @@ function processData(data, uri, blankNode) {
                         break;
                 }
 
-                writer.addTriple({
-                    subject:   uri,
-                    predicate: results[element][vars[0]].value,
-                    object:    object
-                });
+                if (object != "") {
+                    writer.addTriple({
+                        subject: uri,
+                        predicate: results[element][vars[0]].value,
+                        object: object
+                    });
+                }
             }
 
             // TODO: Comprobar si es aconsejable
@@ -292,6 +311,45 @@ function processData(data, uri, blankNode) {
                 });
             }
         }
+    }
+
+    console.log(blankNodes);
+
+
+    for (element in blankNodes){
+        console.log(blankNodes[element]);
+
+        var attributes = [];
+
+        for (var attribute in blankNodes[element].attributes) {
+            if (blankNodes[element].attributes.hasOwnProperty(attribute)) {
+
+                type = blankNodes[element].attributes[attribute].type;
+
+                switch (type) {
+                    case "literal": // Literal
+                    case "typed-literal": // Typed Literal
+                        object = N3Util.createLiteral(blankNodes[element].attributes[attribute].value);
+                        break;
+
+                    case "bnode": // Blanck node
+                        //TODO:
+                        console.log(blankNodes[element].attributes[attribute].value);
+                        break;
+
+                    case "uri": // Uri
+                        object = blankNodes[element].attributes[attribute].value;
+                        break;
+                }
+
+                attributes.push({predicate: blankNodes[element].attributes[attribute].relation, object: object});
+            }
+        }
+
+        writer.addTriple(uri,
+            blankNodes[element].relation,
+            writer.blank(attributes));
+
     }
 
     var triples;

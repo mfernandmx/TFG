@@ -111,7 +111,8 @@ function initMap() {
 
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
-            center: {lat: 39.475088, lng: -6.371472}
+            center: {lat: 39.475088, lng: -6.371472},
+            styles: [{"stylers":[{"saturation":50},{"gamma":0.6}]}]
         });
 
         if (myPoint != "") {
