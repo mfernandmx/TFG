@@ -23,6 +23,11 @@ h1{
     margin-bottom: 0;
 }
 
+#projectTitle{
+    display: inline-block;
+    vertical-align: 15px;
+}
+
 #projectLogo{
     display: inline-block;
     margin: 0 20px;
@@ -40,6 +45,7 @@ h1{
 #homeLink{
     display: inline-block;
     margin-left: 20px;
+    vertical-align: 15px;
 }
 
 #backUri{
@@ -51,6 +57,7 @@ ul{
 }
 
 #types{
+    vertical-align: 15px;
     display: inline-block;
     margin-left: 20px;
 }
@@ -108,7 +115,7 @@ Content
     vertical-align: top;
 }
 
-.values{
+.bnodeTypes{
     display: inline-block;
 }
 
@@ -197,6 +204,7 @@ Change View Selector
     left: 50%;
     transform: translateX(-50%);
     margin: 50px 0 30px 0;
+    min-width: 263px;
 }
 
 input[type=radio] {

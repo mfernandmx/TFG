@@ -138,7 +138,36 @@ block content
                                     if blankNodePredicate.url == blankNode.relation.url
                                         if i < 5
                                             li
-                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
+                                                | {
+                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo
+                                                    span (#{blankNode.nodeID})
+                                                |
+                                                div.bnodeTypes
+                                                    |(
+                                                    each type in blankNode.types
+                                                        a(href=type.url).alignedTop
+                                                            span.alignedTop #{type.prefix}:
+                                                            | #{type.value}
+                                                    |)
+                                                ul
+                                                    each attribute in blankNode.attributes
+                                                        if attribute.type != "type"
+                                                            li
+                                                                a(href=attribute.relation.url).alignedTop
+                                                                    span.alignedTop #{attribute.relation.prefix}:
+                                                                    | #{attribute.relation.value}
+                                                                |
+                                                                case attribute.type
+                                                                    when "literal"
+                                                                    when "typed-literal"
+                                                                        | #{attribute.value}
+                                                                    when "bnode"
+                                                                        a(href=datasetBase + attribute.value + "?backUri=" + rUri) Recurso anónimo
+                                                                            span (#{attribute.value})
+                                                                        |
+                                                                    when "uri"
+                                                                        a #{attribute.value}
+                                                | }
                                         else
                                             li.hidden
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Recurso anónimo (#{blankNode.nodeID})
