@@ -26,14 +26,13 @@ function getData (uri,backUri,type) {
     //                     "OPTIONAL{?o ?n ?m.}";
 
     var queryDirect = "{<"+uri+"> ?p ?o . " +
-                        "OPTIONAL{?o ?n ?m." +
-                            "OPTIONAL{SELECT ?b ?m WHERE{" +
+                        "OPTIONAL{?o ?n ?m. } " +
+                            "OPTIONAL{SELECT ?o ?b ?m WHERE{" +
                                 "<"+uri+"> ?p ?o. " +
                                 "?o ?b ?m. " +
                                 "FILTER isBlank(?o). " +
                                 "} " +
-                            "} " +
-                        "}";
+                            "} ";
 
     var queryUnion = "} UNION ";
     var queryReverse = "{?x ?y <"+uri+">. ";

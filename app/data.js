@@ -148,7 +148,7 @@ function processDataForPage (data, uri, backUri, blankNode){
                                 if (jsonSize == 2) { // Literal url
                                     literals.push({relation: relationProcessed, value: results[element][vars[1]]});
                                 }
-                                else if (jsonSize > 3) { // Relation
+                                else if (jsonSize > 2) { // Relation
 
                                     relationTitle = "";
 
