@@ -8,7 +8,7 @@ block content
             h2.attributeTypeTitle Literals
             ul.properties
                 each literalPredicate in literalsPredicates
-                    li
+                    li.predicate
                         a(href=literalPredicate.url).alignedTop
                             span.alignedTop #{literalPredicate.prefix}:
                             | #{literalPredicate.value}
@@ -47,7 +47,7 @@ block content
             h2.attributeTypeTitle Typed Literals
             ul.properties
                 each typedLiteralPredicate in typedLiteralsPredicates
-                    li
+                    li.predicate
                         a(href=typedLiteralPredicate.url).alignedTop
                             span.alignedTop #{typedLiteralPredicate.prefix}:
                             | #{typedLiteralPredicate.value}
@@ -75,7 +75,7 @@ block content
             h2.attributeTypeTitle Relations
             ul.properties
                 each relationPredicate in relationsPredicates
-                    li
+                    li.predicate
                         a(href=relationPredicate.url).alignedTop
                             span.alignedTop #{relationPredicate.prefix}:
                             | #{relationPredicate.value}
@@ -100,7 +100,7 @@ block content
             h2.attributeTypeTitle Inverse relations
             ul.properties
                 each reverseRelationPredicate in reverseRelationsPredicates
-                    li
+                    li.predicate
                         | Has related:
                         |
                         a(href=reverseRelationPredicate.url).alignedTop
@@ -127,7 +127,7 @@ block content
             h2.attributeTypeTitle Blank Nodes
             ul.properties
                 each blankNodePredicate in blankNodesPredicates
-                    li
+                    li.predicate
                         a(href=blankNodePredicate.url).alignedTop
                             span.alignedTop #{blankNodePredicate.prefix}:
                             | #{blankNodePredicate.value}
@@ -138,7 +138,7 @@ block content
                                     if blankNodePredicate.url == blankNode.relation.url
                                         if i < 5
                                             li
-                                                | {
+                                                | [
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource
                                                     span (#{blankNode.nodeID})
                                                 |
@@ -172,7 +172,7 @@ block content
                                                                     when "image"
                                                                         img(src=attribute.value)#resourceImg
 
-                                                | }
+                                                | ]
                                         else
                                             li.hidden
                                                 a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource (#{blankNode.nodeID})
@@ -187,7 +187,7 @@ block content
                 h2.attributeTypeTitle Geometric Attributes
                 ul.properties
                     each geometriyPredicate in geometriesPredicates
-                        li
+                        li.predicate
                             a(href=geometriyPredicate.url).alignedTop #{geometriyPredicate.prefix}:#{geometriyPredicate.value}
                             div(id = geometriyPredicate.value).values
                                 ul
@@ -200,7 +200,7 @@ block content
             h2.attributeTypeTitle Coordinates Attributes
             ul.properties
                 each pointPredicate in pointsPredicates
-                    li
+                    li.predicate
                         a(href=pointPredicate.lat.url).alignedTop
                             span.alignedTop #{pointPredicate.lat.prefix}:
                             | #{pointPredicate.lat.value}
@@ -208,7 +208,7 @@ block content
                             ul
                                 each point in points
                                     li #{point.lat}
-                    li
+                    li.predicate
                         a(href=pointPredicate.long.url).alignedTop
                             span.alignedTop #{pointPredicate.long.prefix}:
                             | #{pointPredicate.long.value}

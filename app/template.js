@@ -18,7 +18,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var blankNodesValues = [];
     var reverseRelationsValues = [];
 
-    //TODO: Revisar siguientes
     var geometriesValues = [];
     var pointsValues = [];
 
@@ -340,7 +339,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     });
 }
 
-//TODO Revisar formatos. ¿Archivo configuración?
+//TODO ¿Archivo configuración?
 function isImage(attribute) {
     var image = false;
 

@@ -224,10 +224,9 @@ function processDataForPage (data, uri, backUri, blankNode){
     console.log("-------------------------");
 
     //TODO: Agrupar arrays y añadir parámetro tipo
-    //TODO: Comprobar por qué no se ordenan bien las relaciones
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,
-        literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+            literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         relations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
@@ -313,11 +312,8 @@ function processData(data, uri, blankNode) {
         }
     }
 
-    console.log(blankNodes);
-
 
     for (element in blankNodes){
-        console.log(blankNodes[element]);
 
         var attributes = [];
 

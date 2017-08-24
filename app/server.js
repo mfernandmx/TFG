@@ -5,8 +5,6 @@ const fs = require("fs");
 const configuration = require('./configuration');
 const querys = require('./querys');
 
-
-//TODO: Ver si se puede mejorar con express
 http.createServer(function(request, response) {
 
     // var headers = request.headers;
@@ -107,9 +105,6 @@ http.createServer(function(request, response) {
             );
         }
 
-    }
-    else{
-        //TODO:
     }
 
     response.end();

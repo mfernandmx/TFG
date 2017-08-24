@@ -5,7 +5,6 @@ const data = require('./data');
 const configuration = require('./configuration');
 const template = require('./template');
 
-//const request = require('request');
 const request = require('sync-request');
 
 function getData (uri,backUri,type) {
@@ -18,12 +17,9 @@ function getData (uri,backUri,type) {
         uri = object.uri;
     }
 
-    //var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ";
     var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ?b ";
 
     var queryWhere = "WHERE{ ";
-    // var queryDirect = "{<"+uri+"> ?p ?o . " +
-    //                     "OPTIONAL{?o ?n ?m.}";
 
     var queryDirect = "{<"+uri+"> ?p ?o . " +
                         "OPTIONAL{?o ?n ?m. } " +

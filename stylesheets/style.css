@@ -26,11 +26,12 @@ h1{
 #projectTitle{
     display: inline-block;
     vertical-align: 15px;
+    margin-left: 20px;
 }
 
 #projectLogo{
     display: inline-block;
-    margin: 0 20px;
+    margin-left: 20px;
     overflow: auto;
 
 }
@@ -113,6 +114,10 @@ Content
 
 .alignedTop{
     vertical-align: top;
+}
+
+.predicate{
+    padding: 5px 0;
 }
 
 .bnodeTypes{
