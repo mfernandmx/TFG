@@ -37,7 +37,7 @@ http.createServer(function(request, response) {
     pathname = pathname[pathname.length-1];
     console.log("Pathname:", pathname);
 
-    var script, css;
+    var script, css, favicon;
 
     if (pathname == "client.js") {
         response.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
@@ -48,6 +48,12 @@ http.createServer(function(request, response) {
         response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
         css = fs.readFileSync("./stylesheets/style.css", "utf8");
         response.write(css);
+    }
+    else if (pathname == "favicon.ico"){
+        console.log("DEVUELVO FAVICON");
+        response.writeHead(200, {'Content-Type': 'image/x-icon'});
+        favicon = fs.readFileSync("./lod.ico");
+        response.write(favicon);
     }
     else if (url.startsWith(resource)){ // Starts with ../recurso/
 

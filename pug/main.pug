@@ -1,8 +1,9 @@
 doctype html
 html
     head
-        title #{rTitle}
+        title #{rTitle} | #{projectName}
         link(rel='stylesheet', href='style.css')
+        link(rel="icon" href="favicon.ico" type="image/x-icon")
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
         script(type="text/javascript", src="client.js")
@@ -39,22 +40,23 @@ html
         div#content
             block content
 
-        div.radio-group
-            form(id="changeViewType")
-                input(
-                    type="radio"
-                    id="user"
-                    name="selector"
-                    value="user"
-                )
-                label(for="user") User view
-                input(
-                    type="radio"
-                    id="developer"
-                    name="selector"
-                    value="developer"
-                )
-                label(for="developer") Developer view
+        if rTitle != "404 Not Found"
+            div.radio-group
+                form(id="changeViewType")
+                    input(
+                        type="radio"
+                        id="user"
+                        name="selector"
+                        value="user"
+                    )
+                    label(for="user") User view
+                    input(
+                        type="radio"
+                        id="developer"
+                        name="selector"
+                        value="developer"
+                    )
+                    label(for="developer") Developer view
 
         script(type="text/javascript").
             point = "#{geoPoint}";

@@ -9,8 +9,6 @@ const pug = require('pug');
 
 function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, reverseRelations, blankNodes, geometries, points){
 
-    //TODO Language
-
     var element;
     var literalsValues = [];
     var typedLiteralsValues = [];
@@ -225,7 +223,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 ele = {relation: geometries[element].relation, value: geometries[element].value};
                 literalsValues.push(ele);
 
-                //TODO Probar
                 found = false;
                 for (i = 0; i < literalsPredicates.length; i++) {
                     if (literalsPredicates[i].url == geometries[element].relation.url) {
@@ -257,7 +254,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 //TODO: Guardar error en un log (Documentar)
                 console.log(err);
 
-                //TODO Probar
                 ele = {relation: points[element].lat.relation, value: points[element].lat.value};
                 literalsValues.push(ele);
 

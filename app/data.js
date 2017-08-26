@@ -88,7 +88,7 @@ function processDataForPage (data, uri, backUri, blankNode){
                             });
                         } else {
                             //TODO: Guardar fallo en log, y no mostrar (documentar)
-                            console.log("Error: Se ha encontrado una propiedad que corresponde" +
+                            console.error("Error: Se ha encontrado una propiedad que corresponde" +
                                 "a la latitud de un punto pero no se ha encontrado ninguna propiedad " +
                                 "que coincida con la longitud");
                         }
@@ -223,7 +223,6 @@ function processDataForPage (data, uri, backUri, blankNode){
 
     console.log("-------------------------");
 
-    //TODO: Agrupar arrays y añadir parámetro tipo
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,
             literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
@@ -234,9 +233,7 @@ function processDataForPage (data, uri, backUri, blankNode){
 
 }
 
-function processData(data, uri, blankNode) {
-
-    //TODO: blankNode
+function processData(data, uri) {
 
     var dataJSON = JSON.parse(data);
     var vars = dataJSON['head']['vars'];
@@ -301,7 +298,6 @@ function processData(data, uri, blankNode) {
                 }
             }
 
-            // TODO: Comprobar si es aconsejable
             else if (results[element].hasOwnProperty(vars[3])){
                 writer.addTriple({
                     subject:   results[element][vars[3]].value,
@@ -329,8 +325,7 @@ function processData(data, uri, blankNode) {
                         break;
 
                     case "bnode": // Blanck node
-                        //TODO:
-                        console.log(blankNodes[element].attributes[attribute].value);
+                        object = blankNodes[element].attributes[attribute].value;
                         break;
 
                     case "uri": // Uri

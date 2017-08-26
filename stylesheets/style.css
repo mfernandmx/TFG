@@ -77,6 +77,11 @@ ul{
     margin-right: 10px;
 }
 
+#types a{
+    color: #dd855c;
+    font-weight: bold;
+}
+
 .hidden{
     display: none;
 }
@@ -114,6 +119,8 @@ Content
 
 .alignedTop{
     vertical-align: top;
+    color: #dd855c;
+    font-weight: bold;
 }
 
 .predicate{
@@ -122,6 +129,11 @@ Content
 
 .bnodeTypes{
     display: inline-block;
+}
+
+.sameAs{
+    display: inline;
+    margin: 0 15px;
 }
 
 /*

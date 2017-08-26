@@ -76,7 +76,7 @@ function getData (uri,backUri,type) {
             response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
         }
         else if (type == "data"){
-            response.data = data.processData(res.getBody(), uri, blankNode);
+            response.data = data.processData(res.getBody(), uri);
         }
     }
 

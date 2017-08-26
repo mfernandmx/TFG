@@ -13,7 +13,7 @@ block content
                             span.alignedTop #{literalPredicate.prefix}:
                             | #{literalPredicate.value}
                         if literalPredicate.value == "sameAs"
-                            p For more information, check next link(s)
+                            p.sameAs (For more information, check next link)
                         div(id = literalPredicate.value).values
                             ul
                                 - var i = 0;
