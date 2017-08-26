@@ -5,8 +5,16 @@ module.exports.setError404 = setError404;
 const configuration = require('./configuration');
 const geojson = require('./geojson');
 const data = require('./data');
+
+/*
+ External library installed by npm
+ */
 const pug = require('pug');
 
+/*
+Once all the attributes and relations are processed and organized by their type, they are prepared to fill the
+HTML template to be displayed
+ */
 function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, reverseRelations, blankNodes, geometries, points){
 
     var element;
@@ -36,7 +44,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var geoPoint = "";
 
 
-    // Procesamos los valores que sean literales
     for (element in literals) {
         if (literals.hasOwnProperty(element)) {
 
@@ -60,7 +67,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         }
     }
 
-    // Procesamos los valores que sean literales tipados
     for (element in typedLiterals) {
         if (typedLiterals.hasOwnProperty(element)) {
 
@@ -92,7 +98,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         }
     }
 
-    // Procesamos los valores que sean relaciones
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
@@ -292,6 +297,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
+    // Project information loaded from configuration file
     var projectName = configuration.getProperty("projectName")[0].replace(new RegExp("\"", 'g'), "");
     var projectHomePage = configuration.getProperty("projectHomepage")[0];
     var projectLogo = configuration.getProperty("projectLogo")[0];
@@ -336,6 +342,10 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 }
 
 //TODO ¿Archivo configuración?
+
+/*
+Detects if an URI represents an image to be displayed
+ */
 function isImage(attribute) {
     var image = false;
 
@@ -351,6 +361,9 @@ function isImage(attribute) {
     return image;
 }
 
+/*
+It replaces the resource's type for another with reduced prefix to be displayed
+ */
 function replaceType(literal) {
 
     switch (literal.datatype){
@@ -373,6 +386,9 @@ function replaceType(literal) {
     }
 }
 
+/*
+Generates the 404 page template
+ */
 function setError404(uri){
     const compiledFunction = pug.compileFile('./pug/404.pug');
 

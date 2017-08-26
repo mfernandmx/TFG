@@ -5,8 +5,16 @@ const data = require('./data');
 const configuration = require('./configuration');
 const template = require('./template');
 
+/*
+ External library installed by npm
+ */
 const request = require('sync-request');
 
+/*
+Given a URI, it makes a query on the SPARQL Endpoint established in the configuration file.
+If the resource exists, it gets the data and process it for obtaining a response.
+The response can be a HTML page, as well as a N3 file, depends on the type set as parameter
+ */
 function getData (uri,backUri,type) {
 
     var object = {uri: uri};
@@ -17,18 +25,60 @@ function getData (uri,backUri,type) {
         uri = object.uri;
     }
 
+    // Generates the query
+    var sparqlQuery = generateQuery(uri);
+
+    // Get SPARQL Endpoint from configuration file
+    var endpoint = configuration.getProperty("sparqlEndpoint");
+
+    // Query to the endpoint
+    var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
+
+    var status = res.statusCode;
+
+    var response = {status: status};
+
+    var dataJSON = JSON.parse(res.getBody());
+    var results = dataJSON['results']['bindings'];
+
+    // If there are results, the resource exists and it is processed
+    if (results.length > 0) {
+
+        if (type == "page") {
+            response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
+        }
+        else if (type == "data"){
+            response.data = data.processData(res.getBody(), uri);
+        }
+    }
+
+    // If the resource doesn't exist, it generates a 404 HTML Page.
+    else{
+        response.status = 404;
+        response.html = template.setError404(uri);
+    }
+
+    return response;
+}
+
+/*
+Generates a SPARQL Query dynamically based on the resource's URI
+and the label properties established in the configuration file
+ */
+function generateQuery(uri) {
+
     var querySelect = "SELECT ?p ?o min(?m) as ?m ?x ?y ?b ";
 
     var queryWhere = "WHERE{ ";
 
     var queryDirect = "{<"+uri+"> ?p ?o . " +
-                        "OPTIONAL{?o ?n ?m. } " +
-                            "OPTIONAL{SELECT ?o ?b ?m WHERE{" +
-                                "<"+uri+"> ?p ?o. " +
-                                "?o ?b ?m. " +
-                                "FILTER isBlank(?o). " +
-                                "} " +
-                            "} ";
+        "OPTIONAL{?o ?n ?m. } " +
+        "OPTIONAL{SELECT ?o ?b ?m WHERE{" +
+        "<"+uri+"> ?p ?o. " +
+        "?o ?b ?m. " +
+        "FILTER isBlank(?o). " +
+        "} " +
+        "} ";
 
     var queryUnion = "} UNION ";
     var queryReverse = "{?x ?y <"+uri+">. ";
@@ -55,40 +105,14 @@ function getData (uri,backUri,type) {
     }
 
     var sparqlQuery = querySelect + queryWhere + queryDirect + queryUnion + queryReverse + queryEnd;
-    console.log("Query:", sparqlQuery);
+    //console.log("Query:", sparqlQuery);
 
-    var endpoint = configuration.getProperty("sparqlEndpoint");
-
-    var res = request('GET', endpoint+"?default-graph-uri=&query="+sparqlQuery+"&format=json");
-
-    var status = res.statusCode;
-
-    console.log('statusCode:', res && status); // Print the response status code if a response was received
-
-    var response = {status: status};
-
-    var dataJSON = JSON.parse(res.getBody());
-    var results = dataJSON['results']['bindings'];
-    if (results.length > 0) {
-        console.log("ES TRUE!", status);
-
-        if (type == "page") {
-            response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
-        }
-        else if (type == "data"){
-            response.data = data.processData(res.getBody(), uri);
-        }
-    }
-
-    else{
-        console.log("ES FALSE!", status);
-        response.status = 404;
-        response.html = template.setError404(uri);
-    }
-
-    return response;
+    return sparqlQuery
 }
 
+/*
+Auxiliary method to determine if a resource is a blank node or not
+ */
 function isBlankNode(object) {
 
     var blankNode = false;

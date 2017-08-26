@@ -2,6 +2,9 @@
 module.exports.processGeometry = processGeometry;
 module.exports.processPoint = processPoint;
 
+/*
+ External libraries installed by npm
+ */
 const GJV = require("geojson-validation");
 const GeoJSON = require('geojson');
 

@@ -5,15 +5,22 @@ module.exports.processPrefix = processPrefix;
 
 const configuration = require('./configuration');
 const template = require('./template');
-const N3 = require('n3');
-const N3Util = N3.Util;
 
 const geoProperty = "geoProperty";
 const latProperty = "latProperty";
 const typeProperty = "typeProperty";
 const nonSpecial = "nonSpecial";
 
+/*
+ External libraries installed by npm
+ */
+const N3 = require('n3');
+const N3Util = N3.Util;
 
+/*
+Given all the resource's data in JSON format, its attributes and relations are processed to be displayed
+in a HTML page
+ */
 function processDataForPage (data, uri, backUri, blankNode){
 
     var dataJSON = JSON.parse(data);
@@ -37,8 +44,6 @@ function processDataForPage (data, uri, backUri, blankNode){
     var relationProcessed, relationTitle;
 
     var finded;
-
-    console.log("-------------------------");
 
     // Process each element received by the query
     for (element in results){
@@ -217,12 +222,6 @@ function processDataForPage (data, uri, backUri, blankNode){
         }
     }
 
-    console.log("URI:", uri);
-    console.log("BackURI:", backUri);
-    console.log("Type(s):", types);
-
-    console.log("-------------------------");
-
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,
             literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
@@ -233,6 +232,9 @@ function processDataForPage (data, uri, backUri, blankNode){
 
 }
 
+/*
+Given a resource's information, it is processed to prepare a N3 file with its attributes and relations
+ */
 function processData(data, uri) {
 
     var dataJSON = JSON.parse(data);
@@ -354,6 +356,10 @@ function processData(data, uri) {
 
 }
 
+/*
+Given a relation, it checks if it is a special relation to be process, as geometric attribute or
+latitude/longitude attribute
+ */
 function isSpecialRelation(relation){
 
     var specialRelation = "";

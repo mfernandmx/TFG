@@ -1,10 +1,18 @@
 
-const http = require('http');
-const fs = require("fs");
-
 const configuration = require('./configuration');
 const querys = require('./querys');
 
+/*
+ External libraries installed by npm
+ */
+const http = require('http');
+const fs = require("fs");
+
+/*
+Server which controls the recognition of URIs and manages all the features provided by the server
+If the URI has the correct structure, it calls the methods to start querying for the resource, and
+will generate the HTTP responses needed.
+ */
 http.createServer(function(request, response) {
 
     // var headers = request.headers;
@@ -25,8 +33,6 @@ http.createServer(function(request, response) {
         console.error(err);
     });
 
-    console.log("URL recibida:", url);
-
     var resource = configuration.getProperty("webResourcePrefix");
 
     // Replace each " for empty char
@@ -35,7 +41,6 @@ http.createServer(function(request, response) {
 
     var pathname = url.split("/");
     pathname = pathname[pathname.length-1];
-    console.log("Pathname:", pathname);
 
     var script, css, favicon;
 
@@ -50,7 +55,6 @@ http.createServer(function(request, response) {
         response.write(css);
     }
     else if (pathname == "favicon.ico"){
-        console.log("DEVUELVO FAVICON");
         response.writeHead(200, {'Content-Type': 'image/x-icon'});
         favicon = fs.readFileSync("./lod.ico");
         response.write(favicon);
@@ -62,6 +66,7 @@ http.createServer(function(request, response) {
 
         var backUri = "";
 
+        // Process the URI from the previous resource if exists in the URL
         if (url.includes("?")){
             var split = url.split("?");
             url = split[0];
@@ -73,31 +78,28 @@ http.createServer(function(request, response) {
 
                     if (parameters[parameter].startsWith("backUri=")) {
                         backUri = parameters[parameter].replace("backUri=", "");
-                        console.log("BackURI:", backUri);
                     }
                 }
             }
         }
 
-        if (url.startsWith(resource + "page/")) {
+        if (url.startsWith(resource + "page/")) { // HTML page request
             url = url.replace(resource + "page/", datasetBase);
-            console.log("URL de consulta:",url);
 
             result = querys.getData(url, backUri, "page");
 
             response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
             response.write(result.html);
         }
-        else if (url.startsWith(resource + "data/")){
+        else if (url.startsWith(resource + "data/")){ // N3 data request
             url = url.replace(resource + "data/", datasetBase);
-            console.log("URL de consulta:",url);
 
             result = querys.getData(url, backUri, "data");
 
             response.writeHead(result.status, {'Content-Type': 'text/plain; charset=utf-8'});
             response.write(result.data);
         }
-        else{
+        else{ // Default request. It redirects to the HTML page request
             //TODO: Cambiar
             url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
             //url = url.replace(resource, datasetBase + "page/");
