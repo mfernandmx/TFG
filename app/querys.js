@@ -104,10 +104,7 @@ function generateQuery(uri) {
         }
     }
 
-    var sparqlQuery = querySelect + queryWhere + queryDirect + queryUnion + queryReverse + queryEnd;
-    //console.log("Query:", sparqlQuery);
-
-    return sparqlQuery
+    return querySelect + queryWhere + queryDirect + queryUnion + queryReverse + queryEnd;
 }
 
 /*

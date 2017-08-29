@@ -92,7 +92,6 @@ function processDataForPage (data, uri, backUri, blankNode){
                                 long: {relation: relationAux, value: valueAux}
                             });
                         } else {
-                            //TODO: Guardar fallo en log, y no mostrar (documentar)
                             console.error("Error: Se ha encontrado una propiedad que corresponde" +
                                 "a la latitud de un punto pero no se ha encontrado ninguna propiedad " +
                                 "que coincida con la longitud");
@@ -104,8 +103,6 @@ function processDataForPage (data, uri, backUri, blankNode){
                         break;
 
                     case nonSpecial:
-                        // TODO: Guardar fallo en log, y no mostrar (documentar) - long property sin lat
-
                         var type = results[element][vars[1]].type;
 
                         switch (type) {
@@ -347,7 +344,6 @@ function processData(data, uri) {
 
     var triples;
 
-    //TODO: Excepción en el error
     writer.end(function (error, result) {
         triples = result;
     });

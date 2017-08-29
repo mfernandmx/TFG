@@ -23,7 +23,8 @@ var properties = {};
 /*
 Defines the ontology used in the configuration file
  */
-const confPrefix = "http://richard.cyganiak.de/2007/pubby/config.rdf#";
+//TODO: Cambiar a propio
+const confPrefix = "http://example.org/config#";
 
 /*
 First method to be executed when the server is up
@@ -35,8 +36,6 @@ function start(){
 
     var parser = N3.Parser(),
         rdfStream = fs.createReadStream('./config/config.ttl');
-
-    // TODO: Excepción en el error
 
     // While there are triples to process, it continues saving them.
     // At the end, it saves the prefixes in a list and calls the server to be launched

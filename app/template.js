@@ -101,9 +101,10 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
-            //TODO: Cambiar
-            //relations[element].value.url = relations[element].value.value;
-            relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+            //TODO: Modify to try locally
+            //relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+
+            relations[element].value.url = relations[element].value.value;
 
             if (relations[element].title != "") {
                 relations[element].value.value = relations[element].title;
@@ -166,9 +167,10 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {
 
-            // TODO: Cambiar
-            //reverseRelations[element].value.url = reverseRelations[element].value.value;
-            reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+            //TODO: Modify to try locally
+            //reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+
+            reverseRelations[element].value.url = reverseRelations[element].value.value;
 
             if (reverseRelations[element].title != "") {
                 reverseRelations[element].value.value = reverseRelations[element].title;
@@ -222,8 +224,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 }
             }
             catch (err) {
-                //TODO: Guardar error en un log (Documentar)
-                console.log(err);
+                console.error(err);
 
                 ele = {relation: geometries[element].relation, value: geometries[element].value};
                 literalsValues.push(ele);
@@ -256,8 +257,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 geoPoint = JSON.stringify(geodata)
             }
             catch (err) {
-                //TODO: Guardar error en un log (Documentar)
-                console.log(err);
+                console.error(err);
 
                 ele = {relation: points[element].lat.relation, value: points[element].lat.value};
                 literalsValues.push(ele);
@@ -291,9 +291,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
         }
     }
-
-    //TODO: Cambiar
-    backUri = backUri.replace("opendata.caceres.es","localhost:8080");
 
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
@@ -340,8 +337,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         pointsPredicates: pointsPredicates
     });
 }
-
-//TODO ¿Archivo configuración?
 
 /*
 Detects if an URI represents an image to be displayed

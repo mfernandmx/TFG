@@ -20,7 +20,6 @@ http.createServer(function(request, response) {
     var url = request.url;
     var body = [];
 
-    //TODO: Control de errores
     request.on('error', function(err) {
         console.error(err);
     }).on('data', function(chunk) {
@@ -100,9 +99,10 @@ http.createServer(function(request, response) {
             response.write(result.data);
         }
         else{ // Default request. It redirects to the HTML page request
-            //TODO: Cambiar
-            url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
-            //url = url.replace(resource, datasetBase + "page/");
+
+            // TODO: Modify to try locally
+            // url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
+            url = url.replace(resource, datasetBase[0] + "page/");
 
             if (backUri != ""){
                 url += "?backUri=" + backUri;

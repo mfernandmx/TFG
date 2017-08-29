@@ -1,5 +1,5 @@
 
-@prefix conf: <http://richard.cyganiak.de/2007/pubby/config.rdf#> .
+@prefix config: <http://example.org/config#> .
 @prefix meta: <http://example.org/metadata#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -14,23 +14,19 @@
 @prefix schema: <http://schema.org/>.
 
 # Server configuration section
-<> a conf:Configuration;
-    conf:projectName "Open Data Cáceres";
-    conf:projectHomepage <http://opendata.caceres.es>;
-    conf:projectLogo <https://pbs.twimg.com/profile_images/657508266793111553/xF2Vjccz_400x400.jpg>;
-    conf:webBase <http://localhost:8080/>;
-    conf:labelProperty rdfs:label, om:nombreAsociacion;
-    conf:longProperty geo:long;
-    conf:latProperty geo:lat;
-    conf:geoProperty schema:line, schema:polygon;
-    conf:defaultView "user";
-    conf:defaultLanguage "es";
-    conf:indexResource <http://dbpedia.org/resource/Wikipedia>;
+<> a config:Configuration;
+    config:projectName "Open Data Cáceres";
+    config:projectHomepage <http://opendata.caceres.es>;
+    config:projectLogo <https://pbs.twimg.com/profile_images/657508266793111553/xF2Vjccz_400x400.jpg>;
 
-    conf:dataset [
-        conf:sparqlEndpoint <http://opendata.caceres.es/sparql>;
-        conf:datasetBase <http://opendata.caceres.es/recurso/>;
-        conf:webResourcePrefix "recurso/";
-        conf:fixUnescapedCharacters "(),'!$&*+;=@";
-    ];
-    .
+    config:labelProperty rdfs:label, om:nombreAsociacion;
+    config:longProperty geo:long;
+    config:latProperty geo:lat;
+    config:geoProperty schema:line, schema:polygon;
+    config:defaultView "user";
+
+    config:sparqlEndpoint <http://opendata.caceres.es/sparql>;
+    config:datasetBase <http://opendata.caceres.es/recurso/>;
+    config:webBase <http://localhost:8080/>;
+    config:webResourcePrefix "recurso/";
+.
