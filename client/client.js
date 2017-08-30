@@ -37,10 +37,11 @@ function changeView(view) {
         display = "";
     }
 
-    console.log("View:", view);
-
     document.getElementById("resourceUri").style.display = display;
     document.getElementById("geometricAttributes").style.display = display;
+    document.getElementById("dataLink").style.display = display;
+
+    document.getElementById("types").style.pointerEvents = display;
 
     var span;
 
@@ -63,6 +64,14 @@ function changeView(view) {
     for (var type in typeTitles){
         if (typeTitles.hasOwnProperty(type)) {
             typeTitles[type].style.display = display;
+        }
+    }
+
+    var relations = document.getElementsByClassName("alignedTop");
+
+    for (var relation in relations){
+        if (relations.hasOwnProperty(relation)) {
+            relations[relation].style.pointerEvents = display;
         }
     }
 }

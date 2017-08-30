@@ -41,6 +41,11 @@ html
             block content
 
         if rTitle != "404 Not Found"
+
+            div#dataLink
+                a(href = dataUri)
+                    button#dataButton Get triples from resource
+
             div.radio-group
                 form(id="changeViewType")
                     input(

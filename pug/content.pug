@@ -139,8 +139,10 @@ block content
                                         if i < 5
                                             li
                                                 | [
-                                                a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource
-                                                    span (#{blankNode.nodeID})
+                                                span
+                                                    a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource
+                                                        |
+                                                        | (#{blankNode.nodeID})
                                                 |
                                                 |
                                                 div.bnodeTypes

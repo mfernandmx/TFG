@@ -74,7 +74,7 @@ function processDataForPage (data, uri, backUri, blankNode){
 
                         // Find if there is a longitude value to display a point
                         for (elementAux in results) {
-                            if (results.hasOwnProperty(elementAux)) {
+                            if (results.hasOwnProperty(elementAux) && results[elementAux].hasOwnProperty(vars[0])) {
                                 relationAux = results[elementAux][vars[0]].value;
 
                                 if (isSpecificAttribute(relationAux, "longProperty")) {
@@ -263,7 +263,6 @@ function processData(data, uri) {
                         break;
 
                     case "bnode": // Blanck node
-                        console.log(results[element][vars[1]].value);
 
                         nodeID = results[element][vars[1]].value;
                         type = results[element][vars[2]].type;
@@ -297,7 +296,7 @@ function processData(data, uri) {
                 }
             }
 
-            else if (results[element].hasOwnProperty(vars[3])){
+            else if (results[element].hasOwnProperty(vars[3]) && results[element].hasOwnProperty(vars[4])){
                 writer.addTriple({
                     subject:   results[element][vars[3]].value,
                     predicate: results[element][vars[4]].value,
@@ -431,6 +430,7 @@ function processPrefix(relation) {
     prefix = configuration.getPrefixFromConf(prefix);
 
     if (prefix == ""){
+        //TODO: Intentar obtener prefijo de prefix.cc
         prefix="?";
     }
 

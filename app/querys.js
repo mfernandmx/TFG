@@ -121,7 +121,6 @@ function isBlankNode(object) {
     if (uriAux.startsWith("nodeID")){
         object.uri = uriAux;
         blankNode = true;
-        console.log("Es un nodo en blanco");
     }
 
     return blankNode;
