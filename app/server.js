@@ -8,6 +8,15 @@ const querys = require('./querys');
 const http = require('http');
 const fs = require("fs");
 
+var port = configuration.getProperty("port");
+
+if (port != ""){
+    port = port[0].replace(new RegExp("\"", 'g'), "");
+}
+else{
+    port = 8080; // Default port
+}
+
 /*
 Server which controls the recognition of URIs and manages all the features provided by the server
 If the URI has the correct structure, it calls the methods to start querying for the resource, and
@@ -118,4 +127,4 @@ http.createServer(function(request, response) {
 
     response.end();
 
-}).listen(8080); // Activates this server, listening on port 8080.
+}).listen(port); // Activates this server, listening on port 8080.

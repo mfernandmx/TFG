@@ -29,4 +29,9 @@
     config:datasetBase <http://opendata.caceres.es/recurso/>;
     config:webBase <http://localhost:8080/>;
     config:webResourcePrefix "recurso/";
+    config:port "8080";
 .
+
+
+
+

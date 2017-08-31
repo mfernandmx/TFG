@@ -12,6 +12,11 @@ const data = require('./data');
 const pug = require('pug');
 
 /*
+ List of used prefixes
+ */
+var prefixes = [];
+
+/*
 Once all the attributes and relations are processed and organized by their type, they are prepared to fill the
 HTML template to be displayed
  */
@@ -37,12 +42,13 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var geometriesPredicates = [];
     var pointsPredicates = [];
 
+    var prefixesUsed = [];
+
     var found, i;
 
     var geodata;
     var geoFigure = "";
     var geoPoint = "";
-
 
     for (element in literals) {
         if (literals.hasOwnProperty(element)) {
@@ -63,6 +69,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 literalsPredicates.push(literals[element].relation);
+                addPrefix(literals[element].relation.prefix);
             }
         }
     }
@@ -94,6 +101,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 typedLiteralsPredicates.push(typedLiterals[element].relation);
+                addPrefix(typedLiterals[element].relation.prefix);
             }
         }
     }
@@ -123,6 +131,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 relationsPredicates.push(relations[element].relation);
+                addPrefix(relations[element].relation.prefix);
             }
         }
     }
@@ -160,6 +169,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
         if (!found) {
             blankNodesPredicates.push(blankNodes[keys[key]].relation);
+            addPrefix(blankNodes[keys[key]].relation.prefix);
         }
     }
 
@@ -188,6 +198,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 reverseRelationsPredicates.push(reverseRelations[element].relation);
+                addPrefix(reverseRelations[element].relation.prefix);
             }
         }
     }
@@ -219,6 +230,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 if (!found) {
                     geometriesPredicates.push(geometries[element].relation);
+                    addPrefix(geometries[element].relation.prefix);
                 }
             }
             catch (err) {
@@ -237,6 +249,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 if (!found) {
                     literalsPredicates.push(geometries[element].relation);
+                    addPrefix(geometries[element].relation.prefix);
                 }
             }
         }
@@ -251,6 +264,8 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 pointsValues.push({lat: points[element].lat.value.value, long: points[element].long.value.value});
 
                 pointsPredicates.push({lat: points[element].lat.relation, long: points[element].long.relation});
+                addPrefix(points[element].lat.relation.prefix);
+                addPrefix(points[element].long.relation.prefix);
 
                 geoPoint = JSON.stringify(geodata)
             }
@@ -272,6 +287,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 }
                 if (!found) {
                     literalsPredicates.push(points[element].lat.relation);
+                    addPrefix(points[element].lat.relation.prefix);
                 }
 
                 found = false;
@@ -283,11 +299,20 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 }
                 if (!found) {
                     literalsPredicates.push(points[element].long.relation);
+                    addPrefix(points[element].long.relation.prefix);
                 }
 
             }
 
         }
+    }
+
+    var prefixListFromConfig = configuration.getPrefixList();
+    prefixes = prefixes.sort();
+
+    // Get list of prefixes used and their ontologies
+    for (i = 0; i < prefixes.length; i++){
+        prefixesUsed.push({prefix: prefixes[i], ontology: prefixListFromConfig[prefixes[i]]});
     }
 
     //TODO: Cambiar
@@ -340,8 +365,29 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         blankNodesPredicates: blankNodesPredicates,
         reverseRelationsPredicates: reverseRelationsPredicates,
         geometriesPredicates: geometriesPredicates,
-        pointsPredicates: pointsPredicates
+        pointsPredicates: pointsPredicates,
+
+        prefixesUsed: prefixesUsed
     });
+}
+
+/*
+Inserts the given prefix in the prefixes list if it is not already included
+ */
+function addPrefix(prefix) {
+
+    var exists = false;
+
+    for (var i = 0; i < prefixes.length; i++){
+        if (prefix == prefixes[i]){
+            exists = true;
+            break;
+        }
+    }
+
+    if (!exists && prefix != "?") {
+        prefixes.push(prefix);
+    }
 }
 
 /*

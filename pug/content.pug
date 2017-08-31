@@ -223,3 +223,12 @@ block content
 
         div#contentMap
             div#map
+
+        div#prefixes
+            h2 Recognized prefixes
+            ul
+                each element in prefixesUsed
+                    li #{element.prefix}
+                        |
+                        |
+                        a(href=element.ontology) (#{element.ontology})

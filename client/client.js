@@ -43,6 +43,8 @@ function changeView(view) {
 
     document.getElementById("types").style.pointerEvents = display;
 
+    document.getElementById("prefixes").style.display = display;
+
     var span;
 
     $("li").each(function(){

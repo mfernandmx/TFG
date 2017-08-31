@@ -212,6 +212,19 @@ Resource Image
 }
 
 /*
+Prefixes
+ */
+
+#prefixes{
+    width: 400px;
+    margin: auto;
+}
+
+#prefixes ul{
+    padding: 0;
+}
+
+/*
 Data Button
  */
 
