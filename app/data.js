@@ -222,7 +222,7 @@ function processDataForPage (data, uri, backUri, blankNode){
     // Send the data processed to be rendered by the template
     return template.setContentPug(title, uri, backUri, types,
             literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
-        relations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
+        relations,
         typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         reverseRelations.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         blankNodes, geometries, points);
@@ -430,7 +430,6 @@ function processPrefix(relation) {
     prefix = configuration.getPrefixFromConf(prefix);
 
     if (prefix == ""){
-        //TODO: Intentar obtener prefijo de prefix.cc
         prefix="?";
     }
 

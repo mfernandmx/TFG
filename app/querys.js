@@ -118,8 +118,16 @@ function isBlankNode(object) {
 
     var uriAux = object.uri.substr(datasetBase[0].length);
 
-    if (uriAux.startsWith("nodeID")){
+    if (uriAux.startsWith("nodeID:/")){
+
+        var matchesCount = uriAux.split("/").length - 1;
+
+        if (matchesCount == 1){
+            uriAux = uriAux.substr(0,7) + "/" + uriAux.substr(7);
+        }
+
         object.uri = uriAux;
+
         blankNode = true;
     }
 

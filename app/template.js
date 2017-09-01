@@ -109,9 +109,9 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
-            //TODO: Cambiar
-            //relations[element].value.url = relations[element].value.value;
-            relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+            // TODO: Modify to try locally
+            relations[element].value.url = relations[element].value.value;
+            //relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (relations[element].title != "") {
                 relations[element].value.value = relations[element].title;
@@ -176,9 +176,9 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {
 
-            // TODO: Cambiar
-            //reverseRelations[element].value.url = reverseRelations[element].value.value;
-            reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
+            // TODO: Modify to try locally
+            reverseRelations[element].value.url = reverseRelations[element].value.value;
+            //reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (reverseRelations[element].title != "") {
                 reverseRelations[element].value.value = reverseRelations[element].title;
@@ -315,9 +315,6 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         prefixesUsed.push({prefix: prefixes[i], ontology: prefixListFromConfig[prefixes[i]]});
     }
 
-    //TODO: Cambiar
-    backUri = backUri.replace("opendata.caceres.es","localhost:8080");
-
     const compiledFunction = pug.compileFile('./pug/content.pug');
 
     // Project information loaded from configuration file
@@ -326,7 +323,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var projectLogo = configuration.getProperty("projectLogo")[0];
     var defaultView = configuration.getProperty("defaultView")[0].replace(new RegExp("\"", 'g'), "");
 
-    //TODO: Cambiar
+    // TODO: Modify to try locally
     var datasetBase = configuration.getProperty("datasetBase")[0];
     //var datasetBase = configuration.getProperty("webBase") + configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "");
 
