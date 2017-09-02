@@ -12,11 +12,6 @@ const data = require('./data');
 const pug = require('pug');
 
 /*
- List of used prefixes
- */
-var prefixes = [];
-
-/*
 Once all the attributes and relations are processed and organized by their type, they are prepared to fill the
 HTML template to be displayed
  */
@@ -50,6 +45,11 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var geoFigure = "";
     var geoPoint = "";
 
+    /*
+     List of used prefixes
+     */
+    var prefixes = [];
+
     for (element in literals) {
         if (literals.hasOwnProperty(element)) {
 
@@ -69,7 +69,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 literalsPredicates.push(literals[element].relation);
-                addPrefix(literals[element].relation.prefix);
+                addPrefix(prefixes, literals[element].relation.prefix);
             }
         }
     }
@@ -101,7 +101,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 typedLiteralsPredicates.push(typedLiterals[element].relation);
-                addPrefix(typedLiterals[element].relation.prefix);
+                addPrefix(prefixes, typedLiterals[element].relation.prefix);
             }
         }
     }
@@ -109,9 +109,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
-            // TODO: Modify to try locally
             relations[element].value.url = relations[element].value.value;
-            //relations[element].value.url = relations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (relations[element].title != "") {
                 relations[element].value.value = relations[element].title;
@@ -131,7 +129,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 relationsPredicates.push(relations[element].relation);
-                addPrefix(relations[element].relation.prefix);
+                addPrefix(prefixes, relations[element].relation.prefix);
             }
         }
     }
@@ -169,16 +167,14 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
         if (!found) {
             blankNodesPredicates.push(blankNodes[keys[key]].relation);
-            addPrefix(blankNodes[keys[key]].relation.prefix);
+            addPrefix(prefixes, blankNodes[keys[key]].relation.prefix);
         }
     }
 
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {
 
-            // TODO: Modify to try locally
             reverseRelations[element].value.url = reverseRelations[element].value.value;
-            //reverseRelations[element].value.url = reverseRelations[element].value.value.replace("opendata.caceres.es","localhost:8080");
 
             if (reverseRelations[element].title != "") {
                 reverseRelations[element].value.value = reverseRelations[element].title;
@@ -198,7 +194,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
             if (!found) {
                 reverseRelationsPredicates.push(reverseRelations[element].relation);
-                addPrefix(reverseRelations[element].relation.prefix);
+                addPrefix(prefixes, reverseRelations[element].relation.prefix);
             }
         }
     }
@@ -230,7 +226,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 if (!found) {
                     geometriesPredicates.push(geometries[element].relation);
-                    addPrefix(geometries[element].relation.prefix);
+                    addPrefix(prefixes, geometries[element].relation.prefix);
                 }
             }
             catch (err) {
@@ -249,7 +245,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 
                 if (!found) {
                     literalsPredicates.push(geometries[element].relation);
-                    addPrefix(geometries[element].relation.prefix);
+                    addPrefix(prefixes, geometries[element].relation.prefix);
                 }
             }
         }
@@ -264,8 +260,8 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 pointsValues.push({lat: points[element].lat.value.value, long: points[element].long.value.value});
 
                 pointsPredicates.push({lat: points[element].lat.relation, long: points[element].long.relation});
-                addPrefix(points[element].lat.relation.prefix);
-                addPrefix(points[element].long.relation.prefix);
+                addPrefix(prefixes, points[element].lat.relation.prefix);
+                addPrefix(prefixes, points[element].long.relation.prefix);
 
                 geoPoint = JSON.stringify(geodata)
             }
@@ -287,7 +283,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 }
                 if (!found) {
                     literalsPredicates.push(points[element].lat.relation);
-                    addPrefix(points[element].lat.relation.prefix);
+                    addPrefix(prefixes, points[element].lat.relation.prefix);
                 }
 
                 found = false;
@@ -299,7 +295,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
                 }
                 if (!found) {
                     literalsPredicates.push(points[element].long.relation);
-                    addPrefix(points[element].long.relation.prefix);
+                    addPrefix(prefixes, points[element].long.relation.prefix);
                 }
 
             }
@@ -323,9 +319,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
     var projectLogo = configuration.getProperty("projectLogo")[0];
     var defaultView = configuration.getProperty("defaultView")[0].replace(new RegExp("\"", 'g'), "");
 
-    // TODO: Modify to try locally
     var datasetBase = configuration.getProperty("datasetBase")[0];
-    //var datasetBase = configuration.getProperty("webBase") + configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "");
 
     var dataUri = uri.slice(0,datasetBase.length) + "data/" + uri.slice(datasetBase.length);
 
@@ -371,7 +365,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
 /*
 Inserts the given prefix in the prefixes list if it is not already included
  */
-function addPrefix(prefix) {
+function addPrefix(prefixes, prefix) {
 
     var exists = false;
 
