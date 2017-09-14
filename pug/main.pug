@@ -33,6 +33,10 @@ html
             div#resourceUri
                 h2 #{rUri}
 
+            if rDescription != ""
+                div#description
+                    p #{rDescription}
+
         if rBackUri != ""
             div#backUri
                 a(href = rBackUri) Volver al recurso anterior

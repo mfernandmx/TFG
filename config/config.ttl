@@ -35,6 +35,7 @@
     config:projectLogo <https://pbs.twimg.com/profile_images/657508266793111553/xF2Vjccz_400x400.jpg>;
 
     config:labelProperty rdfs:label, om:nombreAsociacion;
+    config:descriptionProperty rdfs:comment, dcterms:description, om:historiaVia;
     config:longProperty geo:long;
     config:latProperty geo:lat;
     config:geoProperty schema:line, schema:polygon;

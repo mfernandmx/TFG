@@ -15,7 +15,8 @@ const pug = require('pug');
 Once all the attributes and relations are processed and organized by their type, they are prepared to fill the
 HTML template to be displayed
  */
-function setContentPug(title, uri, backUri, types, literals, relations, typedLiterals, reverseRelations, blankNodes, geometries, points){
+function setContentPug(title, description, uri, backUri, types,
+                       literals, relations, typedLiterals, reverseRelations, blankNodes, geometries, points){
 
     var element;
     var literalsValues = [];
@@ -328,6 +329,7 @@ function setContentPug(title, uri, backUri, types, literals, relations, typedLit
         defaultView: defaultView,
 
         rTitle: title,
+        rDescription: description,
         rUri: uri,
         rBackUri: backUri,
         rTypes: types,

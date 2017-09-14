@@ -22,6 +22,10 @@ config:labelProperty ex:property1, ex:property2, ...;
     The value of these RDF properties, if present in the dataset,
     will be used as labels and page titles for resources.
 
+config:descriptionProperty ex:property1, ex:property2, ...;
+    The value of these RDF properties, if present in the dataset,
+    will be used descriptions for resources.
+
 config:longProperty ex:property1, ex:property2, ...;
     The value of these RDF properties, if present in the dataset,
     will be displayed in a map as longitude value. Requires a latProperty.

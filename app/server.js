@@ -109,7 +109,9 @@ http.createServer(function(request, response) {
         }
         else{ // Default request. It redirects to the HTML page request
 
-            url = url.replace(resource, datasetBase[0] + "page/");
+            // Modify to try locally
+             url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
+            //url = url.replace(resource, datasetBase[0] + "page/");
 
             if (backUri != ""){
                 url += "?backUri=" + backUri;
