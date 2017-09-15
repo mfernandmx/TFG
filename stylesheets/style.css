@@ -5,7 +5,7 @@ General
  */
 
 body{
-    margin: 3%;
+    margin: 0;
     font-family: Roboto, "serif";
     background-color: #e2e2e2;
 }
@@ -16,8 +16,8 @@ h1{
 }
 
 #header{
-    border-bottom: 5px solid #dd855c;
-    padding-bottom: 15px;
+    padding: 50px 30px;
+    background-color: white;
 }
 
 #header h2{
@@ -33,7 +33,6 @@ h1{
 
 #projectLogo{
     display: inline-block;
-    margin-left: 20px;
     overflow: auto;
 
 }
@@ -53,6 +52,7 @@ h1{
 
 #backUri{
     margin-top: 20px;
+    text-align: center;
 }
 
 ul{
@@ -88,6 +88,10 @@ ul{
     display: none;
 }
 
+#description{
+    text-align: center;
+}
+
 /*
 Content
  */
@@ -95,18 +99,12 @@ Content
 #content{
     width: 100%;
     overflow: auto;
-    margin-top: 25px;
 }
 
-.left {
-    float: left;
-    width: 50%;
-    margin-bottom: 30px;
-}
-
-.right {
-    float: right;
-    width: 50%;
+.attributeTypeTitle{
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: solid 1px;
 }
 
 @media (max-width: 915px) {
@@ -190,16 +188,23 @@ Collapsible lists
     margin: 5px;
 }
 
+.values{
+    padding: 10px 0;
+}
+
+.values ul{
+    overflow: auto;
+    max-height: 250px;
+}
+
 /*
 Map
  */
 
 #contentMap{
     height: 400px;
-    width: 400px;
+    width: 100%;
     margin: auto;
-    border: 10px solid #dd855c;
-    border-radius: 10px;
 }
 
 #map{
@@ -216,12 +221,36 @@ Resource Image
 }
 
 /*
+Flex
+ */
+
+.flex-container{
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    padding: 30px 100px;
+}
+
+.flex-element{
+    height: auto;
+    margin: 10px auto;
+    width: 350px;
+    background-color: white;
+    padding: 10px 30px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+/*
 Prefixes
  */
 
 #prefixes{
-    width: 400px;
+    padding: 10px 30px;
     margin: auto;
+    text-align: center;
 }
 
 #prefixes ul{

@@ -110,6 +110,12 @@ function setContentPug(title, description, uri, backUri, types,
     for (element in relations) {
         if (relations.hasOwnProperty(element)) {
 
+            // Modify to try locally
+
+            // relations[element].value.url = relations[element].value.value.replace(
+            //     configuration.getProperty("datasetBase")[0],
+            //     configuration.getProperty("webBase")[0] +
+            //     configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), ""));
             relations[element].value.url = relations[element].value.value;
 
             if (relations[element].title != "") {
@@ -175,6 +181,12 @@ function setContentPug(title, description, uri, backUri, types,
     for (element in reverseRelations){
         if (reverseRelations.hasOwnProperty(element)) {
 
+            // Modify to try locally
+
+            // reverseRelations[element].value.url = reverseRelations[element].value.value.replace(
+            //     configuration.getProperty("datasetBase")[0],
+            //     configuration.getProperty("webBase")[0] +
+            //     configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), ""));
             reverseRelations[element].value.url = reverseRelations[element].value.value;
 
             if (reverseRelations[element].title != "") {
@@ -323,6 +335,12 @@ function setContentPug(title, description, uri, backUri, types,
     var datasetBase = configuration.getProperty("datasetBase")[0];
 
     var dataUri = uri.slice(0,datasetBase.length) + "data/" + uri.slice(datasetBase.length);
+
+    // Modify to try locally
+
+    // backUri = backUri.replace(configuration.getProperty("datasetBase")[0],
+    //     configuration.getProperty("webBase")[0] +
+    //     configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), ""));
 
     return compiledFunction({
 

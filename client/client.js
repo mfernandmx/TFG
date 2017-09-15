@@ -38,10 +38,18 @@ function changeView(view) {
     }
 
     document.getElementById("resourceUri").style.display = display;
-    document.getElementById("geometricAttributes").style.display = display;
+
+    var geometricAttributes = document.getElementById("geometricAttributes");
+    if (geometricAttributes != null){
+        geometricAttributes.style.display = display;
+    }
+
     document.getElementById("dataLink").style.display = display;
 
-    document.getElementById("types").style.pointerEvents = display;
+    var types = document.getElementById("types");
+    if (types != null){
+        types.style.pointerEvents = display;
+    }
 
     document.getElementById("prefixes").style.display = display;
 

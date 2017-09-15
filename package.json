@@ -12,13 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.4",
-    "request": "latest",
     "pug": "latest",
     "n3": "latest",
     "geojson-validation": "latest",
     "geojson": "latest",
-    "sync-request": "latest",
-    "node-ttl": "latest"
+    "sync-request": "latest"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.26.14",

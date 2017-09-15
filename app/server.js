@@ -110,8 +110,12 @@ http.createServer(function(request, response) {
         else{ // Default request. It redirects to the HTML page request
 
             // Modify to try locally
-             url = url.replace(resource, datasetBase[0].replace("opendata.caceres.es","localhost:8080") + "page/");
-            //url = url.replace(resource, datasetBase[0] + "page/");
+
+            //  url = url.replace(resource, datasetBase[0].replace(
+            //      configuration.getProperty("datasetBase")[0],
+            //          configuration.getProperty("webBase")[0] +
+            //          configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "")) + "page/");
+            url = url.replace(resource, datasetBase[0] + "page/");
 
             if (backUri != ""){
                 url += "?backUri=" + backUri;
