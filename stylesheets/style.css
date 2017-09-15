@@ -7,7 +7,7 @@ General
 body{
     margin: 0;
     font-family: Roboto, "serif";
-    background-color: #e2e2e2;
+    background-color: rgba(231, 239, 246, 0.5);
 }
 
 h1{
@@ -16,8 +16,8 @@ h1{
 }
 
 #header{
-    padding: 50px 30px;
-    background-color: white;
+    padding: 30px;
+    background-color: rgba(173, 203, 227, 0.5);
 }
 
 #header h2{
@@ -28,13 +28,14 @@ h1{
 #projectTitle{
     display: inline-block;
     vertical-align: 15px;
-    margin-left: 20px;
+    color: #2a4d69;
+    margin: 10px 20px 0 0;
 }
 
 #projectLogo{
     display: inline-block;
     overflow: auto;
-
+    margin-right: 20px;
 }
 
 #projectLogo img{
@@ -46,8 +47,8 @@ h1{
 
 #homeLink{
     display: inline-block;
-    margin-left: 20px;
     vertical-align: 15px;
+    margin: 20px 20px 0 0;
 }
 
 #backUri{
@@ -62,7 +63,7 @@ ul{
 #types{
     vertical-align: 15px;
     display: inline-block;
-    margin-left: 20px;
+    margin: 20px 20px 0 0;
 }
 
 #types ul{
@@ -80,7 +81,7 @@ ul{
 }
 
 #types a{
-    color: #dd855c;
+    color: #2a4d69;
     font-weight: bold;
 }
 
@@ -88,8 +89,9 @@ ul{
     display: none;
 }
 
-#description{
+#resourceUri, #resourceDescription{
     text-align: center;
+    color: #2a4d69;
 }
 
 /*
@@ -104,22 +106,13 @@ Content
 .attributeTypeTitle{
     text-align: center;
     padding-bottom: 10px;
-    border-bottom: solid 1px;
-}
-
-@media (max-width: 915px) {
-    .left {
-        width: 100%;
-    }
-
-    .right {
-        width: 100%;
-    }
+    color: #2a4d69;
+    border-bottom: solid 1px #2a4d69;
 }
 
 .alignedTop{
     vertical-align: top;
-    color: #dd855c;
+    color: #2a4d69;
     font-weight: bold;
     pointer-events: auto;
 }
@@ -143,6 +136,7 @@ Links
 
 a {
     word-wrap: break-word;
+    color: #4b86b4;
 }
 
 a:link {
@@ -176,7 +170,7 @@ Collapsible lists
 .collapseButton {
     display: inline-block;
     border-radius: 4px;
-    background-color: #dd855c;
+    background-color: #2a4d69;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -202,7 +196,7 @@ Map
  */
 
 #contentMap{
-    height: 400px;
+    height: 350px;
     width: 100%;
     margin: auto;
 }
@@ -257,20 +251,21 @@ Prefixes
     padding: 0;
 }
 
+#prefixes h2{
+    color: #2a4d69;
+}
+
 /*
 Data Button
  */
 
 #dataLink {
     display: inline-block;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 100px 0 30px 0;
+    margin: 10px 0 10px 0;
 }
 
 #dataButton {
-    background-color: #dd855c;
+    background-color: #2a4d69;
     border: none;
     color: white;
     padding: 15px 32px;
@@ -290,14 +285,12 @@ Change View Selector
  */
 
 .radio-group {
-    border: solid #dd855c;
+    border: solid #2a4d69;
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
-    position: absolute;
-    left: 50%;
     transform: translateX(-50%);
-    margin: 35px 0 30px 0;
+    margin: 10px 0 20px 50%;
     min-width: 263px;
 }
 
@@ -317,9 +310,16 @@ label {
 
 input[type=radio]:checked + label{
     color: #FFFFFF;
-    background: #dd855c;
+    background: #2a4d69;
 }
 
 label + input[type=radio] + label {
-    border-left: solid #dd855c;
+    border-left: solid #2a4d69;
+}
+
+#footer{
+    background-color: rgba(173, 203, 227, 0.5);
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
 }

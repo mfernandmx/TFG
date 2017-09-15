@@ -130,8 +130,8 @@ function initMap() {
 
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
-            center: {lat: 39.475088, lng: -6.371472},
-            styles: [{"stylers":[{"saturation":50},{"gamma":0.6}]}]
+            center: {lat: 39.475088, lng: -6.371472}
+            //styles: [{"stylers":[{"saturation":50},{"gamma":0.6}]}]
         });
 
         if (myPoint != "") {
@@ -160,10 +160,16 @@ function initMap() {
 }
 
 function changeStyle(map) {
+
+    var image = {
+        url: 'http://www.myiconfinder.com/uploads/iconsets/256-256-a5485b563efc4511e0cd8bd04ad0fe9e.png',
+        scaledSize: new google.maps.Size(70, 70)
+    };
+
     map.data.setStyle({
         clickable: false,
 
-        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        icon: image,
 
         strokeColor: 'MidnightBlue',
         fillColor: 'DodgerBlue',
