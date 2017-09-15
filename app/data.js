@@ -21,7 +21,7 @@ const N3Util = N3.Util;
 Given all the resource's data in JSON format, its attributes and relations are processed to be displayed
 in a HTML page
  */
-function processDataForPage (data, uri, backUri, blankNode){
+function processDataForPage (data, uri, blankNode){
 
     var dataJSON = JSON.parse(data);
     var vars = dataJSON['head']['vars'];
@@ -222,7 +222,7 @@ function processDataForPage (data, uri, backUri, blankNode){
     }
 
     // Send the data processed to be rendered by the template
-    return template.setContentPug(title, description, uri, backUri, types,
+    return template.setContentPug(title, description, uri, types,
             literals.sort(function (a, b) {return a.relation.value > b.relation.value;}),
         relations,
         typedLiterals.sort(function (a, b) {return a.relation.value > b.relation.value;}),

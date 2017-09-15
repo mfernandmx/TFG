@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
+:root {
+    --bright-background: rgb(242, 246, 250);
+    --dark-background: rgb(208, 225, 239);
+
+    --bright-text: #4b86b4;
+    --dark-text: #2a4d69;
+}
+
 /*
 General
  */
@@ -7,7 +15,7 @@ General
 body{
     margin: 0;
     font-family: Roboto, "serif";
-    background-color: rgba(231, 239, 246, 0.5);
+    background-color: var(--dark-background);
 }
 
 h1{
@@ -17,7 +25,7 @@ h1{
 
 #header{
     padding: 30px;
-    background-color: rgba(173, 203, 227, 0.5);
+    background-color: var(--dark-background);
 }
 
 #header h2{
@@ -28,7 +36,7 @@ h1{
 #projectTitle{
     display: inline-block;
     vertical-align: 15px;
-    color: #2a4d69;
+    color: var(--dark-text);
     margin: 10px 20px 0 0;
 }
 
@@ -49,11 +57,6 @@ h1{
     display: inline-block;
     vertical-align: 15px;
     margin: 20px 20px 0 0;
-}
-
-#backUri{
-    margin-top: 20px;
-    text-align: center;
 }
 
 ul{
@@ -81,7 +84,7 @@ ul{
 }
 
 #types a{
-    color: #2a4d69;
+    color: var(--dark-text);
     font-weight: bold;
 }
 
@@ -91,7 +94,19 @@ ul{
 
 #resourceUri, #resourceDescription{
     text-align: center;
-    color: #2a4d69;
+    color: var(--dark-text);
+    background-color: var(--bright-background);
+}
+
+#resourceUri h2{
+    padding: 25px 50px;
+    margin: 0;
+}
+
+#resourceDescription p {
+    font-size: 125%;
+    padding: 25px 50px;
+    margin: 0;
 }
 
 /*
@@ -101,18 +116,19 @@ Content
 #content{
     width: 100%;
     overflow: auto;
+    background-color: var(--bright-background);
 }
 
 .attributeTypeTitle{
     text-align: center;
     padding-bottom: 10px;
-    color: #2a4d69;
-    border-bottom: solid 1px #2a4d69;
+    color: var(--dark-text);
+    border-bottom: solid 1px var(--dark-text);
 }
 
 .alignedTop{
     vertical-align: top;
-    color: #2a4d69;
+    color: var(--dark-text);
     font-weight: bold;
     pointer-events: auto;
 }
@@ -136,7 +152,7 @@ Links
 
 a {
     word-wrap: break-word;
-    color: #4b86b4;
+    color: var(--bright-text);
 }
 
 a:link {
@@ -170,9 +186,9 @@ Collapsible lists
 .collapseButton {
     display: inline-block;
     border-radius: 4px;
-    background-color: #2a4d69;
+    background-color: var(--dark-text);
     border: none;
-    color: #FFFFFF;
+    color: white;
     text-align: center;
     font-size: 15px;
     padding: 10px;
@@ -231,7 +247,7 @@ Flex
 .flex-element{
     height: auto;
     margin: 10px auto;
-    width: 350px;
+    width: 300px;
     background-color: white;
     padding: 10px 30px;
     box-shadow: 10px 10px 5px #888888;
@@ -252,7 +268,7 @@ Prefixes
 }
 
 #prefixes h2{
-    color: #2a4d69;
+    color: var(--dark-text);
 }
 
 /*
@@ -265,7 +281,7 @@ Data Button
 }
 
 #dataButton {
-    background-color: #2a4d69;
+    background-color: var(--dark-text);
     border: none;
     color: white;
     padding: 15px 32px;
@@ -285,7 +301,7 @@ Change View Selector
  */
 
 .radio-group {
-    border: solid #2a4d69;
+    border: solid var(--dark-text);
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
@@ -309,16 +325,20 @@ label {
 }
 
 input[type=radio]:checked + label{
-    color: #FFFFFF;
-    background: #2a4d69;
+    color: white;
+    background: var(--dark-text);
 }
 
 label + input[type=radio] + label {
-    border-left: solid #2a4d69;
+    border-left: solid var(--dark-text);
+}
+
+#viewSelector{
+    background-color: var(--bright-background);
 }
 
 #footer{
-    background-color: rgba(173, 203, 227, 0.5);
+    background-color: var(--dark-background);
     width: 100%;
     padding: 15px 0;
     text-align: center;

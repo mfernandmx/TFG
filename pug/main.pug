@@ -37,31 +37,28 @@ html
             div#resourceDescription
                 p #{rDescription}
 
-        if rBackUri != ""
-            div#backUri
-                a(href = rBackUri) Volver al recurso anterior
-
         div#content
             block content
 
         if rTitle != "404 Not Found"
 
-            div.radio-group
-                form(id="changeViewType")
-                    input(
-                        type="radio"
-                        id="user"
-                        name="selector"
-                        value="user"
-                    )
-                    label(for="user") User view
-                    input(
-                        type="radio"
-                        id="developer"
-                        name="selector"
-                        value="developer"
-                    )
-                    label(for="developer") Developer view
+            div#viewSelector
+                div.radio-group
+                    form(id="changeViewType")
+                        input(
+                            type="radio"
+                            id="user"
+                            name="selector"
+                            value="user"
+                        )
+                        label(for="user") User view
+                        input(
+                            type="radio"
+                            id="developer"
+                            name="selector"
+                            value="developer"
+                        )
+                        label(for="developer") Developer view
 
         div#footer
             div

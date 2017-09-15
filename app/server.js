@@ -67,34 +67,20 @@ http.createServer(function(request, response) {
         favicon = fs.readFileSync("./lod.ico");
         response.write(favicon);
     }
+    else if (pathname == "marker.png"){
+        response.writeHead(200, {'Content-Type': 'image'});
+        favicon = fs.readFileSync("./marker.png");
+        response.write(favicon);
+    }
     else if (url.startsWith(resource)){ // Starts with ../recurso/
 
         var datasetBase = configuration.getProperty("datasetBase");
         var result;
 
-        var backUri = "";
-
-        // Process the URI from the previous resource if exists in the URL
-        if (url.includes("?")){
-            var split = url.split("?");
-            url = split[0];
-            var parameters = split[1];
-            parameters = parameters.split("&");
-
-            for (var parameter in parameters){
-                if (parameters.hasOwnProperty(parameter)){
-
-                    if (parameters[parameter].startsWith("backUri=")) {
-                        backUri = parameters[parameter].replace("backUri=", "");
-                    }
-                }
-            }
-        }
-
         if (url.startsWith(resource + "page/")) { // HTML page request
             url = url.replace(resource + "page/", datasetBase);
 
-            result = querys.getData(url, backUri, "page");
+            result = querys.getData(url, "page");
 
             response.writeHead(result.status, {'Content-Type': 'text/html; charset=utf-8'});
             response.write(result.html);
@@ -102,7 +88,7 @@ http.createServer(function(request, response) {
         else if (url.startsWith(resource + "data/")){ // N3 data request
             url = url.replace(resource + "data/", datasetBase);
 
-            result = querys.getData(url, backUri, "data");
+            result = querys.getData(url, "data");
 
             response.writeHead(result.status, {'Content-Type': 'text/plain; charset=utf-8'});
             response.write(result.data);
@@ -116,10 +102,6 @@ http.createServer(function(request, response) {
             //          configuration.getProperty("webBase")[0] +
             //          configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), "")) + "page/");
             url = url.replace(resource, datasetBase[0] + "page/");
-
-            if (backUri != ""){
-                url += "?backUri=" + backUri;
-            }
 
             response.writeHead(301,
                 {Location: url}

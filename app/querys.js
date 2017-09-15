@@ -15,7 +15,7 @@ Given a URI, it makes a query on the SPARQL Endpoint established in the configur
 If the resource exists, it gets the data and process it for obtaining a response.
 The response can be a HTML page, as well as a N3 file, depends on the type set as parameter
  */
-function getData (uri,backUri,type) {
+function getData (uri,type) {
 
     var object = {uri: uri};
 
@@ -45,7 +45,7 @@ function getData (uri,backUri,type) {
     if (results.length > 0) {
 
         if (type == "page") {
-            response.html = data.processDataForPage(res.getBody(), uri, backUri, blankNode);
+            response.html = data.processDataForPage(res.getBody(), uri, blankNode);
         }
         else if (type == "data"){
             response.data = data.processData(res.getBody(), uri);

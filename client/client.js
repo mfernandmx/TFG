@@ -162,7 +162,7 @@ function initMap() {
 function changeStyle(map) {
 
     var image = {
-        url: 'http://www.myiconfinder.com/uploads/iconsets/256-256-a5485b563efc4511e0cd8bd04ad0fe9e.png',
+        url: 'marker.png',
         scaledSize: new google.maps.Size(70, 70)
     };
 

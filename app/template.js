@@ -15,7 +15,7 @@ const pug = require('pug');
 Once all the attributes and relations are processed and organized by their type, they are prepared to fill the
 HTML template to be displayed
  */
-function setContentPug(title, description, uri, backUri, types,
+function setContentPug(title, description, uri, types,
                        literals, relations, typedLiterals, reverseRelations, blankNodes, geometries, points){
 
     var element;
@@ -336,12 +336,6 @@ function setContentPug(title, description, uri, backUri, types,
 
     var dataUri = uri.slice(0,datasetBase.length) + "data/" + uri.slice(datasetBase.length);
 
-    // Modify to try locally
-
-    // backUri = backUri.replace(configuration.getProperty("datasetBase")[0],
-    //     configuration.getProperty("webBase")[0] +
-    //     configuration.getProperty("webResourcePrefix")[0].replace(new RegExp("\"", 'g'), ""));
-
     return compiledFunction({
 
         defaultView: defaultView,
@@ -349,7 +343,6 @@ function setContentPug(title, description, uri, backUri, types,
         rTitle: title,
         rDescription: description,
         rUri: uri,
-        rBackUri: backUri,
         rTypes: types,
 
         dataUri: dataUri,

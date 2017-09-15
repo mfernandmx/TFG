@@ -92,10 +92,10 @@ block content
                                         if relationPredicate.url == relation.relation.url
                                             if i < 5
                                                 li
-                                                    a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
+                                                    a(href=relation.value.url) #{relation.value.value}
                                             else
                                                 li.hidden
-                                                    a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
+                                                    a(href=relation.value.url) #{relation.value.value}
                                             - i++;
 
                         if i > 5
@@ -120,10 +120,10 @@ block content
                                         if reverseRelationPredicate.url == relation.relation.url
                                             if i < 5
                                                 li
-                                                    a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
+                                                    a(href=relation.value.url) #{relation.value.value}
                                             else
                                                 li.hidden
-                                                    a(href=relation.value.url + "?backUri=" + rUri) #{relation.value.value}
+                                                    a(href=relation.value.url) #{relation.value.value}
 
                                             - i++;
 
@@ -148,7 +148,7 @@ block content
                                                 li
                                                     | [
                                                     span
-                                                        a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource
+                                                        a(href=datasetBase + blankNode.nodeID) Anonymous resource
                                                             |
                                                             | (#{blankNode.nodeID})
                                                     |
@@ -174,7 +174,7 @@ block content
                                                                         when "typed-literal"
                                                                             | #{attribute.value}
                                                                         when "bnode"
-                                                                            a(href=datasetBase + attribute.value + "?backUri=" + rUri) Anonymous resource
+                                                                            a(href=datasetBase + attribute.value) Anonymous resource
                                                                                 span (#{attribute.value})
                                                                             |
                                                                         when "uri"
@@ -185,7 +185,7 @@ block content
                                                     | ]
                                             else
                                                 li.hidden
-                                                    a(href=datasetBase + blankNode.nodeID + "?backUri=" + rUri) Anonymous resource (#{blankNode.nodeID})
+                                                    a(href=datasetBase + blankNode.nodeID) Anonymous resource (#{blankNode.nodeID})
                                             - i++;
 
                         if i > 5
