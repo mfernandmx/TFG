@@ -8,22 +8,25 @@ var myFigure = "";
 function initView(view) {
 
     var form = document.getElementById('changeViewType');
-    var views = form.selector;
-    var prev = null;
-    for(var i = 0; i < views.length; i++) {
 
-        if (views[i].value == view){
-            views[i].checked = true;
-            changeView(views[i].value);
-        }
+    if (form != null) {
+        var views = form.selector;
+        var prev = null;
+        for (var i = 0; i < views.length; i++) {
 
-        views[i].onclick = function() {
-            if(this !== prev) {
-                prev = this;
+            if (views[i].value == view) {
+                views[i].checked = true;
+                changeView(views[i].value);
             }
 
-            changeView(this.value);
-        };
+            views[i].onclick = function () {
+                if (this !== prev) {
+                    prev = this;
+                }
+
+                changeView(this.value);
+            };
+        }
     }
 }
 

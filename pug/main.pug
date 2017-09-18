@@ -72,9 +72,10 @@ html
                     a(href="http://quercusseg.unex.es") Quercus SEG
                     |)
 
-            div#dataLink
-                a(href = dataUri)
-                    button#dataButton Get triples from resource
+            if rTitle != "404 Not Found"
+                div#dataLink
+                    a(href = dataUri)
+                        button#dataButton Get triples from resource
 
         script(type="text/javascript").
             point = "#{geoPoint}";
